@@ -162,7 +162,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 3</span> Growth charts in JAMES</h1>
 <div id="chart-naming-conventions" class="section level2">
 <h2><span class="header-section-number">3.1</span> Chart naming conventions</h2>
-<p>The link <a href="https://groeidiagrammen.nl/ocpu/lib/james/www/" class="uri">https://groeidiagrammen.nl/ocpu/lib/james/www/</a> contains an interactive overview of the available growth charts. There are 342 different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart design has a <code>chartcode</code>, a character code identifying the design. This section explains the construction of the chart codes.</p>
+<p>The link <a href="https://groeidiagrammen.nl/ocpu/lib/james/www/" class="uri">https://groeidiagrammen.nl/ocpu/lib/james/www/</a> contains an interactive overview of the available growth charts. There are 342 different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart has a chart code, a character code identifying the design. This section explains the construction of the chart codes.</p>
 <p>The GitHub repository <a href="https://github.com/stefvanbuuren/chartbox" class="uri">https://github.com/stefvanbuuren/chartbox</a> contains the chart libraries that are available to JAMES. The <code>list_charts()</code> function produces a tabular overview.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">charts &lt;-<span class="st"> </span>chartbox<span class="op">::</span><span class="kw">list_charts</span>()</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">dim</span>(charts)</a></code></pre></div>
@@ -175,7 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 300  preterm   PMEAN32         PT female      E front    dutch   32
 ## 301  preterm   PMEAN33         PT female      E front    dutch   33
 ## 340      who      WMBA    WHOpink female      B front    dutch</code></pre>
-<p>The <code>chartbox</code> package currently contains three chart groups: <code>nl2010</code>, <code>preterm</code> and <code>who</code>. Each groups collects charts of a similar type.</p>
+<p>The <code>chartbox</code> package currently contains three chart groups: <code>nl2010</code>, <code>preterm</code> and <code>who</code>. Each group collects charts of a similar type.</p>
 <table>
 <thead>
 <tr class="header">
@@ -210,7 +210,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>The chart code is an alpha-numeric code of four (for <code>nl2010</code> and <code>who</code>) or seven (for <code>preterm</code>) that uniquely identifies each of the charts. The table below specifies the full coding schema used to construct the chartcodes.</p>
+<p>The chart code is an alpha-numeric code of four (for <code>nl2010</code> and <code>who</code>) or seven (for <code>preterm</code>) that uniquely identifies each of the charts. The table below specifies the full coding schema used to construct the chart codes.</p>
 <table>
 <thead>
 <tr class="header">
@@ -373,9 +373,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>For example, code <code>NJAA</code> reference to Dutch (<code>N</code>), boys (<code>J</code>), 0-15 month (<code>A</code>), front side (<code>A</code>). Likewise, <code>PMEAN33</code> codes for the chart of preterm (<code>M</code>), girls (<code>M</code>), 0-4 years (<code>E</code>), front side (<code>A</code>), Dutch language (<code>N</code>) born at 33 weeks of gestation (<code>33</code>).</p>
-<p>Some forms hold multiple growth charts. For example, the <code>NJAA</code> chart is designed for a A4 paper size (297mm <span class="math inline">\(\times\)</span> 210mm) and holds three growth charts: head circumference by age, length by age, and weight by age. Some others no chart, like <code>NJAB</code> with explanations. All square formats holds one growth chart. All of square format have equal sizes (160mm <span class="math inline">\(\times\)</span> 160mm).</p>
-<p>The measures per design-form combination are listed in the following table.</p>
+<p>For illustration, code <code>NJAA</code> references to Dutch (<code>N</code>), boys (<code>J</code>), 0-15 month (<code>A</code>), front side (<code>A</code>). Likewise, <code>PMEAN33</code> codes for the chart of preterm (<code>M</code>), girls (<code>M</code>), 0-4 years (<code>E</code>), front side (<code>A</code>), Dutch language (<code>N</code>) born at 33 weeks of gestation (<code>33</code>).</p>
+<p>Some forms hold multiple growth charts. For example, the <code>NJAA</code> chart is designed for A4 paper size (297mm <span class="math inline">\(\times\)</span> 210mm) and contains three growth charts: head circumference by age, length by age, and weight by age. Some others have no diagram, like <code>NJAB</code> with explanations. All square formats hold one growth chart. All of the square forms have equal sizes (160mm <span class="math inline">\(\times\)</span> 160mm).</p>
+<p>The following table lists the measures per design-form combination.</p>
 <table>
 <thead>
 <tr class="header">
@@ -486,7 +486,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="center"></td>
 <td align="center"></td>
 <td align="left">hgt</td>
-<td align="left">Height by age, 1-21 yr</td>
+<td align="left">height by age, 1-21 yr</td>
 </tr>
 <tr class="even">
 <td align="center"></td>
@@ -540,7 +540,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="center"></td>
 <td align="center"></td>
 <td align="left">hgt</td>
-<td align="left">Height by age, 0-4 yr</td>
+<td align="left">height by age, 0-4 yr</td>
 </tr>
 <tr class="odd">
 <td align="center"></td>

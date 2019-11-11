@@ -151,7 +151,7 @@ Here's an introduction about JAMES
 \hypertarget{chart-naming-conventions}{%
 \section{Chart naming conventions}\label{chart-naming-conventions}}
 
-The link \url{https://groeidiagrammen.nl/ocpu/lib/james/www/} contains an interactive overview of the available growth charts. There are 342 different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart design has a \texttt{chartcode}, a character code identifying the design. This section explains the construction of the chart codes.
+The link \url{https://groeidiagrammen.nl/ocpu/lib/james/www/} contains an interactive overview of the available growth charts. There are 342 different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart has a chart code, a character code identifying the design. This section explains the construction of the chart codes.
 
 The GitHub repository \url{https://github.com/stefvanbuuren/chartbox} contains the chart libraries that are available to JAMES. The \texttt{list\_charts()} function produces a tabular overview.
 
@@ -182,7 +182,7 @@ The GitHub repository \url{https://github.com/stefvanbuuren/chartbox} contains t
 ## 340      who      WMBA    WHOpink female      B front    dutch
 \end{verbatim}
 
-The \texttt{chartbox} package currently contains three chart groups: \texttt{nl2010}, \texttt{preterm} and \texttt{who}. Each groups collects charts of a similar type.
+The \texttt{chartbox} package currently contains three chart groups: \texttt{nl2010}, \texttt{preterm} and \texttt{who}. Each group collects charts of a similar type.
 
 \begin{longtable}[]{@{}lrlll@{}}
 \toprule
@@ -195,7 +195,7 @@ Chart Group & Charts & Chart code & Description & Source\tabularnewline
 \bottomrule
 \end{longtable}
 
-The chart code is an alpha-numeric code of four (for \texttt{nl2010} and \texttt{who}) or seven (for \texttt{preterm}) that uniquely identifies each of the charts. The table below specifies the full coding schema used to construct the chartcodes.
+The chart code is an alpha-numeric code of four (for \texttt{nl2010} and \texttt{who}) or seven (for \texttt{preterm}) that uniquely identifies each of the charts. The table below specifies the full coding schema used to construct the chart codes.
 
 \begin{longtable}[]{@{}clll@{}}
 \toprule
@@ -230,11 +230,11 @@ Position & Field & Value & Description\tabularnewline
 \bottomrule
 \end{longtable}
 
-For example, code \texttt{NJAA} reference to Dutch (\texttt{N}), boys (\texttt{J}), 0-15 month (\texttt{A}), front side (\texttt{A}). Likewise, \texttt{PMEAN33} codes for the chart of preterm (\texttt{M}), girls (\texttt{M}), 0-4 years (\texttt{E}), front side (\texttt{A}), Dutch language (\texttt{N}) born at 33 weeks of gestation (\texttt{33}).
+For illustration, code \texttt{NJAA} references to Dutch (\texttt{N}), boys (\texttt{J}), 0-15 month (\texttt{A}), front side (\texttt{A}). Likewise, \texttt{PMEAN33} codes for the chart of preterm (\texttt{M}), girls (\texttt{M}), 0-4 years (\texttt{E}), front side (\texttt{A}), Dutch language (\texttt{N}) born at 33 weeks of gestation (\texttt{33}).
 
-Some forms hold multiple growth charts. For example, the \texttt{NJAA} chart is designed for a A4 paper size (297mm \(\times\) 210mm) and holds three growth charts: head circumference by age, length by age, and weight by age. Some others no chart, like \texttt{NJAB} with explanations. All square formats holds one growth chart. All of square format have equal sizes (160mm \(\times\) 160mm).
+Some forms hold multiple growth charts. For example, the \texttt{NJAA} chart is designed for A4 paper size (297mm \(\times\) 210mm) and contains three growth charts: head circumference by age, length by age, and weight by age. Some others have no diagram, like \texttt{NJAB} with explanations. All square formats hold one growth chart. All of the square forms have equal sizes (160mm \(\times\) 160mm).
 
-The measures per design-form combination are listed in the following table.
+The following table lists the measures per design-form combination.
 
 \begin{longtable}[]{@{}ccll@{}}
 \toprule
@@ -257,7 +257,7 @@ B & A & wfh & Weight for height, 0-4 yr\tabularnewline
 & R & wfh & Weight for height, 0-4 yr\tabularnewline
 & W & wgt & Weight by age, 0-4 yr\tabularnewline
 C & A & wfh & Weight for height, 1-21 yr\tabularnewline
-& & hgt & Height by age, 1-21 yr\tabularnewline
+& & hgt & height by age, 1-21 yr\tabularnewline
 & B & bmi & BMI by age, 1-21 yr\tabularnewline
 & & hdc & Head circumference by age, 1-21 yr\tabularnewline
 & C & bmi & BMI by age, 1-21 yr\tabularnewline
@@ -266,7 +266,7 @@ C & A & wfh & Weight for height, 1-21 yr\tabularnewline
 & Q & bmi & Body mass index by age, 1-21 yr\tabularnewline
 & R & wfh & Weight for height, 1-21 yr\tabularnewline
 E & A & wgt & Weight by age, 0-4 yr\tabularnewline
-& & hgt & Height by age, 0-4 yr\tabularnewline
+& & hgt & height by age, 0-4 yr\tabularnewline
 & B & hdc & Head circumference by age, 0-4 yr\tabularnewline
 & H & hgt & Height by age, 0-4 yr\tabularnewline
 & O & hdc & Head circumference by age, 0-4 yr\tabularnewline
