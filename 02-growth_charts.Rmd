@@ -63,34 +63,34 @@ The following table lists the measures per design-form combination.
 
 | Design | Side  | Measure | Description
 |:------:|:-----:|:------- |:------------------------------------- |
-|    A   |   A   | hdc     | Head circumference by age, 0-15 mo    |
-|        |       | hgt     | Length by age, 0-15 mo                |
-|        |       | wgt     | Weight by age, 0-15 mo                |
+|    A   |   A   | `hdc`     | Head circumference by age, 0-15 mo    |
+|        |       | `hgt`     | Length by age, 0-15 mo                |
+|        |       | `wgt`     | Weight by age, 0-15 mo                |
 |        |   B   |         |                                       |
-|        |   H   | hgt     | Length by age, 0-15 mo                |
-|        |   O   | hdc     | Head circumference by age, 0-15 mo    |
-|        |   W   | wgt     | Weight by age, 0-15 mo                |
-|    B   |   A   | wfh     | Weight for height, 0-4 yr             |
-|        |       | hgt     | Length by age, 0-4 yr                 |
-|        |   B   | hdc     | Head circumference by age, 0-4 yr     |
+|        |   H   | `hgt`     | Length by age, 0-15 mo                |
+|        |   O   | `hdc`     | Head circumference by age, 0-15 mo    |
+|        |   W   | `wgt`     | Weight by age, 0-15 mo                |
+|    B   |   A   | `wfh`     | Weight for height, 0-4 yr             |
+|        |       | `hgt`     | Length by age, 0-4 yr                 |
+|        |   B   | `hdc`     | Head circumference by age, 0-4 yr     |
 |        |   C   |         |                                       |
-|        |   H   | hgt     | Height by age, 0-4 yr                 |
-|        |   O   | hdc     | Head circumference by age, 0-4 yr     |
-|        |   R   | wfh     | Weight for height, 0-4 yr             |
-|        |   W   | wgt     | Weight by age, 0-4 yr                 |
-|    C   |   A   | wfh     | Weight for height, 1-21 yr            |
-|        |       | hgt     | height by age, 1-21 yr                |
-|        |   B   | bmi     | BMI by age, 1-21 yr                   |
-|        |       | hdc     | Head circumference by age, 1-21 yr    |
-|        |   C   | bmi     | BMI by age, 1-21 yr                   |
-|        |   H   | hgt     | Height by age, 1-21 yr                |
-|        |   O   | hdc     | Head circumference by age, 1-21 yr    |
-|        |   Q   | bmi     | Body mass index by age, 1-21 yr       |
-|        |   R   | wfh     | Weight for height, 1-21 yr            |
-|    E   |   A   | wgt     | Weight by age, 0-4 yr                 |
-|        |       | hgt     | height by age, 0-4 yr                 |
-|        |   B   | hdc     | Head circumference by age, 0-4 yr     |
-|        |   H   | hgt     | Height by age, 0-4 yr                 |
-|        |   O   | hdc     | Head circumference by age, 0-4 yr     |
-|        |   W   | wgt     | Weight by age, 0-4 yr                 |
+|        |   H   | `hgt`     | Height by age, 0-4 yr                 |
+|        |   O   | `hdc`     | Head circumference by age, 0-4 yr     |
+|        |   R   | `wfh`     | Weight for height, 0-4 yr             |
+|        |   W   | `wgt`     | Weight by age, 0-4 yr                 |
+|    C   |   A   | `wfh`     | Weight for height, 1-21 yr            |
+|        |       | `hgt`     | height by age, 1-21 yr                |
+|        |   B   | `bmi`     | BMI by age, 1-21 yr                   |
+|        |       | `hdc`     | Head circumference by age, 1-21 yr    |
+|        |   C   | `bmi`     | BMI by age, 1-21 yr                   |
+|        |   H   | `hgt`     | Height by age, 1-21 yr                |
+|        |   O   | `hdc`     | Head circumference by age, 1-21 yr    |
+|        |   Q   | `bmi`     | Body mass index by age, 1-21 yr       |
+|        |   R   | `wfh`     | Weight for height, 1-21 yr            |
+|    E   |   A   | `wgt`     | Weight by age, 0-4 yr                 |
+|        |       | `hgt`     | height by age, 0-4 yr                 |
+|        |   B   | `hdc`     | Head circumference by age, 0-4 yr     |
+|        |   H   | `hgt`     | Height by age, 0-4 yr                 |
+|        |   O   | `hdc`     | Head circumference by age, 0-4 yr     |
+|        |   W   | `wgt`     | Weight by age, 0-4 yr                 |
 
