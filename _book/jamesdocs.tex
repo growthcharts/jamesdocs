@@ -1,0 +1,315 @@
+\documentclass[]{book}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={A Minimal Book Example},
+            pdfauthor={Yihui Xie},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{natbib}
+\bibliographystyle{apalike}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{A Minimal Book Example}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Yihui Xie}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{2019-11-11}
+
+\usepackage{booktabs}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\hypertarget{prerequisites}{%
+\chapter{Prerequisites}\label{prerequisites}}
+
+This is a \emph{sample} book written in \textbf{Markdown}. You can use anything that Pandoc's Markdown supports, e.g., a math equation \(a^2 + b^2 = c^2\).
+
+The \textbf{bookdown} package can be installed from CRAN or Github:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"bookdown"}\NormalTok{)}
+\CommentTok{# or the development version}
+\CommentTok{# devtools::install_github("rstudio/bookdown")}
+\end{Highlighting}
+\end{Shaded}
+
+Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading \texttt{\#}.
+
+To compile this example to PDF, you need XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): \url{https://yihui.name/tinytex/}.
+
+\hypertarget{intro}{%
+\chapter{Introduction}\label{intro}}
+
+Here's an introduction about JAMES
+
+\hypertarget{growth-charts-in-james}{%
+\chapter{Growth charts in JAMES}\label{growth-charts-in-james}}
+
+\hypertarget{chart-naming-conventions}{%
+\section{Chart naming conventions}\label{chart-naming-conventions}}
+
+The link \url{https://groeidiagrammen.nl/ocpu/lib/james/www/} contains an interactive overview of the available growth charts. There are 342 different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart design has a \texttt{chartcode}, a character code identifying the design. This section explains the construction of the chart codes.
+
+The GitHub repository \url{https://github.com/stefvanbuuren/chartbox} contains the chart libraries that are available to JAMES. The \texttt{list\_charts()} function produces a tabular overview.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{charts <-}\StringTok{ }\NormalTok{chartbox}\OperatorTok{::}\KeywordTok{list_charts}\NormalTok{()}
+\KeywordTok{dim}\NormalTok{(charts)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 342   8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{charts[}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{22}\NormalTok{, }\DecValTok{23}\NormalTok{, }\DecValTok{300}\NormalTok{, }\DecValTok{301}\NormalTok{, }\DecValTok{340}\NormalTok{), ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     chartgrp chartcode population    sex design  side language week
+## 1     nl2010      HJAA         HS   male      A front    dutch     
+## 22    nl2010      HMBH         HS female      B   hgt    dutch     
+## 23    nl2010      HMBR         HS female      B   wfh    dutch     
+## 300  preterm   PMEAN32         PT female      E front    dutch   32
+## 301  preterm   PMEAN33         PT female      E front    dutch   33
+## 340      who      WMBA    WHOpink female      B front    dutch
+\end{verbatim}
+
+The \texttt{chartbox} package currently contains three chart groups: \texttt{nl2010}, \texttt{preterm} and \texttt{who}. Each groups collects charts of a similar type.
+
+\begin{longtable}[]{@{}lrlll@{}}
+\toprule
+Chart Group & Charts & Chart code & Description & Source\tabularnewline
+\midrule
+\endhead
+\texttt{nl2010} & 136 & CCCC & Dutch children 0-21 years, including minorities & \citet{talma2010}\tabularnewline
+\texttt{preterm} & 192 & CCCCCNN & Dutch preterms, ga \textless{}= 36 weeks, 0-4 years & \citet{bocca2012}\tabularnewline
+\texttt{who} & 14 & CCCC & WHO Child Growth Standards 0-4 years & \href{https://www.who.int/childgrowth/en/}{WHO}\tabularnewline
+\bottomrule
+\end{longtable}
+
+The chart code is an alpha-numeric code of four (for \texttt{nl2010} and \texttt{who}) or seven (for \texttt{preterm}) that uniquely identifies each of the charts. The table below specifies the full coding schema used to construct the chartcodes.
+
+\begin{longtable}[]{@{}clll@{}}
+\toprule
+Position & Field & Value & Description\tabularnewline
+\midrule
+\endhead
+1 & Population & N & Dutch\tabularnewline
+& & T & Turkish\tabularnewline
+& & M & Moroccan\tabularnewline
+& & H & Hindostan\tabularnewline
+& & P & Preterm\tabularnewline
+& & W & WHO\tabularnewline
+2 & Sex & J & Male\tabularnewline
+& & M & Female\tabularnewline
+3 & Design & A & 0-15 months\tabularnewline
+& & B & 0-4 years, WFH\tabularnewline
+& & C & 1-21 years\tabularnewline
+& & D & 0-21 years\tabularnewline
+& & E & 0-4 years, WFA\tabularnewline
+4 & Side & A & A4, front\tabularnewline
+& & B & A4, back\tabularnewline
+& & C & A4, back, no \texttt{hdc}\tabularnewline
+& & H & square, \texttt{hgt}\tabularnewline
+& & O & square, \texttt{hdc}\tabularnewline
+& & Q & square, \texttt{bmi}\tabularnewline
+& & R & square, \texttt{wfh}\tabularnewline
+& & W & square, \texttt{wgt}\tabularnewline
+& & X & A4, double sided\tabularnewline
+5 & Language & N & Dutch\tabularnewline
+& & E & English\tabularnewline
+6-7 & Week & 25-36 & Gestational age\tabularnewline
+\bottomrule
+\end{longtable}
+
+For example, code \texttt{NJAA} reference to Dutch (\texttt{N}), boys (\texttt{J}), 0-15 month (\texttt{A}), front side (\texttt{A}). Likewise, \texttt{PMEAN33} codes for the chart of preterm (\texttt{M}), girls (\texttt{M}), 0-4 years (\texttt{E}), front side (\texttt{A}), Dutch language (\texttt{N}) born at 33 weeks of gestation (\texttt{33}).
+
+Some forms hold multiple growth charts. For example, the \texttt{NJAA} chart is designed for a A4 paper size (297mm \(\times\) 210mm) and holds three growth charts: head circumference by age, length by age, and weight by age. Some others no chart, like \texttt{NJAB} with explanations. All square formats holds one growth chart. All of square format have equal sizes (160mm \(\times\) 160mm).
+
+The measures per design-form combination are listed in the following table.
+
+\begin{longtable}[]{@{}ccll@{}}
+\toprule
+Design & Side & Measure & Description\tabularnewline
+\midrule
+\endhead
+A & A & hdc & Head circumference by age, 0-15 mo\tabularnewline
+& & hgt & Length by age, 0-15 mo\tabularnewline
+& & wgt & Weight by age, 0-15 mo\tabularnewline
+& B & &\tabularnewline
+& H & hgt & Length by age, 0-15 mo\tabularnewline
+& O & hdc & Head circumference by age, 0-15 mo\tabularnewline
+& W & wgt & Weight by age, 0-15 mo\tabularnewline
+B & A & wfh & Weight for height, 0-4 yr\tabularnewline
+& & hgt & Length by age, 0-4 yr\tabularnewline
+& B & hdc & Head circumference by age, 0-4 yr\tabularnewline
+& C & &\tabularnewline
+& H & hgt & Height by age, 0-4 yr\tabularnewline
+& O & hdc & Head circumference by age, 0-4 yr\tabularnewline
+& R & wfh & Weight for height, 0-4 yr\tabularnewline
+& W & wgt & Weight by age, 0-4 yr\tabularnewline
+C & A & wfh & Weight for height, 1-21 yr\tabularnewline
+& & hgt & Height by age, 1-21 yr\tabularnewline
+& B & bmi & BMI by age, 1-21 yr\tabularnewline
+& & hdc & Head circumference by age, 1-21 yr\tabularnewline
+& C & bmi & BMI by age, 1-21 yr\tabularnewline
+& H & hgt & Height by age, 1-21 yr\tabularnewline
+& O & hdc & Head circumference by age, 1-21 yr\tabularnewline
+& Q & bmi & Body mass index by age, 1-21 yr\tabularnewline
+& R & wfh & Weight for height, 1-21 yr\tabularnewline
+E & A & wgt & Weight by age, 0-4 yr\tabularnewline
+& & hgt & Height by age, 0-4 yr\tabularnewline
+& B & hdc & Head circumference by age, 0-4 yr\tabularnewline
+& H & hgt & Height by age, 0-4 yr\tabularnewline
+& O & hdc & Head circumference by age, 0-4 yr\tabularnewline
+& W & wgt & Weight by age, 0-4 yr\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{methods}{%
+\chapter{Methods}\label{methods}}
+
+We describe our methods in this chapter.
+
+\hypertarget{applications}{%
+\chapter{Applications}\label{applications}}
+
+Some \emph{significant} applications are demonstrated in this chapter.
+
+\hypertarget{example-one}{%
+\section{Example one}\label{example-one}}
+
+\hypertarget{example-two}{%
+\section{Example two}\label{example-two}}
+
+\hypertarget{final-words}{%
+\chapter{Final Words}\label{final-words}}
+
+We have finished a nice book.
+
+\bibliography{book.bib,packages.bib}
+
+
+\end{document}

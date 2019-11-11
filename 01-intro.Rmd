@@ -1,0 +1,3 @@
+# Introduction {#intro}
+
+Here's an introduction about JAMES
