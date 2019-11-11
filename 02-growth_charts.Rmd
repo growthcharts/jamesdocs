@@ -1,4 +1,5 @@
-```{r setup, include=FALSE}
+
+```{r height, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
 ```
 
@@ -6,7 +7,7 @@ knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
 
 ## Chart naming conventions
 
-The link https://groeidiagrammen.nl/ocpu/lib/james/www/ contains an interactive overview of the available growth charts. There are 342 different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart design has a `chartcode`, a character code identifying the design. This section explains the construction of the chart codes.
+The link https://groeidiagrammen.nl/ocpu/lib/james/www/ contains an interactive overview of the available growth charts. There are 342 different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart has a chart code, a character code identifying the design. This section explains the construction of the chart codes.
 
 The GitHub repository https://github.com/stefvanbuuren/chartbox contains the chart libraries that are available to JAMES. The `list_charts()` function produces a tabular overview.
 
@@ -16,7 +17,7 @@ dim(charts)
 charts[c(1, 22, 23, 300, 301, 340), ]
 ```
 
-The `chartbox` package currently contains three chart groups: `nl2010`, `preterm` and `who`. Each groups collects charts of a similar type. 
+The `chartbox` package currently contains three chart groups: `nl2010`, `preterm` and `who`. Each group collects charts of a similar type. 
 
 | Chart Group    |Charts | Chart code | Description                                     | Source
 |:------- | -----:|:---------- |:----------------------------------------------- |:---------
@@ -24,7 +25,7 @@ The `chartbox` package currently contains three chart groups: `nl2010`, `preterm
 |`preterm`|   192 | CCCCCNN    | Dutch preterms, ga <= 36 weeks, 0-4 years       | @bocca2012
 |`who`    |    14 | CCCC       | WHO Child Growth Standards 0-4 years            | [WHO](https://www.who.int/childgrowth/en/)
 
-The chart code is an alpha-numeric code of four (for `nl2010` and `who`) or seven (for `preterm`) that uniquely identifies each of the charts. The table below specifies the full coding schema used to construct the chartcodes.
+The chart code is an alpha-numeric code of four (for `nl2010` and `who`) or seven (for `preterm`) that uniquely identifies each of the charts. The table below specifies the full coding schema used to construct the chart codes.
 
 | Position | Field      | Value | Description     |
 |:----:|:---------- |:----- |:------------------- |
@@ -54,11 +55,11 @@ The chart code is an alpha-numeric code of four (for `nl2010` and `who`) or seve
 |      |            | E     | English             |
 |  6-7 | Week       | 25-36 | Gestational age     |
 
-For example, code `NJAA` reference to Dutch (`N`), boys (`J`), 0-15 month (`A`), front side (`A`). Likewise, `PMEAN33` codes for the chart of preterm (`M`), girls (`M`), 0-4 years (`E`), front side (`A`), Dutch language (`N`) born at 33 weeks of gestation (`33`).
+For illustration, code `NJAA` references to Dutch (`N`), boys (`J`), 0-15 month (`A`), front side (`A`). Likewise, `PMEAN33` codes for the chart of preterm (`M`), girls (`M`), 0-4 years (`E`), front side (`A`), Dutch language (`N`) born at 33 weeks of gestation (`33`).
 
-Some forms hold multiple growth charts. For example, the `NJAA` chart is designed for a A4 paper size (297mm $\times$ 210mm) and holds three growth charts: head circumference by age, length by age, and weight by age. Some others no chart, like `NJAB` with explanations. All square formats holds one growth chart. All of square format have equal sizes (160mm $\times$ 160mm).
+Some forms hold multiple growth charts. For example, the `NJAA` chart is designed for A4 paper size (297mm $\times$ 210mm) and contains three growth charts: head circumference by age, length by age, and weight by age. Some others have no diagram, like `NJAB` with explanations. All square formats hold one growth chart. All of the square forms have equal sizes (160mm $\times$ 160mm).
 
-The measures per design-form combination are listed in the following table.
+The following table lists the measures per design-form combination. 
 
 | Design | Side  | Measure | Description
 |:------:|:-----:|:------- |:------------------------------------- |
@@ -78,7 +79,7 @@ The measures per design-form combination are listed in the following table.
 |        |   R   | wfh     | Weight for height, 0-4 yr             |
 |        |   W   | wgt     | Weight by age, 0-4 yr                 |
 |    C   |   A   | wfh     | Weight for height, 1-21 yr            |
-|        |       | hgt     | Height by age, 1-21 yr                |
+|        |       | hgt     | height by age, 1-21 yr                |
 |        |   B   | bmi     | BMI by age, 1-21 yr                   |
 |        |       | hdc     | Head circumference by age, 1-21 yr    |
 |        |   C   | bmi     | BMI by age, 1-21 yr                   |
@@ -87,7 +88,7 @@ The measures per design-form combination are listed in the following table.
 |        |   Q   | bmi     | Body mass index by age, 1-21 yr       |
 |        |   R   | wfh     | Weight for height, 1-21 yr            |
 |    E   |   A   | wgt     | Weight by age, 0-4 yr                 |
-|        |       | hgt     | Height by age, 0-4 yr                 |
+|        |       | hgt     | height by age, 0-4 yr                 |
 |        |   B   | hdc     | Head circumference by age, 0-4 yr     |
 |        |   H   | hgt     | Height by age, 0-4 yr                 |
 |        |   O   | hdc     | Head circumference by age, 0-4 yr     |
