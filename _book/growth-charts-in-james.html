@@ -4,24 +4,24 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Growth charts in JAMES | A Minimal Book Example</title>
-  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <title>Chapter 3 Growth charts in JAMES | JAMES manual</title>
+  <meta name="description" content="This is very, very first minimal documentation of JAMES internals." />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Growth charts in JAMES | A Minimal Book Example" />
+  <meta property="og:title" content="Chapter 3 Growth charts in JAMES | JAMES manual" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta property="og:description" content="This is very, very first minimal documentation of JAMES internals." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Growth charts in JAMES | A Minimal Book Example" />
+  <meta name="twitter:title" content="Chapter 3 Growth charts in JAMES | JAMES manual" />
   
-  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="twitter:description" content="This is very, very first minimal documentation of JAMES internals." />
   
 
-<meta name="author" content="Yihui Xie" />
+<meta name="author" content="Stef van Buuren" />
 
 
 <meta name="date" content="2019-11-11" />
@@ -128,7 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">JAMES manual</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
@@ -137,11 +137,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html#chart-naming-conventions"><i class="fa fa-check"></i><b>3.1</b> Chart naming conventions</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
-<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a><ul>
-<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
-<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -155,7 +150,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">JAMES manual</a>
           </h1>
         </div>
 
@@ -169,10 +164,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">3.1</span> Chart naming conventions</h2>
 <p>The link <a href="https://groeidiagrammen.nl/ocpu/lib/james/www/" class="uri">https://groeidiagrammen.nl/ocpu/lib/james/www/</a> contains an interactive overview of the available growth charts. There are 342 different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart design has a <code>chartcode</code>, a character code identifying the design. This section explains the construction of the chart codes.</p>
 <p>The GitHub repository <a href="https://github.com/stefvanbuuren/chartbox" class="uri">https://github.com/stefvanbuuren/chartbox</a> contains the chart libraries that are available to JAMES. The <code>list_charts()</code> function produces a tabular overview.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">charts &lt;-<span class="st"> </span>chartbox<span class="op">::</span><span class="kw">list_charts</span>()</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">dim</span>(charts)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">charts &lt;-<span class="st"> </span>chartbox<span class="op">::</span><span class="kw">list_charts</span>()</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">dim</span>(charts)</a></code></pre></div>
 <pre><code>## [1] 342   8</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">charts[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">300</span>, <span class="dv">301</span>, <span class="dv">340</span>), ]</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">charts[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">300</span>, <span class="dv">301</span>, <span class="dv">340</span>), ]</a></code></pre></div>
 <pre><code>##     chartgrp chartcode population    sex design  side language week
 ## 1     nl2010      HJAA         HS   male      A front    dutch     
 ## 22    nl2010      HMBH         HS female      B   hgt    dutch     
