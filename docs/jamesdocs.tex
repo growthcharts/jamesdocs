@@ -124,7 +124,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-11-11}
+    \date{2019-11-27}
 
 \usepackage{booktabs}
 
@@ -144,6 +144,231 @@ This is very, very first minimal documentation of JAMES internals.
 \chapter{Introduction}\label{intro}}
 
 Here's an introduction about JAMES
+
+\hypertarget{getting-data-into-james}{%
+\chapter{Getting data into JAMES}\label{getting-data-into-james}}
+
+\hypertarget{objective}{%
+\section{Objective}\label{objective}}
+
+This document describes the format of the input data accepted by JAMES. The specification
+
+\begin{itemize}
+\tightlist
+\item
+  closely follows the definition of the \href{https://www.ncj.nl/themadossiers/informatisering/basisdataset/}{Basisdataset JGZ 3.25 (2018)};
+\item
+  defines data objects;
+\item
+  defines the actions taken by JAMES in case of incorrect, missing or out-of-range data;
+\item
+  defines the error messages for informing the client.
+\end{itemize}
+
+\hypertarget{generic-object-model}{%
+\section{Generic object model}\label{generic-object-model}}
+
+\hypertarget{epremdossier-class}{%
+\subsection{EPremDossier Class}\label{epremdossier-class}}
+
+\hypertarget{object-model}{%
+\subsubsection{Object model}\label{object-model}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+EPremDossier & Instance & Class\tabularnewline
+\midrule
+\endhead
+-\textgreater{} & Clientgegevens & EPremGroep\tabularnewline
+-\textgreater{} & Contactmomenten & EPremContactmoment\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{syntax-c}{%
+\subsubsection{\texorpdfstring{Syntax \texttt{C\#}}{Syntax C\#}}\label{syntax-c}}
+
+\texttt{public\ class\ EPremDossier}
+
+\hypertarget{public-properties}{%
+\subsubsection{Public properties}\label{public-properties}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Name & Description & Required\tabularnewline
+\midrule
+\endhead
+Clientgegevens & Class with basic child data & Y\tabularnewline
+Contactmomenten & Class with data per visit & N\tabularnewline
+InstrumentCode & Integer identifying the instrument & Ignored\tabularnewline
+OrganisatieCode & Integer identifying the care organisation & Y\tabularnewline
+Referentie & String identifying the request & N\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{epremgroep-class}{%
+\subsection{EPremGroep Class}\label{epremgroep-class}}
+
+\hypertarget{object-model-1}{%
+\subsubsection{Object model}\label{object-model-1}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+EPremGroep & Instance & Class\tabularnewline
+\midrule
+\endhead
+-\textgreater{} & Elementen & EPremElement\tabularnewline
+-\textgreater{} & Groepen & EPremGroep\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{syntax-c-1}{%
+\subsubsection{\texorpdfstring{Syntax \texttt{C\#}}{Syntax C\#}}\label{syntax-c-1}}
+
+\texttt{public\ class\ EPremGroep}
+
+\hypertarget{public-properties-1}{%
+\subsubsection{Public properties}\label{public-properties-1}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Name & Description & Required\tabularnewline
+\midrule
+\endhead
+Elementen & Class with BDS-elements & Y\tabularnewline
+Groepen & Class with groups of BDS-elements & N\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{epremelement-class}{%
+\subsection{EPremElement Class}\label{epremelement-class}}
+
+\hypertarget{syntax-c-2}{%
+\subsubsection{\texorpdfstring{Syntax \texttt{C\#}}{Syntax C\#}}\label{syntax-c-2}}
+
+\texttt{public\ class\ EPremElement}
+
+\hypertarget{public-properties-2}{%
+\subsubsection{Public properties}\label{public-properties-2}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Name & Description & Required\tabularnewline
+\midrule
+\endhead
+Bdsnummer & Integer identifying the BDS-field & Y\tabularnewline
+InternNummer & Integer identifying internal field & Ignored\tabularnewline
+Waarde & Value of the BDS-field & Y\tabularnewline
+Waardeomschrijving & Descriptive label for value & Ignored\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{epremcontactmoment-class}{%
+\subsection{EPremContactmoment Class}\label{epremcontactmoment-class}}
+
+\hypertarget{object-model-2}{%
+\subsubsection{Object model}\label{object-model-2}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+EPremContactmoment & Instance & Class\tabularnewline
+\midrule
+\endhead
+-\textgreater{} & Elementen & EPremElement\tabularnewline
+-\textgreater{} & Groepen & EPremGroep\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{syntax-c-3}{%
+\subsubsection{\texorpdfstring{Syntax \texttt{C\#}}{Syntax C\#}}\label{syntax-c-3}}
+
+\texttt{public\ class\ EPremContactmoment\ :\ EPremGroep}
+
+\hypertarget{public-properties-3}{%
+\subsubsection{Public properties}\label{public-properties-3}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Name & Description & Required\tabularnewline
+\midrule
+\endhead
+Elementen & Class with BDS-elements & Y\tabularnewline
+Groepen & Class with groups of BDS-elements & N\tabularnewline
+Tijdstip & Date of visit & Y\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{bds-elements}{%
+\section{BDS-elements}\label{bds-elements}}
+
+\begin{longtable}[]{@{}rlrll@{}}
+\toprule
+BDS & Description & Value & Label & Required\tabularnewline
+\midrule
+\endhead
+19 & Sex of child & ``0'' & Unknown & Y\tabularnewline
+& & ``1'' & Male &\tabularnewline
+& & ``2'' & Female &\tabularnewline
+& & ``3'' & Not specified &\tabularnewline
+20 & Date of birth & ``yyyymmdd'' & year-month-day & Y\tabularnewline
+62 & Caretaker relation & ``01'' & biological father & N\tabularnewline
+& & ``02'' & biological mother &\tabularnewline
+& & ``03'' & male partner, stepfather &\tabularnewline
+& & ``04'' & female partner, stepmother &\tabularnewline
+& & ``05'' & adoptive father &\tabularnewline
+& & ``06'' & adoptive mother &\tabularnewline
+& & ``07'' & foster father &\tabularnewline
+& & ``08'' & foster mother &\tabularnewline
+& & ``98'' & other &\tabularnewline
+63 & Caretaker date of birth & ``yyyymmdd'' & year-month-day & N\tabularnewline
+66 & Caretaker education & ``01'' & no primary school & N\tabularnewline
+& & ``02'' & primary school, special ed &\tabularnewline
+& & ``03'' & VSO-MLK/IVBO/VMBO-LWOO &\tabularnewline
+& & ``04'' & LBO/VBO/VMBO-BBL\&KBL &\tabularnewline
+& & ``05'' & MAVO/VMBO-GL\&TL &\tabularnewline
+& & ``06'' & MBO &\tabularnewline
+& & ``07'' & HAVO/VWO &\tabularnewline
+& & ``08'' & HBO/HTS/HEAO &\tabularnewline
+& & ``09'' & WO &\tabularnewline
+& & ``98'' & Other &\tabularnewline
+& & ``00'' & Unknown &\tabularnewline
+71 & Caretaker birth country & ``dddd'' & \href{https://publicaties.rvig.nl/Landelijke_tabellen/Landelijke_tabellen_32_t_m_60_excl_tabel_35/Landelijke_Tabellen_32_t_m_60_in_csv_formaat}{4-digit code, Table 34} & N\tabularnewline
+82 & Gestational age & ``ddd'' & in days & N\tabularnewline
+91 & Smoking during pregnancy & ``1'' & yes & N\tabularnewline
+& & ``2'' & no &\tabularnewline
+& & ``99'' & unknown &\tabularnewline
+110 & Birth weight & ``dddd'' & 3-4 digits, grammes & N\tabularnewline
+235 & Length/height & ``dddd'' & 3-4 digits, millimeters & N\tabularnewline
+245 & Body weight & ``dddddd'' & 3-6 digits, grammes & N\tabularnewline
+252 & Head circumference & ``ddd'' & 2-3 digits, millimeters & N\tabularnewline
+238 & Height biological mother & ``dddd'' & 3-4 digits, millimeters & N\tabularnewline
+240 & Height biological father & ``dddd'' & 3-4 digits, millimeters & N\tabularnewline
+510 & Passive smoking & ``01'' & No smoking in house & N\tabularnewline
+& & ``02'' & Never with child &\tabularnewline
+& & ``03'' & Not in last 7 days &\tabularnewline
+& & ``04'' & Yes &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{error-checking}{%
+\section{Error checking}\label{error-checking}}
+
+Error checking of the JSON data occurs in three phases:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  PHASE 1: Check whether the JSON data are valid JSON. The process terminates
+  with an error message if the input JSON is not valid.
+\item
+  PHASE 2: Validate the JSON data against the JSON schema specification. The process terminates
+  with an error if any required fields are missing. The process generates messages for data points
+  that do not conform to the JSON schema, but continues.
+\item
+  PHASE 3: Check the range of the numeric data. The process generates messages for out-of-range
+  values, but continues using the specified values.
+\end{enumerate}
+
+The default JSON schema in phase 2 is the built-in JSON schema \texttt{bds\_schema\_str.json}, a data format implementing a version that accepts strings as values for BDS-elements.
 
 \hypertarget{growth-charts-in-james}{%
 \chapter{Growth charts in JAMES}\label{growth-charts-in-james}}

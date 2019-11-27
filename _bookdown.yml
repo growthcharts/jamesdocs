@@ -6,6 +6,7 @@ language:
     chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
             "Rmd/01-intro.Rmd",
+            "Rmd/02-data_specification.Rmd",
             "Rmd/03-growth_charts.Rmd",
             "Rmd/04-method.Rmd",
             "Rmd/Appendix-references.Rmd"]
