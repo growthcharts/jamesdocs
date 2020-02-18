@@ -33,4 +33,5 @@ minihealth | [816be33](https://github.com/stefvanbuuren/minihealth/commit/816be3
 donordata  | [77e01b4](https://github.com/stefvanbuuren/donordata/commit/77e01b40e2be75c19f27423092aa5626b0d5d3c3) | Add milestones to SMOCC donor data
 donordata  | [ecb3413](https://github.com/stefvanbuuren/donordata/commit/ecb3413b115c3193135b1af118597768b083dc41) | Calculate D-score and DAZ for SMOCC data
 donordata  | [3fa9d4d](https://github.com/stefvanbuuren/donordata/commit/3fa9d4de347d09ccff32a887cf6bd8dadfdfaeb6) | Fit and store brokenstick model for D-score on SMOCC data
+donorloader | [c22c446](https://github.com/stefvanbuuren/donorloader/commit/c22c44607b40ff6bda2009c25894362b68831275) | Update internal data after changes in donordata
 jamesdocs  | TBD | Document steps (this file)
