@@ -1,3 +1,6 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
 \documentclass[]{book}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
@@ -6,30 +9,31 @@
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
 \else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
+  \usepackage{unicode-math}
   \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
 \IfFileExists{microtype.sty}{%
-\usepackage{microtype}
+\usepackage[]{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
 \usepackage{hyperref}
-\hypersetup{unicode=true,
+\hypersetup{
             pdftitle={JAMES manual},
             pdfauthor={Stef van Buuren},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
-\usepackage{natbib}
-\bibliographystyle{apalike}
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -71,6 +75,8 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{longtable}}{}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -80,12 +86,6 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -100,33 +100,18 @@
 \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
 
-%%% Use protect on footnotes to avoid problems with footnotes in titles
-\let\rmarkdownfootnote\footnote%
-\def\footnote{\protect\rmarkdownfootnote}
-
-%%% Change title format to be more compact
-\usepackage{titling}
-
-% Create subtitle command for use in maketitle
-\providecommand{\subtitle}[1]{
-  \posttitle{
-    \begin{center}\large#1\end{center}
-    }
-}
-
-\setlength{\droptitle}{-2em}
-
-  \title{JAMES manual}
-    \pretitle{\vspace{\droptitle}\centering\huge}
-  \posttitle{\par}
-    \author{Stef van Buuren}
-    \preauthor{\centering\large\emph}
-  \postauthor{\par}
-      \predate{\centering\large\emph}
-  \postdate{\par}
-    \date{2019-11-27}
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
 
 \usepackage{booktabs}
+\usepackage[]{natbib}
+\bibliographystyle{apalike}
+
+\title{JAMES manual}
+\author{Stef van Buuren}
+\date{2020-02-18}
 
 \begin{document}
 \maketitle
@@ -145,13 +130,13 @@ This is very, very first minimal documentation of JAMES internals.
 
 Here's an introduction about JAMES
 
-\hypertarget{getting-data-into-james}{%
-\chapter{Getting data into JAMES}\label{getting-data-into-james}}
+\hypertarget{james-data-format}{%
+\chapter{JAMES data format}\label{james-data-format}}
 
 \hypertarget{objective}{%
 \section{Objective}\label{objective}}
 
-This document describes the format of the input data accepted by JAMES. The specification
+This chapter describes the format of the input data accepted by JAMES. The specification
 
 \begin{itemize}
 \tightlist
@@ -504,7 +489,211 @@ E & A & \texttt{wgt} & Weight by age, 0-4 yr\tabularnewline
 
 We describe our methods in this chapter.
 
-\bibliography{book.bib,packages.bib}
+\hypertarget{d-score-implementation}{%
+\chapter{D-score implementation}\label{d-score-implementation}}
 
+This document describes the actions needed to implement the
+\href{https://stefvanbuuren.name/dbook1/}{D-score} into JAMES. The functionality of JAMES is distributed over multiple packages. This set of actions may be of interest when implementing new features.
+
+\hypertarget{actions}{%
+\section{Actions}\label{actions}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.26\columnwidth}\raggedright
+Package\strut
+\end{minipage} & \begin{minipage}[b]{0.29\columnwidth}\raggedright
+PR\strut
+\end{minipage} & \begin{minipage}[b]{0.36\columnwidth}\raggedright
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+minihealth\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc}{03a32f1}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Create milestones descriptions\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+dscore\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b}{f0013ce}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Link BDS number to Van Wiechen milestones\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+dscore\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0}{6886854}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Fine tuning of milestone labels\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+minihealth\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Create the \texttt{bds\_lexicon} object\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+minihealth\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/minihealth/commit/4893982631717539b070c8d19b88b2b10319f2ee}{4893982}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Add milestones to BDS validation JSON schema\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+minihealth\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/minihealth/commit/0069671c8d09f64f2436faa93b764bd288324fcc}{0069671}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Add \texttt{convert\_ddi\_gsed()} to convert BDS-milestones into GSED items\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+minihealth\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/minihealth/commit/8ab1392fdbe781adfa004fcadb4f661c14487cf2}{8ab1392}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Add a new class \texttt{individualDS} for storing milestones, D-score and DAZ\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+clopus\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/clopus/commit/1182cb02508a3207c0c9bcb35232851c38d24179}{1182cb0}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Add Dutch and GCDG D-score references\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+clopus\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/clopus/commit/7bdbcd9629bb215f466bbc2e2f886b6f16c5b5e9}{7bdbcd9}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Construct age-shifted D-score references for preterms\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+clopus\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/clopus/commit/ceab7f9547b9ae843a97b640d920ea0c36185053}{ceab7f9}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Import the D-score references into \texttt{clopus}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+chartdesigner\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/chartdesigner/commit/68831906cef5cdca0d8851b057a01cc8be4fff6d}{6883190}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Add chart constructor functions for D-score, both terms and pre-terms\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+chartdesigner\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/chartdesigner/commit/511f456884bc62d6bebc9b5ef33cebb940dc126d}{511f456}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Extend internal \texttt{set.axes.design()} to D-score charts\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+chartdesigner\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/chartdesigner/commit/6582af8753331a25d8970683d4523c69d6959f0d}{6582af8}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Extend to \texttt{axes.locations} object to D-score charts\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+chartdesigner\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/chartdesigner/commit/47e3cc39d1253a41d3cc81d3d6dd55bffa842f18}{47e3cc3}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Create \texttt{dchart()} function and extend its helper functions\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+chartdesigner\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/chartdesigner/commit/fbbc7c8647ea010b2292fa9dd9b253ce95b6a54b}{fbbc7c8}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Function \texttt{chartcode()} factory, make one function for each chart code\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+chartcatalog\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c}{cc46788}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Extend the chart naming system to D-score charts\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+chartcatalog\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1}{84aaded}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Extend the lookup table \texttt{ynames\_lookup} to handle new D-score charts\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+chartbox\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f}{aa31067}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Extend chart box with all D-score charts\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+james\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/james/commits/dscore}{6412840}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Add radio button for D-score charts\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+minihealth\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/minihealth/commit/06a04c9ce70546db7998de5147a15897af0c7ddb}{06a04c9}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Calculate D-score and DAZ\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+chartplotter\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16}{4b58638}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Skip the \texttt{dsc} field for finding matches\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+minihealth\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/minihealth/commit/816be33b8921ab8d80d8a750d5c4e11966a58c18}{816be33}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Add D-score and DAZ to class \texttt{individualAN}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+donordata\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/donordata/commit/77e01b40e2be75c19f27423092aa5626b0d5d3c3}{77e01b4}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Add milestones to SMOCC donor data\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+donordata\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/donordata/commit/ecb3413b115c3193135b1af118597768b083dc41}{ecb3413}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Calculate D-score and DAZ for SMOCC data\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+donordata\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/donordata/commit/3fa9d4de347d09ccff32a887cf6bd8dadfdfaeb6}{3fa9d4d}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Fit and store brokenstick model for D-score on SMOCC data\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+jamesdocs\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+TBD\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Document steps (this file)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\bibliography{book.bib,packages.bib}
 
 \end{document}

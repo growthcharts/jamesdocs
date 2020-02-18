@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>JAMES manual</title>
+  <title>Chapter 6 D-score implementation | JAMES manual</title>
   <meta name="description" content="This is very, very first minimal documentation of JAMES internals." />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="JAMES manual" />
+  <meta property="og:title" content="Chapter 6 D-score implementation | JAMES manual" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="JAMES manual" />
+  <meta name="twitter:title" content="Chapter 6 D-score implementation | JAMES manual" />
   
   <meta name="twitter:description" content="This is very, very first minimal documentation of JAMES internals." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="intro.html"/>
+<link rel="prev" href="methods.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -172,23 +172,168 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">JAMES manual</h1>
-<p class="author"><em>Stef van Buuren</em></p>
-<p class="date"><em>2020-02-18</em></p>
-</div>
-<div id="prerequisites" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Prerequisites</h1>
-<p>This is very, very first minimal documentation of JAMES internals.</p>
+<div id="d-score-implementation" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> D-score implementation</h1>
+<p>This document describes the actions needed to implement the
+<a href="https://stefvanbuuren.name/dbook1/">D-score</a> into JAMES. The functionality of JAMES is distributed over multiple packages. This set of actions may be of interest when implementing new features.</p>
+<div id="actions" class="section level2">
+<h2><span class="header-section-number">6.1</span> Actions</h2>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="32%" />
+<col width="39%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Package</th>
+<th>PR</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>minihealth</td>
+<td><a href="https://github.com/stefvanbuuren/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc">03a32f1</a></td>
+<td>Create milestones descriptions</td>
+</tr>
+<tr class="even">
+<td>dscore</td>
+<td><a href="https://github.com/stefvanbuuren/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b">f0013ce</a></td>
+<td>Link BDS number to Van Wiechen milestones</td>
+</tr>
+<tr class="odd">
+<td>dscore</td>
+<td><a href="https://github.com/stefvanbuuren/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0">6886854</a></td>
+<td>Fine tuning of milestone labels</td>
+</tr>
+<tr class="even">
+<td>minihealth</td>
+<td></td>
+<td>Create the <code>bds_lexicon</code> object</td>
+</tr>
+<tr class="odd">
+<td>minihealth</td>
+<td><a href="https://github.com/stefvanbuuren/minihealth/commit/4893982631717539b070c8d19b88b2b10319f2ee">4893982</a></td>
+<td>Add milestones to BDS validation JSON schema</td>
+</tr>
+<tr class="even">
+<td>minihealth</td>
+<td><a href="https://github.com/stefvanbuuren/minihealth/commit/0069671c8d09f64f2436faa93b764bd288324fcc">0069671</a></td>
+<td>Add <code>convert_ddi_gsed()</code> to convert BDS-milestones into GSED items</td>
+</tr>
+<tr class="odd">
+<td>minihealth</td>
+<td><a href="https://github.com/stefvanbuuren/minihealth/commit/8ab1392fdbe781adfa004fcadb4f661c14487cf2">8ab1392</a></td>
+<td>Add a new class <code>individualDS</code> for storing milestones, D-score and DAZ</td>
+</tr>
+<tr class="even">
+<td>clopus</td>
+<td><a href="https://github.com/stefvanbuuren/clopus/commit/1182cb02508a3207c0c9bcb35232851c38d24179">1182cb0</a></td>
+<td>Add Dutch and GCDG D-score references</td>
+</tr>
+<tr class="odd">
+<td>clopus</td>
+<td><a href="https://github.com/stefvanbuuren/clopus/commit/7bdbcd9629bb215f466bbc2e2f886b6f16c5b5e9">7bdbcd9</a></td>
+<td>Construct age-shifted D-score references for preterms</td>
+</tr>
+<tr class="even">
+<td>clopus</td>
+<td><a href="https://github.com/stefvanbuuren/clopus/commit/ceab7f9547b9ae843a97b640d920ea0c36185053">ceab7f9</a></td>
+<td>Import the D-score references into <code>clopus</code></td>
+</tr>
+<tr class="odd">
+<td>chartdesigner</td>
+<td><a href="https://github.com/stefvanbuuren/chartdesigner/commit/68831906cef5cdca0d8851b057a01cc8be4fff6d">6883190</a></td>
+<td>Add chart constructor functions for D-score, both terms and pre-terms</td>
+</tr>
+<tr class="even">
+<td>chartdesigner</td>
+<td><a href="https://github.com/stefvanbuuren/chartdesigner/commit/511f456884bc62d6bebc9b5ef33cebb940dc126d">511f456</a></td>
+<td>Extend internal <code>set.axes.design()</code> to D-score charts</td>
+</tr>
+<tr class="odd">
+<td>chartdesigner</td>
+<td><a href="https://github.com/stefvanbuuren/chartdesigner/commit/6582af8753331a25d8970683d4523c69d6959f0d">6582af8</a></td>
+<td>Extend to <code>axes.locations</code> object to D-score charts</td>
+</tr>
+<tr class="even">
+<td>chartdesigner</td>
+<td><a href="https://github.com/stefvanbuuren/chartdesigner/commit/47e3cc39d1253a41d3cc81d3d6dd55bffa842f18">47e3cc3</a></td>
+<td>Create <code>dchart()</code> function and extend its helper functions</td>
+</tr>
+<tr class="odd">
+<td>chartdesigner</td>
+<td><a href="https://github.com/stefvanbuuren/chartdesigner/commit/fbbc7c8647ea010b2292fa9dd9b253ce95b6a54b">fbbc7c8</a></td>
+<td>Function <code>chartcode()</code> factory, make one function for each chart code</td>
+</tr>
+<tr class="even">
+<td>chartcatalog</td>
+<td><a href="https://github.com/stefvanbuuren/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c">cc46788</a></td>
+<td>Extend the chart naming system to D-score charts</td>
+</tr>
+<tr class="odd">
+<td>chartcatalog</td>
+<td><a href="https://github.com/stefvanbuuren/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1">84aaded</a></td>
+<td>Extend the lookup table <code>ynames_lookup</code> to handle new D-score charts</td>
+</tr>
+<tr class="even">
+<td>chartbox</td>
+<td><a href="https://github.com/stefvanbuuren/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f">aa31067</a></td>
+<td>Extend chart box with all D-score charts</td>
+</tr>
+<tr class="odd">
+<td>james</td>
+<td><a href="https://github.com/stefvanbuuren/james/commits/dscore">6412840</a></td>
+<td>Add radio button for D-score charts</td>
+</tr>
+<tr class="even">
+<td>minihealth</td>
+<td><a href="https://github.com/stefvanbuuren/minihealth/commit/06a04c9ce70546db7998de5147a15897af0c7ddb">06a04c9</a></td>
+<td>Calculate D-score and DAZ</td>
+</tr>
+<tr class="odd">
+<td>chartplotter</td>
+<td><a href="https://github.com/stefvanbuuren/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16">4b58638</a></td>
+<td>Skip the <code>dsc</code> field for finding matches</td>
+</tr>
+<tr class="even">
+<td>minihealth</td>
+<td><a href="https://github.com/stefvanbuuren/minihealth/commit/816be33b8921ab8d80d8a750d5c4e11966a58c18">816be33</a></td>
+<td>Add D-score and DAZ to class <code>individualAN</code></td>
+</tr>
+<tr class="odd">
+<td>donordata</td>
+<td><a href="https://github.com/stefvanbuuren/donordata/commit/77e01b40e2be75c19f27423092aa5626b0d5d3c3">77e01b4</a></td>
+<td>Add milestones to SMOCC donor data</td>
+</tr>
+<tr class="even">
+<td>donordata</td>
+<td><a href="https://github.com/stefvanbuuren/donordata/commit/ecb3413b115c3193135b1af118597768b083dc41">ecb3413</a></td>
+<td>Calculate D-score and DAZ for SMOCC data</td>
+</tr>
+<tr class="odd">
+<td>donordata</td>
+<td><a href="https://github.com/stefvanbuuren/donordata/commit/3fa9d4de347d09ccff32a887cf6bd8dadfdfaeb6">3fa9d4d</a></td>
+<td>Fit and store brokenstick model for D-score on SMOCC data</td>
+</tr>
+<tr class="even">
+<td>jamesdocs</td>
+<td>TBD</td>
+<td>Document steps (this file)</td>
+</tr>
+</tbody>
+</table>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

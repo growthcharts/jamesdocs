@@ -3,11 +3,11 @@
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Getting data into JAMES
+# JAMES data format
 
 ## Objective
 
-This document describes the format of the input data accepted by JAMES. The specification
+This chapter describes the format of the input data accepted by JAMES. The specification
 
 - closely follows the definition of the [Basisdataset JGZ 3.25 (2018)](https://www.ncj.nl/themadossiers/informatisering/basisdataset/);
 - defines data objects;

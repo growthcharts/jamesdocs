@@ -1,0 +1,36 @@
+
+# D-score implementation
+
+This document describes the actions needed to implement the 
+[D-score](https://stefvanbuuren.name/dbook1/) into JAMES. The functionality of JAMES is distributed over multiple packages. This set of actions may be of interest when implementing new features.
+
+## Actions
+
+Package  | PR        | Description
+-------- | --------- | -----------
+minihealth | [03a32f1](https://github.com/stefvanbuuren/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc) | Create milestones descriptions
+dscore     | [f0013ce](https://github.com/stefvanbuuren/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b) | Link BDS number to Van Wiechen milestones
+dscore     | [6886854](https://github.com/stefvanbuuren/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0) | Fine tuning of milestone labels
+minihealth | | Create the `bds_lexicon` object
+minihealth | [4893982](https://github.com/stefvanbuuren/minihealth/commit/4893982631717539b070c8d19b88b2b10319f2ee) | Add milestones to BDS validation JSON schema
+minihealth | [0069671](https://github.com/stefvanbuuren/minihealth/commit/0069671c8d09f64f2436faa93b764bd288324fcc) | Add `convert_ddi_gsed()` to convert BDS-milestones into GSED items
+minihealth | [8ab1392](https://github.com/stefvanbuuren/minihealth/commit/8ab1392fdbe781adfa004fcadb4f661c14487cf2) | Add a new class `individualDS` for storing milestones, D-score and DAZ
+clopus | [1182cb0](https://github.com/stefvanbuuren/clopus/commit/1182cb02508a3207c0c9bcb35232851c38d24179) | Add Dutch and GCDG D-score references
+clopus | [7bdbcd9](https://github.com/stefvanbuuren/clopus/commit/7bdbcd9629bb215f466bbc2e2f886b6f16c5b5e9) | Construct age-shifted D-score references for preterms
+clopus | [ceab7f9](https://github.com/stefvanbuuren/clopus/commit/ceab7f9547b9ae843a97b640d920ea0c36185053) | Import the D-score references into `clopus`
+chartdesigner | [6883190](https://github.com/stefvanbuuren/chartdesigner/commit/68831906cef5cdca0d8851b057a01cc8be4fff6d) | Add chart constructor functions for D-score, both terms and pre-terms
+chartdesigner | [511f456](https://github.com/stefvanbuuren/chartdesigner/commit/511f456884bc62d6bebc9b5ef33cebb940dc126d) | Extend internal `set.axes.design()` to D-score charts
+chartdesigner | [6582af8](https://github.com/stefvanbuuren/chartdesigner/commit/6582af8753331a25d8970683d4523c69d6959f0d) | Extend to `axes.locations` object to D-score charts
+chartdesigner | [47e3cc3](https://github.com/stefvanbuuren/chartdesigner/commit/47e3cc39d1253a41d3cc81d3d6dd55bffa842f18) | Create `dchart()` function and extend its helper functions
+chartdesigner | [fbbc7c8](https://github.com/stefvanbuuren/chartdesigner/commit/fbbc7c8647ea010b2292fa9dd9b253ce95b6a54b) | Function `chartcode()` factory, make one function for each chart code 
+chartcatalog | [cc46788](https://github.com/stefvanbuuren/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c) | Extend the chart naming system to D-score charts
+chartcatalog | [84aaded](https://github.com/stefvanbuuren/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1) | Extend the lookup table `ynames_lookup` to handle new D-score charts
+chartbox | [aa31067](https://github.com/stefvanbuuren/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f) | Extend chart box with all D-score charts
+james       | [6412840](https://github.com/stefvanbuuren/james/commits/dscore) | Add radio button for D-score charts
+minihealth | [06a04c9](https://github.com/stefvanbuuren/minihealth/commit/06a04c9ce70546db7998de5147a15897af0c7ddb) | Calculate D-score and DAZ
+chartplotter | [4b58638](https://github.com/stefvanbuuren/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16) | Skip the `dsc` field for finding matches
+minihealth | [816be33](https://github.com/stefvanbuuren/minihealth/commit/816be33b8921ab8d80d8a750d5c4e11966a58c18) | Add D-score and DAZ to class `individualAN`
+donordata  | [77e01b4](https://github.com/stefvanbuuren/donordata/commit/77e01b40e2be75c19f27423092aa5626b0d5d3c3) | Add milestones to SMOCC donor data
+donordata  | [ecb3413](https://github.com/stefvanbuuren/donordata/commit/ecb3413b115c3193135b1af118597768b083dc41) | Calculate D-score and DAZ for SMOCC data
+donordata  | [3fa9d4d](https://github.com/stefvanbuuren/donordata/commit/3fa9d4de347d09ccff32a887cf6bd8dadfdfaeb6) | Fit and store brokenstick model for D-score on SMOCC data
+jamesdocs  | TBD | Document steps (this file)

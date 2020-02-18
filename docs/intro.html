@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Introduction | JAMES manual</title>
   <meta name="description" content="This is very, very first minimal documentation of JAMES internals." />
-  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Introduction | JAMES manual" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Stef van Buuren" />
 
 
-<meta name="date" content="2019-11-27" />
+<meta name="date" content="2020-02-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="getting-data-into-james.html"/>
+<link rel="next" href="james-data-format.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -133,21 +133,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
-<li class="chapter" data-level="3" data-path="getting-data-into-james.html"><a href="getting-data-into-james.html"><i class="fa fa-check"></i><b>3</b> Getting data into JAMES</a><ul>
-<li class="chapter" data-level="3.1" data-path="getting-data-into-james.html"><a href="getting-data-into-james.html#objective"><i class="fa fa-check"></i><b>3.1</b> Objective</a></li>
-<li class="chapter" data-level="3.2" data-path="getting-data-into-james.html"><a href="getting-data-into-james.html#generic-object-model"><i class="fa fa-check"></i><b>3.2</b> Generic object model</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="getting-data-into-james.html"><a href="getting-data-into-james.html#epremdossier-class"><i class="fa fa-check"></i><b>3.2.1</b> EPremDossier Class</a></li>
-<li class="chapter" data-level="3.2.2" data-path="getting-data-into-james.html"><a href="getting-data-into-james.html#epremgroep-class"><i class="fa fa-check"></i><b>3.2.2</b> EPremGroep Class</a></li>
-<li class="chapter" data-level="3.2.3" data-path="getting-data-into-james.html"><a href="getting-data-into-james.html#epremelement-class"><i class="fa fa-check"></i><b>3.2.3</b> EPremElement Class</a></li>
-<li class="chapter" data-level="3.2.4" data-path="getting-data-into-james.html"><a href="getting-data-into-james.html#epremcontactmoment-class"><i class="fa fa-check"></i><b>3.2.4</b> EPremContactmoment Class</a></li>
+<li class="chapter" data-level="3" data-path="james-data-format.html"><a href="james-data-format.html"><i class="fa fa-check"></i><b>3</b> JAMES data format</a><ul>
+<li class="chapter" data-level="3.1" data-path="james-data-format.html"><a href="james-data-format.html#objective"><i class="fa fa-check"></i><b>3.1</b> Objective</a></li>
+<li class="chapter" data-level="3.2" data-path="james-data-format.html"><a href="james-data-format.html#generic-object-model"><i class="fa fa-check"></i><b>3.2</b> Generic object model</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="james-data-format.html"><a href="james-data-format.html#epremdossier-class"><i class="fa fa-check"></i><b>3.2.1</b> EPremDossier Class</a></li>
+<li class="chapter" data-level="3.2.2" data-path="james-data-format.html"><a href="james-data-format.html#epremgroep-class"><i class="fa fa-check"></i><b>3.2.2</b> EPremGroep Class</a></li>
+<li class="chapter" data-level="3.2.3" data-path="james-data-format.html"><a href="james-data-format.html#epremelement-class"><i class="fa fa-check"></i><b>3.2.3</b> EPremElement Class</a></li>
+<li class="chapter" data-level="3.2.4" data-path="james-data-format.html"><a href="james-data-format.html#epremcontactmoment-class"><i class="fa fa-check"></i><b>3.2.4</b> EPremContactmoment Class</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="getting-data-into-james.html"><a href="getting-data-into-james.html#bds-elements"><i class="fa fa-check"></i><b>3.3</b> BDS-elements</a></li>
-<li class="chapter" data-level="3.4" data-path="getting-data-into-james.html"><a href="getting-data-into-james.html#error-checking"><i class="fa fa-check"></i><b>3.4</b> Error checking</a></li>
+<li class="chapter" data-level="3.3" data-path="james-data-format.html"><a href="james-data-format.html#bds-elements"><i class="fa fa-check"></i><b>3.3</b> BDS-elements</a></li>
+<li class="chapter" data-level="3.4" data-path="james-data-format.html"><a href="james-data-format.html#error-checking"><i class="fa fa-check"></i><b>3.4</b> Error checking</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html"><i class="fa fa-check"></i><b>4</b> Growth charts in JAMES</a><ul>
 <li class="chapter" data-level="4.1" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html#chart-naming-conventions"><i class="fa fa-check"></i><b>4.1</b> Chart naming conventions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>5</b> Methods</a></li>
+<li class="chapter" data-level="6" data-path="d-score-implementation.html"><a href="d-score-implementation.html"><i class="fa fa-check"></i><b>6</b> D-score implementation</a><ul>
+<li class="chapter" data-level="6.1" data-path="d-score-implementation.html"><a href="d-score-implementation.html#actions"><i class="fa fa-check"></i><b>6.1</b> Actions</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -180,7 +183,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="getting-data-into-james.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="james-data-format.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -199,12 +202,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -216,6 +218,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
