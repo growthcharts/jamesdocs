@@ -111,7 +111,7 @@
 
 \title{JAMES manual}
 \author{Stef van Buuren}
-\date{2020-02-18}
+\date{2020-03-05}
 
 \begin{document}
 \maketitle
@@ -373,7 +373,7 @@ The GitHub repository \url{https://github.com/stefvanbuuren/chartbox} contains t
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 342   8
+## [1] 394   8
 \end{verbatim}
 
 \begin{Shaded}
@@ -387,9 +387,9 @@ The GitHub repository \url{https://github.com/stefvanbuuren/chartbox} contains t
 ## 1     nl2010      HJAA         HS   male      A front    dutch     
 ## 22    nl2010      HMBH         HS female      B   hgt    dutch     
 ## 23    nl2010      HMBR         HS female      B   wfh    dutch     
-## 300  preterm   PMEAN32         PT female      E front    dutch   32
-## 301  preterm   PMEAN33         PT female      E front    dutch   33
-## 340      who      WMBA    WHOpink female      B front    dutch
+## 300  preterm   PMAHN28         PT female      A   hgt    dutch   28
+## 301  preterm   PMAHN29         PT female      A   hgt    dutch   29
+## 340  preterm   PMEAN32         PT female      E front    dutch   32
 \end{verbatim}
 
 The \texttt{chartbox} package currently contains three chart groups: \texttt{nl2010}, \texttt{preterm} and \texttt{who}. Each group collects charts of a similar type.
@@ -697,6 +697,41 @@ jamesdocs\strut
 TBD\strut
 \end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
 Document steps (this file)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+donordata\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/donordata/commit/7983c3d81a69eb9c6b81a3e0f0668e892c5abf5a}{94937e5}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Saves the item scores to create JSON files\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+donordata\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/donordata/commit/1537182a0df4180e0000d59225c6355a9c506472}{390adca}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Save mapping between SMOCC and BDS coding scheme\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+donorloader\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2}{90ce41f}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Make \texttt{smocc\_bds} available to JAMES\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+minihealth\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/minihealth/commit/badf9232605065c6e00cc66bb6c795f7c20ed318}{b9a4a23}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Add two classes to store and convert to BDS number individual milestones data\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+jamestest\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/jamestest/commit/e5dee9bed5b4fdf7f78240da52efa5d865d156ad}{89dad46}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Update the \texttt{installed.cabinets} object with the new individual milestones data\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
