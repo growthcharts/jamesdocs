@@ -1,0 +1,134 @@
+
+```{r setup6, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+```
+
+# Dockerfile for JAMES
+
+## Objective
+
+This chapter describes how to build and deploy JAMES as a Docker container.
+
+## Pre-requisites
+
+JAMES is currently constructed from a collection of `R` packages. The top-level package at <https://github.com/stefvanbuuren/james> also defines a Javascript interface in the `inst/www` directory. Deployment of JAMES relies on the `OpenCPU` server. In principle, it is enough to install the `james` package on the `OpenCPU` server, and will also install all dependencies. 
+
+The following is needed to build and run a JAMES image:
+
+- Permission to read from the following private repo's: 
+
+    - `stefvanbuuren/chartplotter`
+    - `stefvanbuuren/clopus`
+    - `stefvanbuuren/curvematching`
+    - `stefvanbuuren/donorloader`
+    
+- Personal Github token with repo scope from [here](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line), Generate a token with only scope repo.
+
+- Install `Docker Desktop` on your local machine, and run some tutorials
+
+## Dockerfile
+
+```{bash}
+FROM opencpu/rstudio as intermediate
+
+# install for V8 package
+RUN apt-get update && apt-get install -y \ 
+    libv8-dev
+
+# repo_token.txt should be something like "GITHUB_PAT=624adeaa..."
+# to be able to install packages from private repo's
+COPY repo_token.txt .Renviron
+
+# install R packages needed for JAMES
+RUN \
+    R -e 'install.packages("remotes")' \
+    R -e 'remotes::install_github("stefvanbuuren/james")'
+
+# rebuild the layer
+FROM opencpu/rstudio
+
+LABEL maintainer="stef.vanbuuren@tno.nl" 
+
+# re-install for V8 package
+RUN apt-get update && apt-get install -y \ 
+    libv8-dev
+
+COPY --from=intermediate /usr/local/lib/R/site-library /usr/local/lib/R/site-library
+
+CMD service cron start && /usr/lib/rstudio-server/bin/rserver && apachectl -DFOREGROUND
+```
+
+- Create a fresh directory, and `cd` to this directory in your terminal
+- Store the script given above in a file named `Dockerfile`
+- Create a file named `repo_token.txt` with one line: `GITHUB_PAT=624adeaa...` with your token
+
+## Docker commands 
+
+Build the `james` image, type in a terminal
+
+```{bash}
+docker build -t james .
+```
+
+This may takes a long time (30-60 minutes), in which the entire application is downloaded from various web-locations. After (hopefully succesful) completion, check the image
+
+```{bash}
+docker images
+```
+
+If all is well, the top line is called `james`. Now run the container on your local machine:
+
+```{bash}
+docker run -t -d -p 80:80 -p 8004:8004 james
+```
+
+If the ports are already taken by other containers, stop and remove all containers:
+
+```{bash}
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+```
+
+Reissue the `docker run`, and the container should now run. Check by
+
+```{bash}
+docker ps
+```
+
+which should list a container created from the `james` image.
+
+## Checks with the browser
+
+```{bash}
+http://localhost
+```
+
+should show Apache2 Ubuntu default screen.
+
+```{bash}
+http://localhost/ocpu/test/
+```
+
+should show `OpenCPU` test page.
+
+```{bash}
+http://localhost/rstudio/
+```
+
+should start the Rstudio IDE on the container. Use `opencpu:opencpu` to log in.
+
+
+```{bash}
+http://localhost/ocpu/library/james/www/
+```
+
+should start the JAMES javascript interface. 
+
+See also <https://registry.hub.docker.com/r/opencpu/rstudio>
+
+## Security
+
+1. The container is shielded from the machine on which it runs. However, the materials within the container are not protected. 
+2. Don't use intermediate containers, since these contain your token in `/.Renviron`. The latest (`james`) container does not hold your token, and can be shared, of course, keeping in mind remark 1.
+
+

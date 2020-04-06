@@ -10,4 +10,5 @@ rmd_files: ["index.Rmd",
             "Rmd/03-growth_charts.Rmd",
             "Rmd/04-method.Rmd",
             "RMD/05-D-score-implementation.Rmd",
+            "Rmd/06-docker.Rmd",
             "Rmd/Appendix-references.Rmd"]

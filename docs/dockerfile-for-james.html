@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 D-score implementation | JAMES manual</title>
+  <title>Chapter 7 Dockerfile for JAMES | JAMES manual</title>
   <meta name="description" content="This is very, very first minimal documentation of JAMES internals." />
   <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 D-score implementation | JAMES manual" />
+  <meta property="og:title" content="Chapter 7 Dockerfile for JAMES | JAMES manual" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 D-score implementation | JAMES manual" />
+  <meta name="twitter:title" content="Chapter 7 Dockerfile for JAMES | JAMES manual" />
   
   <meta name="twitter:description" content="This is very, very first minimal documentation of JAMES internals." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="methods.html"/>
-<link rel="next" href="dockerfile-for-james.html"/>
+<link rel="prev" href="d-score-implementation.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -180,198 +180,96 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="d-score-implementation" class="section level1">
-<h1><span class="header-section-number">Chapter 6</span> D-score implementation</h1>
-<p>This document describes the actions needed to implement the
-<a href="https://stefvanbuuren.name/dbook1/">D-score</a> into JAMES. The functionality of JAMES is distributed over multiple packages. This set of actions may be of interest when implementing new features.</p>
-<div id="actions" class="section level2">
-<h2><span class="header-section-number">6.1</span> Actions</h2>
-<table>
-<colgroup>
-<col width="28%" />
-<col width="32%" />
-<col width="39%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Package</th>
-<th>PR</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>minihealth</td>
-<td><a href="https://github.com/stefvanbuuren/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc">03a32f1</a></td>
-<td>Create milestones descriptions</td>
-</tr>
-<tr class="even">
-<td>dscore</td>
-<td><a href="https://github.com/stefvanbuuren/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b">f0013ce</a></td>
-<td>Link BDS number to Van Wiechen milestones</td>
-</tr>
-<tr class="odd">
-<td>dscore</td>
-<td><a href="https://github.com/stefvanbuuren/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0">6886854</a></td>
-<td>Fine tuning of milestone labels</td>
-</tr>
-<tr class="even">
-<td>minihealth</td>
-<td></td>
-<td>Create the <code>bds_lexicon</code> object</td>
-</tr>
-<tr class="odd">
-<td>minihealth</td>
-<td><a href="https://github.com/stefvanbuuren/minihealth/commit/4893982631717539b070c8d19b88b2b10319f2ee">4893982</a></td>
-<td>Add milestones to BDS validation JSON schema</td>
-</tr>
-<tr class="even">
-<td>minihealth</td>
-<td><a href="https://github.com/stefvanbuuren/minihealth/commit/0069671c8d09f64f2436faa93b764bd288324fcc">0069671</a></td>
-<td>Add <code>convert_ddi_gsed()</code> to convert BDS-milestones into GSED items</td>
-</tr>
-<tr class="odd">
-<td>minihealth</td>
-<td><a href="https://github.com/stefvanbuuren/minihealth/commit/8ab1392fdbe781adfa004fcadb4f661c14487cf2">8ab1392</a></td>
-<td>Add a new class <code>individualDS</code> for storing milestones, D-score and DAZ</td>
-</tr>
-<tr class="even">
-<td>clopus</td>
-<td><a href="https://github.com/stefvanbuuren/clopus/commit/1182cb02508a3207c0c9bcb35232851c38d24179">1182cb0</a></td>
-<td>Add Dutch and GCDG D-score references</td>
-</tr>
-<tr class="odd">
-<td>clopus</td>
-<td><a href="https://github.com/stefvanbuuren/clopus/commit/7bdbcd9629bb215f466bbc2e2f886b6f16c5b5e9">7bdbcd9</a></td>
-<td>Construct age-shifted D-score references for preterms</td>
-</tr>
-<tr class="even">
-<td>clopus</td>
-<td><a href="https://github.com/stefvanbuuren/clopus/commit/ceab7f9547b9ae843a97b640d920ea0c36185053">ceab7f9</a></td>
-<td>Import the D-score references into <code>clopus</code></td>
-</tr>
-<tr class="odd">
-<td>chartdesigner</td>
-<td><a href="https://github.com/stefvanbuuren/chartdesigner/commit/68831906cef5cdca0d8851b057a01cc8be4fff6d">6883190</a></td>
-<td>Add chart constructor functions for D-score, both terms and pre-terms</td>
-</tr>
-<tr class="even">
-<td>chartdesigner</td>
-<td><a href="https://github.com/stefvanbuuren/chartdesigner/commit/511f456884bc62d6bebc9b5ef33cebb940dc126d">511f456</a></td>
-<td>Extend internal <code>set.axes.design()</code> to D-score charts</td>
-</tr>
-<tr class="odd">
-<td>chartdesigner</td>
-<td><a href="https://github.com/stefvanbuuren/chartdesigner/commit/6582af8753331a25d8970683d4523c69d6959f0d">6582af8</a></td>
-<td>Extend to <code>axes.locations</code> object to D-score charts</td>
-</tr>
-<tr class="even">
-<td>chartdesigner</td>
-<td><a href="https://github.com/stefvanbuuren/chartdesigner/commit/47e3cc39d1253a41d3cc81d3d6dd55bffa842f18">47e3cc3</a></td>
-<td>Create <code>dchart()</code> function and extend its helper functions</td>
-</tr>
-<tr class="odd">
-<td>chartdesigner</td>
-<td><a href="https://github.com/stefvanbuuren/chartdesigner/commit/fbbc7c8647ea010b2292fa9dd9b253ce95b6a54b">fbbc7c8</a></td>
-<td>Function <code>chartcode()</code> factory, make one function for each chart code</td>
-</tr>
-<tr class="even">
-<td>chartcatalog</td>
-<td><a href="https://github.com/stefvanbuuren/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c">cc46788</a></td>
-<td>Extend the chart naming system to D-score charts</td>
-</tr>
-<tr class="odd">
-<td>chartcatalog</td>
-<td><a href="https://github.com/stefvanbuuren/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1">84aaded</a></td>
-<td>Extend the lookup table <code>ynames_lookup</code> to handle new D-score charts</td>
-</tr>
-<tr class="even">
-<td>chartbox</td>
-<td><a href="https://github.com/stefvanbuuren/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f">aa31067</a></td>
-<td>Extend chart box with all D-score charts</td>
-</tr>
-<tr class="odd">
-<td>james</td>
-<td><a href="https://github.com/stefvanbuuren/james/commits/dscore">6412840</a></td>
-<td>Add radio button for D-score charts</td>
-</tr>
-<tr class="even">
-<td>minihealth</td>
-<td><a href="https://github.com/stefvanbuuren/minihealth/commit/06a04c9ce70546db7998de5147a15897af0c7ddb">06a04c9</a></td>
-<td>Calculate D-score and DAZ</td>
-</tr>
-<tr class="odd">
-<td>chartplotter</td>
-<td><a href="https://github.com/stefvanbuuren/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16">4b58638</a></td>
-<td>Skip the <code>dsc</code> field for finding matches</td>
-</tr>
-<tr class="even">
-<td>minihealth</td>
-<td><a href="https://github.com/stefvanbuuren/minihealth/commit/816be33b8921ab8d80d8a750d5c4e11966a58c18">816be33</a></td>
-<td>Add D-score and DAZ to class <code>individualAN</code></td>
-</tr>
-<tr class="odd">
-<td>donordata</td>
-<td><a href="https://github.com/stefvanbuuren/donordata/commit/77e01b40e2be75c19f27423092aa5626b0d5d3c3">77e01b4</a></td>
-<td>Add milestones to SMOCC donor data</td>
-</tr>
-<tr class="even">
-<td>donordata</td>
-<td><a href="https://github.com/stefvanbuuren/donordata/commit/ecb3413b115c3193135b1af118597768b083dc41">ecb3413</a></td>
-<td>Calculate D-score and DAZ for SMOCC data</td>
-</tr>
-<tr class="odd">
-<td>donordata</td>
-<td><a href="https://github.com/stefvanbuuren/donordata/commit/3fa9d4de347d09ccff32a887cf6bd8dadfdfaeb6">3fa9d4d</a></td>
-<td>Fit and store brokenstick model for D-score on SMOCC data</td>
-</tr>
-<tr class="even">
-<td>donorloader</td>
-<td><a href="https://github.com/stefvanbuuren/donorloader/commit/c22c44607b40ff6bda2009c25894362b68831275">c22c446</a></td>
-<td>Update internal data after changes in donordata</td>
-</tr>
-<tr class="odd">
-<td>jamesdocs</td>
-<td>TBD</td>
-<td>Document steps (this file)</td>
-</tr>
-<tr class="even">
-<td>donordata</td>
-<td><a href="https://github.com/stefvanbuuren/donordata/commit/7983c3d81a69eb9c6b81a3e0f0668e892c5abf5a">7983c3</a></td>
-<td>Saves the item scores to create JSON files</td>
-</tr>
-<tr class="odd">
-<td>donordata</td>
-<td><a href="https://github.com/stefvanbuuren/donordata/commit/1537182a0df4180e0000d59225c6355a9c506472">1537182</a></td>
-<td>Save mapping between SMOCC and BDS coding scheme</td>
-</tr>
-<tr class="even">
-<td>donorloader</td>
-<td><a href="https://github.com/stefvanbuuren/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2">e9a8ed</a></td>
-<td>Make <code>smocc_bds</code> available to JAMES</td>
-</tr>
-<tr class="odd">
-<td>jamestest</td>
-<td><a href="https://github.com/stefvanbuuren/jamestest/commit/6484191fd8de0d93b35354aa3ee846447aa81df6">648419</a></td>
-<td>Regenerate smocc JSON files to include DDI scores</td>
-</tr>
-<tr class="even">
-<td>jamestest</td>
-<td><a href="https://github.com/stefvanbuuren/jamestest/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc">ce1dbe</a></td>
-<td>Update the <code>installed.cabinets</code> object with the new individual milestones data</td>
-</tr>
-<tr class="odd">
-<td>minihealth</td>
-<td><a href="https://github.com/stefvanbuuren/minihealth/commit/4dda8daabca8811a4cc321c66aaccf31c4aba83f">4dda8d</a></td>
-<td>Add class <code>individualRW</code> to store and convert raw milestones data</td>
-</tr>
-<tr class="even">
-<td>minihealth</td>
-<td><a href="https://github.com/stefvanbuuren/minihealth/commit/9e03e7e39b007a9687d21efbaa13e77283866d5c">9e03e7</a></td>
-<td>Complete the JSON validator schema</td>
-</tr>
-</tbody>
-</table>
+<div id="dockerfile-for-james" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> Dockerfile for JAMES</h1>
+<div id="objective-1" class="section level2">
+<h2><span class="header-section-number">7.1</span> Objective</h2>
+<p>This chapter describes how to build and deploy JAMES as a Docker container.</p>
+</div>
+<div id="pre-requisites" class="section level2">
+<h2><span class="header-section-number">7.2</span> Pre-requisites</h2>
+<p>JAMES is currently constructed from a collection of <code>R</code> packages. The top-level package at <a href="https://github.com/stefvanbuuren/james" class="uri">https://github.com/stefvanbuuren/james</a> also defines a Javascript interface in the <code>inst/www</code> directory. Deployment of JAMES relies on the <code>OpenCPU</code> server. In principle, it is enough to install the <code>james</code> package on the <code>OpenCPU</code> server, and will also install all dependencies.</p>
+<p>The following is needed to build and run a JAMES image:</p>
+<ul>
+<li><p>Permission to read from the following private repo’s:</p>
+<ul>
+<li><code>stefvanbuuren/chartplotter</code></li>
+<li><code>stefvanbuuren/clopus</code></li>
+<li><code>stefvanbuuren/curvematching</code></li>
+<li><code>stefvanbuuren/donorloader</code></li>
+</ul></li>
+<li><p>Personal Github token with repo scope from <a href="https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line">here</a>, Generate a token with only scope repo.</p></li>
+<li><p>Install <code>Docker Desktop</code> on your local machine, and run some tutorials</p></li>
+</ul>
+</div>
+<div id="dockerfile" class="section level2">
+<h2><span class="header-section-number">7.3</span> Dockerfile</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ex">FROM</span> opencpu/rstudio as intermediate</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># install for V8 package</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="ex">RUN</span> apt-get update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install -y <span class="dt">\ </span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">    <span class="ex">libv8-dev</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co"># repo_token.txt should be something like &quot;GITHUB_PAT=624adeaa...&quot;</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co"># to be able to install packages from private repo&#39;s</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="ex">COPY</span> repo_token.txt .Renviron</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co"># install R packages needed for JAMES</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="ex">RUN</span> \</a>
+<a class="sourceLine" id="cb5-13" data-line-number="13">    R -e <span class="st">&#39;install.packages(&quot;remotes&quot;)&#39;</span> \</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">    R -e <span class="st">&#39;remotes::install_github(&quot;stefvanbuuren/james&quot;)&#39;</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co"># rebuild the layer</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="ex">FROM</span> opencpu/rstudio</a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="ex">LABEL</span> maintainer=<span class="st">&quot;stef.vanbuuren@tno.nl&quot;</span> </a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co"># re-install for V8 package</span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="ex">RUN</span> apt-get update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install -y <span class="dt">\ </span></a>
+<a class="sourceLine" id="cb5-23" data-line-number="23">    <span class="ex">libv8-dev</span></a>
+<a class="sourceLine" id="cb5-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="ex">COPY</span> --from=intermediate /usr/local/lib/R/site-library /usr/local/lib/R/site-library</a>
+<a class="sourceLine" id="cb5-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb5-27" data-line-number="27"><span class="ex">CMD</span> service cron start <span class="kw">&amp;&amp;</span> <span class="ex">/usr/lib/rstudio-server/bin/rserver</span> <span class="kw">&amp;&amp;</span> <span class="ex">apachectl</span> -DFOREGROUND</a></code></pre></div>
+<ul>
+<li>Create a fresh directory, and <code>cd</code> to this directory in your terminal</li>
+<li>Store the script given above in a file named <code>Dockerfile</code></li>
+<li>Create a file named <code>repo_token.txt</code> with one line: <code>GITHUB_PAT=624adeaa...</code> with your token</li>
+</ul>
+</div>
+<div id="docker-commands" class="section level2">
+<h2><span class="header-section-number">7.4</span> Docker commands</h2>
+<p>Build the <code>james</code> image, type in a terminal</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ex">docker</span> build -t james .</a></code></pre></div>
+<p>This may takes a long time (30-60 minutes), in which the entire application is downloaded from various web-locations. After (hopefully succesful) completion, check the image</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="ex">docker</span> images</a></code></pre></div>
+<p>If all is well, the top line is called <code>james</code>. Now run the container on your local machine:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="ex">docker</span> run -t -d -p 80:80 -p 8004:8004 james</a></code></pre></div>
+<p>If the ports are already taken by other containers, stop and remove all containers:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ex">docker</span> stop <span class="va">$(</span><span class="ex">docker</span> ps -a -q<span class="va">)</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="ex">docker</span> rm <span class="va">$(</span><span class="ex">docker</span> ps -a -q<span class="va">)</span></a></code></pre></div>
+<p>Reissue the <code>docker run</code>, and the container should now run. Check by</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="ex">docker</span> ps</a></code></pre></div>
+<p>which should list a container created from the <code>james</code> image.</p>
+</div>
+<div id="checks-with-the-browser" class="section level2">
+<h2><span class="header-section-number">7.5</span> Checks with the browser</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="ex">http</span>://localhost</a></code></pre></div>
+<p>should show Apache2 Ubuntu default screen.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="ex">http</span>://localhost/ocpu/test/</a></code></pre></div>
+<p>should show <code>OpenCPU</code> test page.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="ex">http</span>://localhost/rstudio/</a></code></pre></div>
+<p>should start the Rstudio IDE on the container. Use <code>opencpu:opencpu</code> to log in.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="ex">http</span>://localhost/ocpu/library/james/www/</a></code></pre></div>
+<p>should start the JAMES javascript interface.</p>
+<p>See also <a href="https://registry.hub.docker.com/r/opencpu/rstudio" class="uri">https://registry.hub.docker.com/r/opencpu/rstudio</a></p>
+</div>
+<div id="security" class="section level2">
+<h2><span class="header-section-number">7.6</span> Security</h2>
+<ol style="list-style-type: decimal">
+<li>The container is shielded from the machine on which it runs. However, the materials within the container are not protected.</li>
+<li>Don’t use intermediate containers, since these contain your token in <code>/.Renviron</code>. The latest (<code>james</code>) container does not hold your token, and can be shared, of course, keeping in mind remark 1.</li>
+</ol>
 
 </div>
 </div>
@@ -380,8 +278,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="dockerfile-for-james.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="d-score-implementation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

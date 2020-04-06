@@ -111,7 +111,7 @@
 
 \title{JAMES manual}
 \author{Stef van Buuren}
-\date{2020-03-05}
+\date{2020-04-06}
 
 \begin{document}
 \maketitle
@@ -701,40 +701,230 @@ Document steps (this file)\strut
 \begin{minipage}[t]{0.26\columnwidth}\raggedright
 donordata\strut
 \end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/donordata/commit/7983c3d81a69eb9c6b81a3e0f0668e892c5abf5a}{94937e5}\strut
+\href{https://github.com/stefvanbuuren/donordata/commit/7983c3d81a69eb9c6b81a3e0f0668e892c5abf5a}{7983c3}\strut
 \end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
 Saves the item scores to create JSON files\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.26\columnwidth}\raggedright
 donordata\strut
 \end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/donordata/commit/1537182a0df4180e0000d59225c6355a9c506472}{390adca}\strut
+\href{https://github.com/stefvanbuuren/donordata/commit/1537182a0df4180e0000d59225c6355a9c506472}{1537182}\strut
 \end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
 Save mapping between SMOCC and BDS coding scheme\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.26\columnwidth}\raggedright
 donorloader\strut
 \end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2}{90ce41f}\strut
+\href{https://github.com/stefvanbuuren/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2}{e9a8ed}\strut
 \end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
 Make \texttt{smocc\_bds} available to JAMES\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.26\columnwidth}\raggedright
-minihealth\strut
+jamestest\strut
 \end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/minihealth/commit/badf9232605065c6e00cc66bb6c795f7c20ed318}{b9a4a23}\strut
+\href{https://github.com/stefvanbuuren/jamestest/commit/6484191fd8de0d93b35354aa3ee846447aa81df6}{648419}\strut
 \end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Add two classes to store and convert to BDS number individual milestones data\strut
+Regenerate smocc JSON files to include DDI scores\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.26\columnwidth}\raggedright
 jamestest\strut
 \end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/jamestest/commit/e5dee9bed5b4fdf7f78240da52efa5d865d156ad}{89dad46}\strut
+\href{https://github.com/stefvanbuuren/jamestest/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc}{ce1dbe}\strut
 \end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
 Update the \texttt{installed.cabinets} object with the new individual milestones data\strut
 \end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+minihealth\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/minihealth/commit/4dda8daabca8811a4cc321c66aaccf31c4aba83f}{4dda8d}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Add class \texttt{individualRW} to store and convert raw milestones data\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.26\columnwidth}\raggedright
+minihealth\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
+\href{https://github.com/stefvanbuuren/minihealth/commit/9e03e7e39b007a9687d21efbaa13e77283866d5c}{9e03e7}\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
+Complete the JSON validator schema\strut
+\end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
+
+\hypertarget{dockerfile-for-james}{%
+\chapter{Dockerfile for JAMES}\label{dockerfile-for-james}}
+
+\hypertarget{objective-1}{%
+\section{Objective}\label{objective-1}}
+
+This chapter describes how to build and deploy JAMES as a Docker container.
+
+\hypertarget{pre-requisites}{%
+\section{Pre-requisites}\label{pre-requisites}}
+
+JAMES is currently constructed from a collection of \texttt{R} packages. The top-level package at \url{https://github.com/stefvanbuuren/james} also defines a Javascript interface in the \texttt{inst/www} directory. Deployment of JAMES relies on the \texttt{OpenCPU} server. In principle, it is enough to install the \texttt{james} package on the \texttt{OpenCPU} server, and will also install all dependencies.
+
+The following is needed to build and run a JAMES image:
+
+\begin{itemize}
+\item
+  Permission to read from the following private repo's:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{stefvanbuuren/chartplotter}
+  \item
+    \texttt{stefvanbuuren/clopus}
+  \item
+    \texttt{stefvanbuuren/curvematching}
+  \item
+    \texttt{stefvanbuuren/donorloader}
+  \end{itemize}
+\item
+  Personal Github token with repo scope from \href{https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line}{here}, Generate a token with only scope repo.
+\item
+  Install \texttt{Docker\ Desktop} on your local machine, and run some tutorials
+\end{itemize}
+
+\hypertarget{dockerfile}{%
+\section{Dockerfile}\label{dockerfile}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{FROM}\NormalTok{ opencpu/rstudio as intermediate}
+
+\CommentTok{# install for V8 package}
+\ExtensionTok{RUN}\NormalTok{ apt-get update }\KeywordTok{&&} \ExtensionTok{apt-get}\NormalTok{ install -y }\DataTypeTok{\textbackslash{} }
+    \ExtensionTok{libv8-dev}
+
+\CommentTok{# repo_token.txt should be something like "GITHUB_PAT=624adeaa..."}
+\CommentTok{# to be able to install packages from private repo's}
+\ExtensionTok{COPY}\NormalTok{ repo_token.txt .Renviron}
+
+\CommentTok{# install R packages needed for JAMES}
+\ExtensionTok{RUN}\NormalTok{ \textbackslash{}}
+\NormalTok{    R -e }\StringTok{'install.packages("remotes")'}\NormalTok{ \textbackslash{}}
+\NormalTok{    R -e }\StringTok{'remotes::install_github("stefvanbuuren/james")'}
+
+\CommentTok{# rebuild the layer}
+\ExtensionTok{FROM}\NormalTok{ opencpu/rstudio}
+
+\ExtensionTok{LABEL}\NormalTok{ maintainer=}\StringTok{"stef.vanbuuren@tno.nl"} 
+
+\CommentTok{# re-install for V8 package}
+\ExtensionTok{RUN}\NormalTok{ apt-get update }\KeywordTok{&&} \ExtensionTok{apt-get}\NormalTok{ install -y }\DataTypeTok{\textbackslash{} }
+    \ExtensionTok{libv8-dev}
+
+\ExtensionTok{COPY}\NormalTok{ --from=intermediate /usr/local/lib/R/site-library /usr/local/lib/R/site-library}
+
+\ExtensionTok{CMD}\NormalTok{ service cron start }\KeywordTok{&&} \ExtensionTok{/usr/lib/rstudio-server/bin/rserver} \KeywordTok{&&} \ExtensionTok{apachectl}\NormalTok{ -DFOREGROUND}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Create a fresh directory, and \texttt{cd} to this directory in your terminal
+\item
+  Store the script given above in a file named \texttt{Dockerfile}
+\item
+  Create a file named \texttt{repo\_token.txt} with one line: \texttt{GITHUB\_PAT=624adeaa...} with your token
+\end{itemize}
+
+\hypertarget{docker-commands}{%
+\section{Docker commands}\label{docker-commands}}
+
+Build the \texttt{james} image, type in a terminal
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ build -t james .}
+\end{Highlighting}
+\end{Shaded}
+
+This may takes a long time (30-60 minutes), in which the entire application is downloaded from various web-locations. After (hopefully succesful) completion, check the image
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ images}
+\end{Highlighting}
+\end{Shaded}
+
+If all is well, the top line is called \texttt{james}. Now run the container on your local machine:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ run -t -d -p 80:80 -p 8004:8004 james}
+\end{Highlighting}
+\end{Shaded}
+
+If the ports are already taken by other containers, stop and remove all containers:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ stop }\VariableTok{$(}\ExtensionTok{docker}\NormalTok{ ps -a -q}\VariableTok{)}
+\ExtensionTok{docker}\NormalTok{ rm }\VariableTok{$(}\ExtensionTok{docker}\NormalTok{ ps -a -q}\VariableTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Reissue the \texttt{docker\ run}, and the container should now run. Check by
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ ps}
+\end{Highlighting}
+\end{Shaded}
+
+which should list a container created from the \texttt{james} image.
+
+\hypertarget{checks-with-the-browser}{%
+\section{Checks with the browser}\label{checks-with-the-browser}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{http}\NormalTok{://localhost}
+\end{Highlighting}
+\end{Shaded}
+
+should show Apache2 Ubuntu default screen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{http}\NormalTok{://localhost/ocpu/test/}
+\end{Highlighting}
+\end{Shaded}
+
+should show \texttt{OpenCPU} test page.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{http}\NormalTok{://localhost/rstudio/}
+\end{Highlighting}
+\end{Shaded}
+
+should start the Rstudio IDE on the container. Use \texttt{opencpu:opencpu} to log in.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{http}\NormalTok{://localhost/ocpu/library/james/www/}
+\end{Highlighting}
+\end{Shaded}
+
+should start the JAMES javascript interface.
+
+See also \url{https://registry.hub.docker.com/r/opencpu/rstudio}
+
+\hypertarget{security}{%
+\section{Security}\label{security}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The container is shielded from the machine on which it runs. However, the materials within the container are not protected.
+\item
+  Don't use intermediate containers, since these contain your token in \texttt{/.Renviron}. The latest (\texttt{james}) container does not hold your token, and can be shared, of course, keeping in mind remark 1.
+\end{enumerate}
 
 \bibliography{book.bib,packages.bib}
 

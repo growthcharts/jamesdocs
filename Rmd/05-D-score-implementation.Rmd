@@ -35,10 +35,10 @@ donordata  | [ecb3413](https://github.com/stefvanbuuren/donordata/commit/ecb3413
 donordata  | [3fa9d4d](https://github.com/stefvanbuuren/donordata/commit/3fa9d4de347d09ccff32a887cf6bd8dadfdfaeb6) | Fit and store brokenstick model for D-score on SMOCC data
 donorloader | [c22c446](https://github.com/stefvanbuuren/donorloader/commit/c22c44607b40ff6bda2009c25894362b68831275) | Update internal data after changes in donordata
 jamesdocs  | TBD | Document steps (this file)
-donordata  | [94937e5](https://github.com/stefvanbuuren/donordata/commit/7983c3d81a69eb9c6b81a3e0f0668e892c5abf5a) | Saves the item scores to create JSON files
-donordata  | [390adca](https://github.com/stefvanbuuren/donordata/commit/1537182a0df4180e0000d59225c6355a9c506472) | Save mapping between SMOCC and BDS coding scheme
-donorloader | [90ce41f](https://github.com/stefvanbuuren/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2) | Make `smocc_bds` available to JAMES
-minihealth | [b9a4a23](https://github.com/stefvanbuuren/minihealth/commit/badf9232605065c6e00cc66bb6c795f7c20ed318) | Add two classes to store and convert to BDS number individual milestones data
-jamestest  | [89dad46](https://github.com/stefvanbuuren/jamestest/commit/e5dee9bed5b4fdf7f78240da52efa5d865d156ad) | Update the `installed.cabinets` object with the new individual milestones data
-
-
+donordata  | [7983c3](https://github.com/stefvanbuuren/donordata/commit/7983c3d81a69eb9c6b81a3e0f0668e892c5abf5a) | Saves the item scores to create JSON files
+donordata  | [1537182](https://github.com/stefvanbuuren/donordata/commit/1537182a0df4180e0000d59225c6355a9c506472) | Save mapping between SMOCC and BDS coding scheme
+donorloader | [e9a8ed](https://github.com/stefvanbuuren/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2) | Make `smocc_bds` available to JAMES
+jamestest  | [648419](https://github.com/stefvanbuuren/jamestest/commit/6484191fd8de0d93b35354aa3ee846447aa81df6) | Regenerate smocc JSON files to include DDI scores
+jamestest  | [ce1dbe](https://github.com/stefvanbuuren/jamestest/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc) | Update the `installed.cabinets` object with the new individual milestones data
+minihealth | [4dda8d](https://github.com/stefvanbuuren/minihealth/commit/4dda8daabca8811a4cc321c66aaccf31c4aba83f) | Add class `individualRW` to store and convert raw milestones data
+minihealth | [9e03e7](https://github.com/stefvanbuuren/minihealth/commit/9e03e7e39b007a9687d21efbaa13e77283866d5c) | Complete the JSON validator schema
