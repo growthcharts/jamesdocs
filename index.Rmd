@@ -19,4 +19,5 @@ This is very, very first minimal documentation of JAMES internals.
 knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
+options(bookdown.render.file_scope = FALSE)
 ```
