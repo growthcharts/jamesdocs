@@ -1,5 +1,5 @@
 --- 
-title: "JAMES manual"
+title: "JAMES internals"
 author: "Stef van Buuren"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -7,12 +7,10 @@ documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
-description: "This is very, very first minimal documentation of JAMES internals."
+description: "Minimal documentation of JAMES internals."
 ---
 
-# Prerequisites
-
-This is very, very first minimal documentation of JAMES internals.
+This document contains minimal documentation of JAMES internals.
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages

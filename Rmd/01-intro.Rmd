@@ -1,3 +1,81 @@
 # Introduction {#intro}
 
-Here's an introduction about JAMES
+## Overview
+
+This chapter gives a brief overview the Joint Automatic Measurement and Evaluation System (JAMES).
+
+JAMES is an experimental web service for creating and interpreting charts of child growth and
+development. The current version
+
+1. provides access to high-quality over 300 growth charts used by the Dutch youth health care;
+2. interchanges data coded according to the [Basisdataset JGZ](https://www.ncj.nl/themadossiers/informatisering/basisdataset/documentatie/?cat=13);
+3. screens for abnormal height, weight and head circumference;
+4. converts developmental data into the D-score;
+5. plot D-scores on special D-score charts;
+6. predicts future growth and development.
+
+The service can be used by anyone interested in high-quality charts for monitoring and evaluating childhood growth and development. This chapter highlights the components of JAMES.
+
+## Architecture
+
+JAMES provides its services through [OpenCPU](https://www.opencpu.org), an open system for scientific computing and reproducible research. The system allows for easy integration of growth charts into any `HTTPS` compliant client by means of OpenCPU's [API](https://www.opencpu.org/api.html). The JAMES webservice is a RESTful Application Programming Interface (API).
+
+The contents of the system consist of two parts:
+
+- **JAMES**: A collection of R packages that provides back-end functionality
+- **JESSE**: A gateway front-end JAMES that translates incoming and outcoming requests
+
+## R packages
+
+### JAMES Active packages
+
+Active packages reside on the JAMES server and provide all functionality.
+
+| Package | Open | Description                                            |
+|:--------|:-----|:-------------------------------------------------------|
+| [`james`](https://github.com/growthcharts/james) | Y | Joint Automatic Measurement and Evaluation System |
+| [`nlreferences`](https://github.com/growthcharts/nlreferences) | Y | Growth References for Children living in The Netherlands |
+| [`centile`](https://github.com/growthcharts/centile) | Y | Translate Measurements, Z-Scores and Centiles with the RIF format |
+| [`chartbox`](https://github.com/growthcharts/chartbox) | Y | Collection of Growth Charts |
+| [`chartcatalog`](https://github.com/growthcharts/chartcatalog) | Y | Catalog of JAMES Growth Charts |
+| [`chartplotter`](https://github.com/growthcharts/chartplotter) | N | Analysing and Plotting Growth Curves |
+| [`curvematching`](https://github.com/growthcharts/curvematching) | N | Personalised Prediction by Matching Invididuals |
+| [`donorloader`](https://github.com/growthcharts/donorloader) | N | Loads Donor Data from Package or Database |
+| [`brokenstick`](https://github.com/growthcharts/brokenstick) | Y | Broken Stick Model for Irregular Longitudinal Data |
+| [`dscore`](https://github.com/D-score/dscore) | Y | D-Score for Child Development |
+| [`bdsreader`](https://github.com/growthcharts/bdsreader) | Y | Read Data from the Basisdataset Jeugdgezondheidszorg |
+| [`growthscreener`](https://github.com/growthcharts/growthscreener) | Y | Finding Children with Unusual Growth Patterns |
+| [`jamesclient`](https://github.com/growthcharts/jamesclient) | Y | Client-side R Functions for JAMES |
+| [`jamesdemodata`](https://github.com/growthcharts/jamesdemodata) | Y | Demo Data for JAMES |
+
+### JAMES Support packages
+
+Support packages produce half-fabricated materials, provide testing or store documentation. 
+
+| Package | Open | Description                                            |
+|:--------|:-----|:-------------------------------------------------------|
+| [`donordata`](https://github.com/stefvanbuuren/donordata) | N | Longitudinal Data for Curve Matching |
+| [`chartdesigner`](https://github.com/stefvanbuuren/chartdesigner) | N | Design Growth Charts for JAMES |
+| [`gateway`](https://github.com/stefvanbuuren/gateway) | Y | Entry to TNO online analytic growth modules |
+| [`jamesdocker`](https://github.com/stefvanbuuren/jamesdocker) | Y | JAMES Docker API |
+| [`bdsschema`](https://github.com/stefvanbuuren/bdsschema) | Y | Data Exchange Tools for the Basisdataset JGZ |
+| [`jamestest`](https://github.com/stefvanbuuren/jamestest) | Y | Shiny app to test JAMES |
+| [`minihealth`](https://github.com/stefvanbuuren/minihealth) | Y | Mini Dossier for Individual Health Data |
+| [`clopus`](https://github.com/stefvanbuuren/clopus) | N | Growth reference library |
+| [`jamesdocs`](https://github.com/stefvanbuuren/jamesdocs) | Y | JAMES internals |
+
+## JESSE
+
+
+## JAMES servers
+
+- Production: <https://groeidiagrammen.nl/ocpu/test/>, Docs (outdated): <https://groeidiagrammen.nl>
+- Test: <https://vps.stefvanbuuren.nl/ocpu/test/>
+- Future: `james.tno.nl`
+
+## Resources
+
+- Demo JAMES at <https://tnochildhealthstatistics.shinyapps.io/james_tryout/>
+- [OpenCPU system](https://www.opencpu.org)
+- [OpenCPU API](https://www.opencpu.org/api.html)
+- <https://www.tno.nl/groei>, <https://www.tno.nl/growth>
