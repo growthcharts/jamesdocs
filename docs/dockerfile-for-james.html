@@ -4,27 +4,27 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Dockerfile for JAMES | JAMES manual</title>
-  <meta name="description" content="This is very, very first minimal documentation of JAMES internals." />
-  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+  <title>Chapter 6 Dockerfile for JAMES | JAMES internals</title>
+  <meta name="description" content="Minimal documentation of JAMES internals." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Dockerfile for JAMES | JAMES manual" />
+  <meta property="og:title" content="Chapter 6 Dockerfile for JAMES | JAMES internals" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This is very, very first minimal documentation of JAMES internals." />
+  <meta property="og:description" content="Minimal documentation of JAMES internals." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Dockerfile for JAMES | JAMES manual" />
+  <meta name="twitter:title" content="Chapter 6 Dockerfile for JAMES | JAMES internals" />
   
-  <meta name="twitter:description" content="This is very, very first minimal documentation of JAMES internals." />
+  <meta name="twitter:description" content="Minimal documentation of JAMES internals." />
   
 
 <meta name="author" content="Stef van Buuren" />
 
 
-<meta name="date" content="2020-04-06" />
+<meta name="date" content="2021-05-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,6 +33,7 @@
   
 <link rel="prev" href="d-score-implementation.html"/>
 <link rel="next" href="references.html"/>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -53,25 +54,27 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +83,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -128,36 +131,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">JAMES manual</a></li>
+<li><a href="./">JAMES Internals</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
-<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
-<li class="chapter" data-level="3" data-path="james-data-format.html"><a href="james-data-format.html"><i class="fa fa-check"></i><b>3</b> JAMES data format</a><ul>
-<li class="chapter" data-level="3.1" data-path="james-data-format.html"><a href="james-data-format.html#objective"><i class="fa fa-check"></i><b>3.1</b> Objective</a></li>
-<li class="chapter" data-level="3.2" data-path="james-data-format.html"><a href="james-data-format.html#generic-object-model"><i class="fa fa-check"></i><b>3.2</b> Generic object model</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="james-data-format.html"><a href="james-data-format.html#epremdossier-class"><i class="fa fa-check"></i><b>3.2.1</b> EPremDossier Class</a></li>
-<li class="chapter" data-level="3.2.2" data-path="james-data-format.html"><a href="james-data-format.html#epremgroep-class"><i class="fa fa-check"></i><b>3.2.2</b> EPremGroep Class</a></li>
-<li class="chapter" data-level="3.2.3" data-path="james-data-format.html"><a href="james-data-format.html#epremelement-class"><i class="fa fa-check"></i><b>3.2.3</b> EPremElement Class</a></li>
-<li class="chapter" data-level="3.2.4" data-path="james-data-format.html"><a href="james-data-format.html#epremcontactmoment-class"><i class="fa fa-check"></i><b>3.2.4</b> EPremContactmoment Class</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#overview"><i class="fa fa-check"></i><b>1.1</b> Overview</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#architecture"><i class="fa fa-check"></i><b>1.2</b> Architecture</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#r-packages"><i class="fa fa-check"></i><b>1.3</b> R packages</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#james-active-packages"><i class="fa fa-check"></i><b>1.3.1</b> JAMES Active packages</a></li>
+<li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#james-support-packages"><i class="fa fa-check"></i><b>1.3.2</b> JAMES Support packages</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="james-data-format.html"><a href="james-data-format.html#bds-elements"><i class="fa fa-check"></i><b>3.3</b> BDS-elements</a></li>
-<li class="chapter" data-level="3.4" data-path="james-data-format.html"><a href="james-data-format.html#error-checking"><i class="fa fa-check"></i><b>3.4</b> Error checking</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#jesse"><i class="fa fa-check"></i><b>1.4</b> JESSE</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#james-servers"><i class="fa fa-check"></i><b>1.5</b> JAMES servers</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#resources"><i class="fa fa-check"></i><b>1.6</b> Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html"><i class="fa fa-check"></i><b>4</b> Growth charts in JAMES</a><ul>
-<li class="chapter" data-level="4.1" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html#chart-naming-conventions"><i class="fa fa-check"></i><b>4.1</b> Chart naming conventions</a></li>
+<li class="chapter" data-level="2" data-path="james-data-format.html"><a href="james-data-format.html"><i class="fa fa-check"></i><b>2</b> JAMES data format</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="james-data-format.html"><a href="james-data-format.html#objective"><i class="fa fa-check"></i><b>2.1</b> Objective</a></li>
+<li class="chapter" data-level="2.2" data-path="james-data-format.html"><a href="james-data-format.html#generic-object-model"><i class="fa fa-check"></i><b>2.2</b> Generic object model</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="james-data-format.html"><a href="james-data-format.html#epremdossier-class"><i class="fa fa-check"></i><b>2.2.1</b> EPremDossier Class</a></li>
+<li class="chapter" data-level="2.2.2" data-path="james-data-format.html"><a href="james-data-format.html#epremgroep-class"><i class="fa fa-check"></i><b>2.2.2</b> EPremGroep Class</a></li>
+<li class="chapter" data-level="2.2.3" data-path="james-data-format.html"><a href="james-data-format.html#epremelement-class"><i class="fa fa-check"></i><b>2.2.3</b> EPremElement Class</a></li>
+<li class="chapter" data-level="2.2.4" data-path="james-data-format.html"><a href="james-data-format.html#epremcontactmoment-class"><i class="fa fa-check"></i><b>2.2.4</b> EPremContactmoment Class</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>5</b> Methods</a></li>
-<li class="chapter" data-level="6" data-path="d-score-implementation.html"><a href="d-score-implementation.html"><i class="fa fa-check"></i><b>6</b> D-score implementation</a><ul>
-<li class="chapter" data-level="6.1" data-path="d-score-implementation.html"><a href="d-score-implementation.html#actions"><i class="fa fa-check"></i><b>6.1</b> Actions</a></li>
+<li class="chapter" data-level="2.3" data-path="james-data-format.html"><a href="james-data-format.html#bds-elements"><i class="fa fa-check"></i><b>2.3</b> BDS-elements</a></li>
+<li class="chapter" data-level="2.4" data-path="james-data-format.html"><a href="james-data-format.html#error-checking"><i class="fa fa-check"></i><b>2.4</b> Error checking</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html"><i class="fa fa-check"></i><b>7</b> Dockerfile for JAMES</a><ul>
-<li class="chapter" data-level="7.1" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#objective-1"><i class="fa fa-check"></i><b>7.1</b> Objective</a></li>
-<li class="chapter" data-level="7.2" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#pre-requisites"><i class="fa fa-check"></i><b>7.2</b> Pre-requisites</a></li>
-<li class="chapter" data-level="7.3" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#dockerfile"><i class="fa fa-check"></i><b>7.3</b> Dockerfile</a></li>
-<li class="chapter" data-level="7.4" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#docker-commands"><i class="fa fa-check"></i><b>7.4</b> Docker commands</a></li>
-<li class="chapter" data-level="7.5" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#checks-with-the-browser"><i class="fa fa-check"></i><b>7.5</b> Checks with the browser</a></li>
-<li class="chapter" data-level="7.6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#security"><i class="fa fa-check"></i><b>7.6</b> Security</a></li>
+<li class="chapter" data-level="3" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html"><i class="fa fa-check"></i><b>3</b> Growth charts in JAMES</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html#chart-naming-conventions"><i class="fa fa-check"></i><b>3.1</b> Chart naming conventions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
+<li class="chapter" data-level="5" data-path="d-score-implementation.html"><a href="d-score-implementation.html"><i class="fa fa-check"></i><b>5</b> D-score implementation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="d-score-implementation.html"><a href="d-score-implementation.html#actions"><i class="fa fa-check"></i><b>5.1</b> Actions</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html"><i class="fa fa-check"></i><b>6</b> Dockerfile for JAMES</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#objective-1"><i class="fa fa-check"></i><b>6.1</b> Objective</a></li>
+<li class="chapter" data-level="6.2" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#pre-requisites"><i class="fa fa-check"></i><b>6.2</b> Pre-requisites</a></li>
+<li class="chapter" data-level="6.3" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#dockerfile"><i class="fa fa-check"></i><b>6.3</b> Dockerfile</a></li>
+<li class="chapter" data-level="6.4" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#docker-commands"><i class="fa fa-check"></i><b>6.4</b> Docker commands</a></li>
+<li class="chapter" data-level="6.5" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#checks-with-the-browser"><i class="fa fa-check"></i><b>6.5</b> Checks with the browser</a></li>
+<li class="chapter" data-level="6.6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#security"><i class="fa fa-check"></i><b>6.6</b> Security</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -172,7 +191,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">JAMES manual</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">JAMES internals</a>
           </h1>
         </div>
 
@@ -180,14 +199,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="dockerfile-for-james" class="section level1">
-<h1><span class="header-section-number">Chapter 7</span> Dockerfile for JAMES</h1>
-<div id="objective-1" class="section level2">
-<h2><span class="header-section-number">7.1</span> Objective</h2>
+<div id="dockerfile-for-james" class="section level1" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Dockerfile for JAMES</h1>
+<div id="objective-1" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Objective</h2>
 <p>This chapter describes how to build and deploy JAMES as a Docker container.</p>
 </div>
-<div id="pre-requisites" class="section level2">
-<h2><span class="header-section-number">7.2</span> Pre-requisites</h2>
+<div id="pre-requisites" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Pre-requisites</h2>
 <p>JAMES is currently constructed from a collection of <code>R</code> packages. The top-level package at <a href="https://github.com/stefvanbuuren/james" class="uri">https://github.com/stefvanbuuren/james</a> also defines a Javascript interface in the <code>inst/www</code> directory. Deployment of JAMES relies on the <code>OpenCPU</code> server. In principle, it is enough to install the <code>james</code> package on the <code>OpenCPU</code> server, and will also install all dependencies.</p>
 <p>The following is needed to build and run a JAMES image:</p>
 <ul>
@@ -202,73 +221,119 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Install <code>Docker Desktop</code> on your local machine, and run some tutorials</p></li>
 </ul>
 </div>
-<div id="dockerfile" class="section level2">
-<h2><span class="header-section-number">7.3</span> Dockerfile</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ex">FROM</span> opencpu/rstudio as intermediate</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># install for V8 package</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="ex">RUN</span> apt-get update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install -y <span class="dt">\ </span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">    <span class="ex">libv8-dev</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co"># repo_token.txt should be something like &quot;GITHUB_PAT=624adeaa...&quot;</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co"># to be able to install packages from private repo&#39;s</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="ex">COPY</span> repo_token.txt .Renviron</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co"># install R packages needed for JAMES</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="ex">RUN</span> \</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">    R -e <span class="st">&#39;install.packages(&quot;remotes&quot;)&#39;</span> \</a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">    R -e <span class="st">&#39;remotes::install_github(&quot;stefvanbuuren/james&quot;)&#39;</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co"># rebuild the layer</span></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="ex">FROM</span> opencpu/rstudio</a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="ex">LABEL</span> maintainer=<span class="st">&quot;stef.vanbuuren@tno.nl&quot;</span> </a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co"># re-install for V8 package</span></a>
-<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="ex">RUN</span> apt-get update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install -y <span class="dt">\ </span></a>
-<a class="sourceLine" id="cb5-23" data-line-number="23">    <span class="ex">libv8-dev</span></a>
-<a class="sourceLine" id="cb5-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="ex">COPY</span> --from=intermediate /usr/local/lib/R/site-library /usr/local/lib/R/site-library</a>
-<a class="sourceLine" id="cb5-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb5-27" data-line-number="27"><span class="ex">CMD</span> service cron start <span class="kw">&amp;&amp;</span> <span class="ex">/usr/lib/rstudio-server/bin/rserver</span> <span class="kw">&amp;&amp;</span> <span class="ex">apachectl</span> -DFOREGROUND</a></code></pre></div>
+<div id="dockerfile" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Dockerfile</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="dockerfile-for-james.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">FROM</span> opencpu/base as intermediate</span>
+<span id="cb5-2"><a href="dockerfile-for-james.html#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="dockerfile-for-james.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># install for V8 package</span></span>
+<span id="cb5-4"><a href="dockerfile-for-james.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">RUN</span> apt-get update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install <span class="at">-y</span> libnode-dev</span>
+<span id="cb5-5"><a href="dockerfile-for-james.html#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="dockerfile-for-james.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># repo_token.txt should be something like &quot;GITHUB_PAT=624adeaa...&quot;</span></span>
+<span id="cb5-7"><a href="dockerfile-for-james.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># to be able to install packages from private repo&#39;s</span></span>
+<span id="cb5-8"><a href="dockerfile-for-james.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">COPY</span> repo_token.txt .Renviron</span>
+<span id="cb5-9"><a href="dockerfile-for-james.html#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="dockerfile-for-james.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># install R packages needed for JAMES</span></span>
+<span id="cb5-11"><a href="dockerfile-for-james.html#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="ex">RUN</span> <span class="dt">\</span></span>
+<span id="cb5-12"><a href="dockerfile-for-james.html#cb5-12" aria-hidden="true" tabindex="-1"></a>    R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;remotes&quot;)&#39;</span> <span class="dt">\</span></span>
+<span id="cb5-13"><a href="dockerfile-for-james.html#cb5-13" aria-hidden="true" tabindex="-1"></a>    R <span class="at">-e</span> <span class="st">&#39;remotes::install_github(&quot;stefvanbuuren/clopus&quot;)&#39;</span> <span class="dt">\</span></span>
+<span id="cb5-14"><a href="dockerfile-for-james.html#cb5-14" aria-hidden="true" tabindex="-1"></a>    R <span class="at">-e</span> <span class="st">&#39;remotes::install_github(&quot;stefvanbuuren/dscore&quot;)&#39;</span> <span class="dt">\</span></span>
+<span id="cb5-15"><a href="dockerfile-for-james.html#cb5-15" aria-hidden="true" tabindex="-1"></a>    R <span class="at">-e</span> <span class="st">&#39;remotes::install_github(&quot;stefvanbuuren/chartbox&quot;)&#39;</span> <span class="dt">\</span></span>
+<span id="cb5-16"><a href="dockerfile-for-james.html#cb5-16" aria-hidden="true" tabindex="-1"></a>    R <span class="at">-e</span> <span class="st">&#39;remotes::install_github(&quot;stefvanbuuren/brokenstick&quot;)&#39;</span> <span class="dt">\</span></span>
+<span id="cb5-17"><a href="dockerfile-for-james.html#cb5-17" aria-hidden="true" tabindex="-1"></a>    R <span class="at">-e</span> <span class="st">&#39;remotes::install_github(&quot;stefvanbuuren/minihealth&quot;)&#39;</span> <span class="dt">\</span></span>
+<span id="cb5-18"><a href="dockerfile-for-james.html#cb5-18" aria-hidden="true" tabindex="-1"></a>    R <span class="at">-e</span> <span class="st">&#39;remotes::install_github(&quot;stefvanbuuren/jamestest&quot;)&#39;</span> <span class="dt">\</span></span>
+<span id="cb5-19"><a href="dockerfile-for-james.html#cb5-19" aria-hidden="true" tabindex="-1"></a>    R <span class="at">-e</span> <span class="st">&#39;remotes::install_github(&quot;stefvanbuuren/growthscreener&quot;)&#39;</span> <span class="dt">\</span></span>
+<span id="cb5-20"><a href="dockerfile-for-james.html#cb5-20" aria-hidden="true" tabindex="-1"></a>    R <span class="at">-e</span> <span class="st">&#39;remotes::install_github(&quot;stefvanbuuren/james&quot;)&#39;</span></span>
+<span id="cb5-21"><a href="dockerfile-for-james.html#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="dockerfile-for-james.html#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># rebuild layer without .Renviron</span></span>
+<span id="cb5-23"><a href="dockerfile-for-james.html#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="ex">FROM</span> opencpu/base</span>
+<span id="cb5-24"><a href="dockerfile-for-james.html#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="dockerfile-for-james.html#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="ex">LABEL</span> maintainer=<span class="st">&quot;stef.vanbuuren@tno.nl&quot;</span> </span>
+<span id="cb5-26"><a href="dockerfile-for-james.html#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="dockerfile-for-james.html#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co"># re-install for V8 package</span></span>
+<span id="cb5-28"><a href="dockerfile-for-james.html#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="ex">RUN</span> apt-get update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install <span class="at">-y</span> libnode-dev</span>
+<span id="cb5-29"><a href="dockerfile-for-james.html#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="dockerfile-for-james.html#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># copy R libraries</span></span>
+<span id="cb5-31"><a href="dockerfile-for-james.html#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="ex">COPY</span> <span class="at">--from</span><span class="op">=</span>intermediate /usr/local/lib/R/site-library /usr/local/lib/R/site-library</span>
+<span id="cb5-32"><a href="dockerfile-for-james.html#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="dockerfile-for-james.html#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co"># modify preload section</span></span>
+<span id="cb5-34"><a href="dockerfile-for-james.html#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="ex">COPY</span> james.conf /etc/opencpu/server.conf.d/james.conf</span>
+<span id="cb5-35"><a href="dockerfile-for-james.html#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="dockerfile-for-james.html#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co"># install Arial</span></span>
+<span id="cb5-37"><a href="dockerfile-for-james.html#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="ex">RUN</span> mkdir /usr/share/fonts/truetype/arial/</span>
+<span id="cb5-38"><a href="dockerfile-for-james.html#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="ex">COPY</span> fonts/truetype/arial/<span class="pp">*</span> /usr/share/fonts/truetype/arial/</span>
+<span id="cb5-39"><a href="dockerfile-for-james.html#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="dockerfile-for-james.html#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="ex">CMD</span> service cron start <span class="kw">&amp;&amp;</span> <span class="ex">apachectl</span> <span class="at">-DFOREGROUND</span></span></code></pre></div>
 <ul>
 <li>Create a fresh directory, and <code>cd</code> to this directory in your terminal</li>
 <li>Store the script given above in a file named <code>Dockerfile</code></li>
 <li>Create a file named <code>repo_token.txt</code> with one line: <code>GITHUB_PAT=624adeaa...</code> with your token</li>
+<li>Create <code>fonts/truetype/arial</code> with the proper <code>ttf</code> files</li>
+<li>Create a file <code>james.conf</code> specifying the preload libraries</li>
 </ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="dockerfile-for-james.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span></span>
+<span id="cb6-2"><a href="dockerfile-for-james.html#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;enable.api.library&quot;</span><span class="ex">:</span> true,</span>
+<span id="cb6-3"><a href="dockerfile-for-james.html#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;enable.api.apps&quot;</span><span class="ex">:</span> true,</span>
+<span id="cb6-4"><a href="dockerfile-for-james.html#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;enable.api.user&quot;</span><span class="ex">:</span> true,</span>
+<span id="cb6-5"><a href="dockerfile-for-james.html#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;enable.api.tmp&quot;</span><span class="ex">:</span> true,</span>
+<span id="cb6-6"><a href="dockerfile-for-james.html#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;enable.cors&quot;</span> : true,</span>
+<span id="cb6-7"><a href="dockerfile-for-james.html#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;enable.post.code&quot;</span><span class="ex">:</span> true,</span>
+<span id="cb6-8"><a href="dockerfile-for-james.html#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;enable.rlimits&quot;</span> : true,</span>
+<span id="cb6-9"><a href="dockerfile-for-james.html#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;error.showcall&quot;</span><span class="ex">:</span> true,</span>
+<span id="cb6-10"><a href="dockerfile-for-james.html#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;smtp.server&quot;</span> : <span class="st">&quot;localhost&quot;</span>,</span>
+<span id="cb6-11"><a href="dockerfile-for-james.html#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;smtp.use.ssl&quot;</span> : <span class="st">&quot;no&quot;</span>,</span>
+<span id="cb6-12"><a href="dockerfile-for-james.html#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;httpcache.post&quot;</span><span class="ex">:</span> 300,</span>
+<span id="cb6-13"><a href="dockerfile-for-james.html#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;httpcache.lib&quot;</span><span class="ex">:</span> 86400,</span>
+<span id="cb6-14"><a href="dockerfile-for-james.html#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;httpcache.apps&quot;</span><span class="ex">:</span> 900,</span>
+<span id="cb6-15"><a href="dockerfile-for-james.html#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;httpcache.tmp&quot;</span><span class="ex">:</span> 86400,</span>
+<span id="cb6-16"><a href="dockerfile-for-james.html#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;httpcache.static&quot;</span><span class="ex">:</span> 31536000,</span>
+<span id="cb6-17"><a href="dockerfile-for-james.html#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;key.length&quot;</span> : 13,</span>
+<span id="cb6-18"><a href="dockerfile-for-james.html#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;repos&quot;</span><span class="ex">:</span> <span class="st">&quot;https://cran.rstudio.com&quot;</span>,</span>
+<span id="cb6-19"><a href="dockerfile-for-james.html#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;rlimit.as&quot;</span><span class="ex">:</span> 4e9,</span>
+<span id="cb6-20"><a href="dockerfile-for-james.html#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;rlimit.fsize&quot;</span><span class="ex">:</span> 1e9,</span>
+<span id="cb6-21"><a href="dockerfile-for-james.html#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;rlimit.nproc&quot;</span><span class="ex">:</span> 500,</span>
+<span id="cb6-22"><a href="dockerfile-for-james.html#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;timelimit.get&quot;</span><span class="ex">:</span> 60,</span>
+<span id="cb6-23"><a href="dockerfile-for-james.html#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;timelimit.post&quot;</span><span class="ex">:</span> 90,</span>
+<span id="cb6-24"><a href="dockerfile-for-james.html#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;timelimit.webhook&quot;</span><span class="ex">:</span> 900,</span>
+<span id="cb6-25"><a href="dockerfile-for-james.html#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;preload&quot;</span><span class="ex">:</span> [<span class="st">&quot;clopus&quot;</span>, <span class="st">&quot;donorloader&quot;</span>, <span class="st">&quot;chartbox&quot;</span>, <span class="st">&quot;brokenstick&quot;</span>, <span class="st">&quot;minihealth&quot;</span>, <span class="st">&quot;growthscreener&quot;</span>, <span class="st">&quot;james&quot;</span>]</span>
+<span id="cb6-26"><a href="dockerfile-for-james.html#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
 </div>
-<div id="docker-commands" class="section level2">
-<h2><span class="header-section-number">7.4</span> Docker commands</h2>
+<div id="docker-commands" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Docker commands</h2>
 <p>Build the <code>james</code> image, type in a terminal</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ex">docker</span> build -t james .</a></code></pre></div>
-<p>This may takes a long time (30-60 minutes), in which the entire application is downloaded from various web-locations. After (hopefully succesful) completion, check the image</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="ex">docker</span> images</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="dockerfile-for-james.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> james .</span></code></pre></div>
+<p>This may takes a long time (30 minutes), in which the entire application is downloaded from various web-locations. After (hopefully succesful) completion, check the image</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="dockerfile-for-james.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> images <span class="at">-a</span></span></code></pre></div>
 <p>If all is well, the top line is called <code>james</code>. Now run the container on your local machine:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="ex">docker</span> run -t -d -p 80:80 -p 8004:8004 james</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="dockerfile-for-james.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-t</span> <span class="at">-d</span> <span class="at">-p</span> 80:80 james</span></code></pre></div>
 <p>If the ports are already taken by other containers, stop and remove all containers:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ex">docker</span> stop <span class="va">$(</span><span class="ex">docker</span> ps -a -q<span class="va">)</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="ex">docker</span> rm <span class="va">$(</span><span class="ex">docker</span> ps -a -q<span class="va">)</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="dockerfile-for-james.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> stop <span class="va">$(</span><span class="ex">docker</span> ps <span class="at">-a</span> <span class="at">-q</span><span class="va">)</span></span>
+<span id="cb10-2"><a href="dockerfile-for-james.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rm <span class="va">$(</span><span class="ex">docker</span> ps <span class="at">-a</span> <span class="at">-q</span><span class="va">)</span></span></code></pre></div>
 <p>Reissue the <code>docker run</code>, and the container should now run. Check by</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="ex">docker</span> ps</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="dockerfile-for-james.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps</span></code></pre></div>
 <p>which should list a container created from the <code>james</code> image.</p>
+<p>If you want to enter the container use</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="dockerfile-for-james.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-i</span> <span class="at">-t</span> 6c /bin/bash</span></code></pre></div>
+<p>where <code>6c</code> are the first two characters of the container ID.</p>
+<p>Inside the container, check font matching of Arial as</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="dockerfile-for-james.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fc-match</span> Arial</span></code></pre></div>
 </div>
-<div id="checks-with-the-browser" class="section level2">
-<h2><span class="header-section-number">7.5</span> Checks with the browser</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="ex">http</span>://localhost</a></code></pre></div>
+<div id="checks-with-the-browser" class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Checks with the browser</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="dockerfile-for-james.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">http://localhost</span></span></code></pre></div>
 <p>should show Apache2 Ubuntu default screen.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="ex">http</span>://localhost/ocpu/test/</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="dockerfile-for-james.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">http://localhost/ocpu/test/</span></span></code></pre></div>
 <p>should show <code>OpenCPU</code> test page.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="ex">http</span>://localhost/rstudio/</a></code></pre></div>
-<p>should start the Rstudio IDE on the container. Use <code>opencpu:opencpu</code> to log in.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="ex">http</span>://localhost/ocpu/library/james/www/</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="dockerfile-for-james.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">http://localhost/rstudio/</span></span></code></pre></div>
+<p>should start the Rstudio IDE - <em>if installed</em> . Use <code>opencpu:opencpu</code> to log in.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="dockerfile-for-james.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">http://localhost/ocpu/library/james/www/</span></span></code></pre></div>
 <p>should start the JAMES javascript interface.</p>
 <p>See also <a href="https://registry.hub.docker.com/r/opencpu/rstudio" class="uri">https://registry.hub.docker.com/r/opencpu/rstudio</a></p>
 </div>
-<div id="security" class="section level2">
-<h2><span class="header-section-number">7.6</span> Security</h2>
+<div id="security" class="section level2" number="6.6">
+<h2><span class="header-section-number">6.6</span> Security</h2>
 <ol style="list-style-type: decimal">
-<li>The container is shielded from the machine on which it runs. However, the materials within the container are not protected.</li>
-<li>Don’t use intermediate containers, since these contain your token in <code>/.Renviron</code>. The latest (<code>james</code>) container does not hold your token, and can be shared, of course, keeping in mind remark 1.</li>
+<li>Don’t use the intermediate container, since it will contain your token in <code>/.Renviron</code>. The latest (<code>james</code>) container does not hold your token, and can be shared.</li>
+<li>The container is shielded from the machine on which it runs. However, the materials within the container are only protected by <code>R_LIMITS</code>. In general, for production it is wise to add restriction on the <code>OpenCPU</code> server.</li>
 </ol>
 
 </div>

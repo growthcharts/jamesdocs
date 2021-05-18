@@ -1,39 +1,46 @@
-\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 %
-\documentclass[]{book}
+\documentclass[
+]{book}
+\usepackage{amsmath,amssymb}
 \usepackage{lmodern}
-\usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provides euro and other symbols
-\else % if luatex or xelatex
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
   \usepackage{unicode-math}
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
-% use upquote if available, for straight quotes in verbatim environments
+% Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-% use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage[]{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
-\usepackage{hyperref}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-            pdftitle={JAMES manual},
-            pdfauthor={Stef van Buuren},
-            pdfborder={0 0 0},
-            breaklinks=true}
-\urlstyle{same}  % don't use monospace font for urls
+  pdftitle={JAMES internals},
+  pdfauthor={Stef van Buuren},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -74,10 +81,17 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\usepackage{longtable,booktabs}
-% Fix footnotes in tables (requires footnote package)
-\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{longtable}}{}
-\usepackage{graphicx,grffile}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -86,32 +100,24 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{5}
-% Redefines (sub)paragraphs to behave more like sections
-\ifx\paragraph\undefined\else
-\let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-\fi
-\ifx\subparagraph\undefined\else
-\let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
-
-% set default figure placement to htbp
+% Set default figure placement to htbp
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
-
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
 \usepackage{booktabs}
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
 
-\title{JAMES manual}
+\title{JAMES internals}
 \author{Stef van Buuren}
-\date{2020-04-06}
+\date{2021-05-18}
 
 \begin{document}
 \maketitle
@@ -120,15 +126,138 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\hypertarget{prerequisites}{%
-\chapter{Prerequisites}\label{prerequisites}}
-
-This is very, very first minimal documentation of JAMES internals.
+This document contains minimal documentation of JAMES internals.
 
 \hypertarget{intro}{%
 \chapter{Introduction}\label{intro}}
 
-Here's an introduction about JAMES
+\hypertarget{overview}{%
+\section{Overview}\label{overview}}
+
+This chapter gives a brief overview the Joint Automatic Measurement and Evaluation System (JAMES).
+
+JAMES is an experimental web service for creating and interpreting charts of child growth and
+development. The current version
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  provides access to high-quality over 300 growth charts used by the Dutch youth health care;
+\item
+  interchanges data coded according to the \href{https://www.ncj.nl/themadossiers/informatisering/basisdataset/documentatie/?cat=13}{Basisdataset JGZ};
+\item
+  screens for abnormal height, weight and head circumference;
+\item
+  converts developmental data into the D-score;
+\item
+  plot D-scores on special D-score charts;
+\item
+  predicts future growth and development.
+\end{enumerate}
+
+The service can be used by anyone interested in high-quality charts for monitoring and evaluating childhood growth and development. This chapter highlights the components of JAMES.
+
+\hypertarget{architecture}{%
+\section{Architecture}\label{architecture}}
+
+JAMES provides its services through \href{https://www.opencpu.org}{OpenCPU}, an open system for scientific computing and reproducible research. The system allows for easy integration of growth charts into any \texttt{HTTPS} compliant client by means of OpenCPU's \href{https://www.opencpu.org/api.html}{API}. The JAMES webservice is a RESTful Application Programming Interface (API).
+
+The contents of the system consist of two parts:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{JAMES}: A collection of R packages that provides back-end functionality
+\item
+  \textbf{JESSE}: A gateway front-end JAMES that translates incoming and outcoming requests
+\end{itemize}
+
+\hypertarget{r-packages}{%
+\section{R packages}\label{r-packages}}
+
+\hypertarget{james-active-packages}{%
+\subsection{JAMES Active packages}\label{james-active-packages}}
+
+Active packages reside on the JAMES server and provide all functionality.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.13}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.08}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.79}}@{}}
+\toprule
+Package & Open & Description \\
+\midrule
+\endhead
+\href{https://github.com/growthcharts/james}{\texttt{james}} & Y & Joint Automatic Measurement and Evaluation System \\
+\href{https://github.com/growthcharts/nlreferences}{\texttt{nlreferences}} & Y & Growth References for Children living in The Netherlands \\
+\href{https://github.com/growthcharts/centile}{\texttt{centile}} & Y & Translate Measurements, Z-Scores and Centiles with the RIF format \\
+\href{https://github.com/growthcharts/chartbox}{\texttt{chartbox}} & Y & Collection of Growth Charts \\
+\href{https://github.com/growthcharts/chartcatalog}{\texttt{chartcatalog}} & Y & Catalog of JAMES Growth Charts \\
+\href{https://github.com/growthcharts/chartplotter}{\texttt{chartplotter}} & N & Analysing and Plotting Growth Curves \\
+\href{https://github.com/growthcharts/curvematching}{\texttt{curvematching}} & N & Personalised Prediction by Matching Invididuals \\
+\href{https://github.com/growthcharts/donorloader}{\texttt{donorloader}} & N & Loads Donor Data from Package or Database \\
+\href{https://github.com/growthcharts/brokenstick}{\texttt{brokenstick}} & Y & Broken Stick Model for Irregular Longitudinal Data \\
+\href{https://github.com/D-score/dscore}{\texttt{dscore}} & Y & D-Score for Child Development \\
+\href{https://github.com/growthcharts/bdsreader}{\texttt{bdsreader}} & Y & Read Data from the Basisdataset Jeugdgezondheidszorg \\
+\href{https://github.com/growthcharts/growthscreener}{\texttt{growthscreener}} & Y & Finding Children with Unusual Growth Patterns \\
+\href{https://github.com/growthcharts/jamesclient}{\texttt{jamesclient}} & Y & Client-side R Functions for JAMES \\
+\href{https://github.com/growthcharts/jamesdemodata}{\texttt{jamesdemodata}} & Y & Demo Data for JAMES \\
+\bottomrule
+\end{longtable}
+
+\hypertarget{james-support-packages}{%
+\subsection{JAMES Support packages}\label{james-support-packages}}
+
+Support packages produce half-fabricated materials, provide testing or store documentation.
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Package & Open & Description \\
+\midrule
+\endhead
+\href{https://github.com/stefvanbuuren/donordata}{\texttt{donordata}} & N & Longitudinal Data for Curve Matching \\
+\href{https://github.com/stefvanbuuren/chartdesigner}{\texttt{chartdesigner}} & N & Design Growth Charts for JAMES \\
+\href{https://github.com/stefvanbuuren/gateway}{\texttt{gateway}} & Y & Entry to TNO online analytic growth modules \\
+\href{https://github.com/stefvanbuuren/jamesdocker}{\texttt{jamesdocker}} & Y & JAMES Docker API \\
+\href{https://github.com/stefvanbuuren/bdsschema}{\texttt{bdsschema}} & Y & Data Exchange Tools for the Basisdataset JGZ \\
+\href{https://github.com/stefvanbuuren/jamestest}{\texttt{jamestest}} & Y & Shiny app to test JAMES \\
+\href{https://github.com/stefvanbuuren/minihealth}{\texttt{minihealth}} & Y & Mini Dossier for Individual Health Data \\
+\href{https://github.com/stefvanbuuren/clopus}{\texttt{clopus}} & N & Growth reference library \\
+\href{https://github.com/stefvanbuuren/jamesdocs}{\texttt{jamesdocs}} & Y & JAMES internals \\
+\bottomrule
+\end{longtable}
+
+\hypertarget{jesse}{%
+\section{JESSE}\label{jesse}}
+
+\hypertarget{james-servers}{%
+\section{JAMES servers}\label{james-servers}}
+
+\begin{itemize}
+\tightlist
+\item
+  Production: \url{https://groeidiagrammen.nl/ocpu/test/}, Docs (outdated): \url{https://groeidiagrammen.nl}
+\item
+  Test: \url{https://vps.stefvanbuuren.nl/ocpu/test/}
+\item
+  Future: \texttt{james.tno.nl}
+\end{itemize}
+
+\hypertarget{resources}{%
+\section{Resources}\label{resources}}
+
+\begin{itemize}
+\tightlist
+\item
+  Demo JAMES at \url{https://tnochildhealthstatistics.shinyapps.io/james_tryout/}
+\item
+  \href{https://www.opencpu.org}{OpenCPU system}
+\item
+  \href{https://www.opencpu.org/api.html}{OpenCPU API}
+\item
+  \url{https://www.tno.nl/groei}, \url{https://www.tno.nl/growth}
+\end{itemize}
 
 \hypertarget{james-data-format}{%
 \chapter{JAMES data format}\label{james-data-format}}
@@ -161,11 +290,11 @@ This chapter describes the format of the input data accepted by JAMES. The speci
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule
-EPremDossier & Instance & Class\tabularnewline
+EPremDossier & Instance & Class \\
 \midrule
 \endhead
--\textgreater{} & Clientgegevens & EPremGroep\tabularnewline
--\textgreater{} & Contactmomenten & EPremContactmoment\tabularnewline
+-\textgreater{} & Clientgegevens & EPremGroep \\
+-\textgreater{} & Contactmomenten & EPremContactmoment \\
 \bottomrule
 \end{longtable}
 
@@ -179,14 +308,14 @@ EPremDossier & Instance & Class\tabularnewline
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule
-Name & Description & Required\tabularnewline
+Name & Description & Required \\
 \midrule
 \endhead
-Clientgegevens & Class with basic child data & Y\tabularnewline
-Contactmomenten & Class with data per visit & N\tabularnewline
-InstrumentCode & Integer identifying the instrument & Ignored\tabularnewline
-OrganisatieCode & Integer identifying the care organisation & Y\tabularnewline
-Referentie & String identifying the request & N\tabularnewline
+Clientgegevens & Class with basic child data & Y \\
+Contactmomenten & Class with data per visit & N \\
+InstrumentCode & Integer identifying the instrument & Ignored \\
+OrganisatieCode & Integer identifying the care organisation & Y \\
+Referentie & String identifying the request & N \\
 \bottomrule
 \end{longtable}
 
@@ -198,11 +327,11 @@ Referentie & String identifying the request & N\tabularnewline
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule
-EPremGroep & Instance & Class\tabularnewline
+EPremGroep & Instance & Class \\
 \midrule
 \endhead
--\textgreater{} & Elementen & EPremElement\tabularnewline
--\textgreater{} & Groepen & EPremGroep\tabularnewline
+-\textgreater{} & Elementen & EPremElement \\
+-\textgreater{} & Groepen & EPremGroep \\
 \bottomrule
 \end{longtable}
 
@@ -216,11 +345,11 @@ EPremGroep & Instance & Class\tabularnewline
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule
-Name & Description & Required\tabularnewline
+Name & Description & Required \\
 \midrule
 \endhead
-Elementen & Class with BDS-elements & Y\tabularnewline
-Groepen & Class with groups of BDS-elements & N\tabularnewline
+Elementen & Class with BDS-elements & Y \\
+Groepen & Class with groups of BDS-elements & N \\
 \bottomrule
 \end{longtable}
 
@@ -237,13 +366,13 @@ Groepen & Class with groups of BDS-elements & N\tabularnewline
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule
-Name & Description & Required\tabularnewline
+Name & Description & Required \\
 \midrule
 \endhead
-Bdsnummer & Integer identifying the BDS-field & Y\tabularnewline
-InternNummer & Integer identifying internal field & Ignored\tabularnewline
-Waarde & Value of the BDS-field & Y\tabularnewline
-Waardeomschrijving & Descriptive label for value & Ignored\tabularnewline
+Bdsnummer & Integer identifying the BDS-field & Y \\
+InternNummer & Integer identifying internal field & Ignored \\
+Waarde & Value of the BDS-field & Y \\
+Waardeomschrijving & Descriptive label for value & Ignored \\
 \bottomrule
 \end{longtable}
 
@@ -255,11 +384,11 @@ Waardeomschrijving & Descriptive label for value & Ignored\tabularnewline
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule
-EPremContactmoment & Instance & Class\tabularnewline
+EPremContactmoment & Instance & Class \\
 \midrule
 \endhead
--\textgreater{} & Elementen & EPremElement\tabularnewline
--\textgreater{} & Groepen & EPremGroep\tabularnewline
+-\textgreater{} & Elementen & EPremElement \\
+-\textgreater{} & Groepen & EPremGroep \\
 \bottomrule
 \end{longtable}
 
@@ -273,12 +402,12 @@ EPremContactmoment & Instance & Class\tabularnewline
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule
-Name & Description & Required\tabularnewline
+Name & Description & Required \\
 \midrule
 \endhead
-Elementen & Class with BDS-elements & Y\tabularnewline
-Groepen & Class with groups of BDS-elements & N\tabularnewline
-Tijdstip & Date of visit & Y\tabularnewline
+Elementen & Class with BDS-elements & Y \\
+Groepen & Class with groups of BDS-elements & N \\
+Tijdstip & Date of visit & Y \\
 \bottomrule
 \end{longtable}
 
@@ -287,50 +416,50 @@ Tijdstip & Date of visit & Y\tabularnewline
 
 \begin{longtable}[]{@{}rlrll@{}}
 \toprule
-BDS & Description & Value & Label & Required\tabularnewline
+BDS & Description & Value & Label & Required \\
 \midrule
 \endhead
-19 & Sex of child & ``0'' & Unknown & Y\tabularnewline
-& & ``1'' & Male &\tabularnewline
-& & ``2'' & Female &\tabularnewline
-& & ``3'' & Not specified &\tabularnewline
-20 & Date of birth & ``yyyymmdd'' & year-month-day & Y\tabularnewline
-62 & Caretaker relation & ``01'' & biological father & N\tabularnewline
-& & ``02'' & biological mother &\tabularnewline
-& & ``03'' & male partner, stepfather &\tabularnewline
-& & ``04'' & female partner, stepmother &\tabularnewline
-& & ``05'' & adoptive father &\tabularnewline
-& & ``06'' & adoptive mother &\tabularnewline
-& & ``07'' & foster father &\tabularnewline
-& & ``08'' & foster mother &\tabularnewline
-& & ``98'' & other &\tabularnewline
-63 & Caretaker date of birth & ``yyyymmdd'' & year-month-day & N\tabularnewline
-66 & Caretaker education & ``01'' & no primary school & N\tabularnewline
-& & ``02'' & primary school, special ed &\tabularnewline
-& & ``03'' & VSO-MLK/IVBO/VMBO-LWOO &\tabularnewline
-& & ``04'' & LBO/VBO/VMBO-BBL\&KBL &\tabularnewline
-& & ``05'' & MAVO/VMBO-GL\&TL &\tabularnewline
-& & ``06'' & MBO &\tabularnewline
-& & ``07'' & HAVO/VWO &\tabularnewline
-& & ``08'' & HBO/HTS/HEAO &\tabularnewline
-& & ``09'' & WO &\tabularnewline
-& & ``98'' & Other &\tabularnewline
-& & ``00'' & Unknown &\tabularnewline
-71 & Caretaker birth country & ``dddd'' & \href{https://publicaties.rvig.nl/Landelijke_tabellen/Landelijke_tabellen_32_t_m_60_excl_tabel_35/Landelijke_Tabellen_32_t_m_60_in_csv_formaat}{4-digit code, Table 34} & N\tabularnewline
-82 & Gestational age & ``ddd'' & in days & N\tabularnewline
-91 & Smoking during pregnancy & ``1'' & yes & N\tabularnewline
-& & ``2'' & no &\tabularnewline
-& & ``99'' & unknown &\tabularnewline
-110 & Birth weight & ``dddd'' & 3-4 digits, grammes & N\tabularnewline
-235 & Length/height & ``dddd'' & 3-4 digits, millimeters & N\tabularnewline
-245 & Body weight & ``dddddd'' & 3-6 digits, grammes & N\tabularnewline
-252 & Head circumference & ``ddd'' & 2-3 digits, millimeters & N\tabularnewline
-238 & Height biological mother & ``dddd'' & 3-4 digits, millimeters & N\tabularnewline
-240 & Height biological father & ``dddd'' & 3-4 digits, millimeters & N\tabularnewline
-510 & Passive smoking & ``01'' & No smoking in house & N\tabularnewline
-& & ``02'' & Never with child &\tabularnewline
-& & ``03'' & Not in last 7 days &\tabularnewline
-& & ``04'' & Yes &\tabularnewline
+19 & Sex of child & ``0'' & Unknown & Y \\
+& & ``1'' & Male & \\
+& & ``2'' & Female & \\
+& & ``3'' & Not specified & \\
+20 & Date of birth & ``yyyymmdd'' & year-month-day & Y \\
+62 & Caretaker relation & ``01'' & biological father & N \\
+& & ``02'' & biological mother & \\
+& & ``03'' & male partner, stepfather & \\
+& & ``04'' & female partner, stepmother & \\
+& & ``05'' & adoptive father & \\
+& & ``06'' & adoptive mother & \\
+& & ``07'' & foster father & \\
+& & ``08'' & foster mother & \\
+& & ``98'' & other & \\
+63 & Caretaker date of birth & ``yyyymmdd'' & year-month-day & N \\
+66 & Caretaker education & ``01'' & no primary school & N \\
+& & ``02'' & primary school, special ed & \\
+& & ``03'' & VSO-MLK/IVBO/VMBO-LWOO & \\
+& & ``04'' & LBO/VBO/VMBO-BBL\&KBL & \\
+& & ``05'' & MAVO/VMBO-GL\&TL & \\
+& & ``06'' & MBO & \\
+& & ``07'' & HAVO/VWO & \\
+& & ``08'' & HBO/HTS/HEAO & \\
+& & ``09'' & WO & \\
+& & ``98'' & Other & \\
+& & ``00'' & Unknown & \\
+71 & Caretaker birth country & ``dddd'' & \href{https://publicaties.rvig.nl/Landelijke_tabellen/Landelijke_tabellen_32_t_m_60_excl_tabel_35/Landelijke_Tabellen_32_t_m_60_in_csv_formaat}{4-digit code, Table 34} & N \\
+82 & Gestational age & ``ddd'' & in days & N \\
+91 & Smoking during pregnancy & ``1'' & yes & N \\
+& & ``2'' & no & \\
+& & ``99'' & unknown & \\
+110 & Birth weight & ``dddd'' & 3-4 digits, grammes & N \\
+235 & Length/height & ``dddd'' & 3-4 digits, millimeters & N \\
+245 & Body weight & ``dddddd'' & 3-6 digits, grammes & N \\
+252 & Head circumference & ``ddd'' & 2-3 digits, millimeters & N \\
+238 & Height biological mother & ``dddd'' & 3-4 digits, millimeters & N \\
+240 & Height biological father & ``dddd'' & 3-4 digits, millimeters & N \\
+510 & Passive smoking & ``01'' & No smoking in house & N \\
+& & ``02'' & Never with child & \\
+& & ``03'' & Not in last 7 days & \\
+& & ``04'' & Yes & \\
 \bottomrule
 \end{longtable}
 
@@ -367,8 +496,8 @@ The GitHub repository \url{https://github.com/stefvanbuuren/chartbox} contains t
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{charts <-}\StringTok{ }\NormalTok{chartbox}\OperatorTok{::}\KeywordTok{list_charts}\NormalTok{()}
-\KeywordTok{dim}\NormalTok{(charts)}
+\NormalTok{charts }\OtherTok{\textless{}{-}}\NormalTok{ chartbox}\SpecialCharTok{::}\FunctionTok{list\_charts}\NormalTok{()}
+\FunctionTok{dim}\NormalTok{(charts)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -378,7 +507,7 @@ The GitHub repository \url{https://github.com/stefvanbuuren/chartbox} contains t
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{charts[}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{22}\NormalTok{, }\DecValTok{23}\NormalTok{, }\DecValTok{300}\NormalTok{, }\DecValTok{301}\NormalTok{, }\DecValTok{340}\NormalTok{), ]}
+\NormalTok{charts[}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{22}\NormalTok{, }\DecValTok{23}\NormalTok{, }\DecValTok{300}\NormalTok{, }\DecValTok{301}\NormalTok{, }\DecValTok{340}\NormalTok{), ]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -396,12 +525,12 @@ The \texttt{chartbox} package currently contains three chart groups: \texttt{nl2
 
 \begin{longtable}[]{@{}lrlll@{}}
 \toprule
-Chart Group & Charts & Chart code & Description & Source\tabularnewline
+Chart Group & Charts & Chart code & Description & Source \\
 \midrule
 \endhead
-\texttt{nl2010} & 136 & CCCC & Dutch children 0-21 years, including minorities & \citet{talma2010}\tabularnewline
-\texttt{preterm} & 192 & CCCCCNN & Dutch preterms, ga \textless{}= 36 weeks, 0-4 years & \citet{bocca2012}\tabularnewline
-\texttt{who} & 14 & CCCC & WHO Child Growth Standards 0-4 years & \href{https://www.who.int/childgrowth/en/}{WHO}\tabularnewline
+\texttt{nl2010} & 136 & CCCC & Dutch children 0-21 years, including minorities & \citet{talma2010} \\
+\texttt{preterm} & 192 & CCCCCNN & Dutch preterms, ga \textless= 36 weeks, 0-4 years & \citet{bocca2012} \\
+\texttt{who} & 14 & CCCC & WHO Child Growth Standards 0-4 years & \href{https://www.who.int/childgrowth/en/}{WHO} \\
 \bottomrule
 \end{longtable}
 
@@ -409,34 +538,34 @@ The chart code is an alpha-numeric code of four (for \texttt{nl2010} and \texttt
 
 \begin{longtable}[]{@{}clll@{}}
 \toprule
-Position & Field & Value & Description\tabularnewline
+Position & Field & Value & Description \\
 \midrule
 \endhead
-1 & Population & N & Dutch\tabularnewline
-& & T & Turkish\tabularnewline
-& & M & Moroccan\tabularnewline
-& & H & Hindostan\tabularnewline
-& & P & Preterm\tabularnewline
-& & W & WHO\tabularnewline
-2 & Sex & J & Male\tabularnewline
-& & M & Female\tabularnewline
-3 & Design & A & 0-15 months\tabularnewline
-& & B & 0-4 years, WFH\tabularnewline
-& & C & 1-21 years\tabularnewline
-& & D & 0-21 years\tabularnewline
-& & E & 0-4 years, WFA\tabularnewline
-4 & Side & A & A4, front\tabularnewline
-& & B & A4, back\tabularnewline
-& & C & A4, back, no \texttt{hdc}\tabularnewline
-& & H & square, \texttt{hgt}\tabularnewline
-& & O & square, \texttt{hdc}\tabularnewline
-& & Q & square, \texttt{bmi}\tabularnewline
-& & R & square, \texttt{wfh}\tabularnewline
-& & W & square, \texttt{wgt}\tabularnewline
-& & X & A4, double sided\tabularnewline
-5 & Language & N & Dutch\tabularnewline
-& & E & English\tabularnewline
-6-7 & Week & 25-36 & Gestational age\tabularnewline
+1 & Population & N & Dutch \\
+& & T & Turkish \\
+& & M & Moroccan \\
+& & H & Hindostan \\
+& & P & Preterm \\
+& & W & WHO \\
+2 & Sex & J & Male \\
+& & M & Female \\
+3 & Design & A & 0-15 months \\
+& & B & 0-4 years, WFH \\
+& & C & 1-21 years \\
+& & D & 0-21 years \\
+& & E & 0-4 years, WFA \\
+4 & Side & A & A4, front \\
+& & B & A4, back \\
+& & C & A4, back, no \texttt{hdc} \\
+& & H & square, \texttt{hgt} \\
+& & O & square, \texttt{hdc} \\
+& & Q & square, \texttt{bmi} \\
+& & R & square, \texttt{wfh} \\
+& & W & square, \texttt{wgt} \\
+& & X & A4, double sided \\
+5 & Language & N & Dutch \\
+& & E & English \\
+6-7 & Week & 25-36 & Gestational age \\
 \bottomrule
 \end{longtable}
 
@@ -448,39 +577,39 @@ The following table lists the measures per design-form combination.
 
 \begin{longtable}[]{@{}ccll@{}}
 \toprule
-Design & Side & Measure & Description\tabularnewline
+Design & Side & Measure & Description \\
 \midrule
 \endhead
-A & A & \texttt{hdc} & Head circumference by age, 0-15 mo\tabularnewline
-& & \texttt{hgt} & Length by age, 0-15 mo\tabularnewline
-& & \texttt{wgt} & Weight by age, 0-15 mo\tabularnewline
-& B & &\tabularnewline
-& H & \texttt{hgt} & Length by age, 0-15 mo\tabularnewline
-& O & \texttt{hdc} & Head circumference by age, 0-15 mo\tabularnewline
-& W & \texttt{wgt} & Weight by age, 0-15 mo\tabularnewline
-B & A & \texttt{wfh} & Weight for height, 0-4 yr\tabularnewline
-& & \texttt{hgt} & Length by age, 0-4 yr\tabularnewline
-& B & \texttt{hdc} & Head circumference by age, 0-4 yr\tabularnewline
-& C & &\tabularnewline
-& H & \texttt{hgt} & Height by age, 0-4 yr\tabularnewline
-& O & \texttt{hdc} & Head circumference by age, 0-4 yr\tabularnewline
-& R & \texttt{wfh} & Weight for height, 0-4 yr\tabularnewline
-& W & \texttt{wgt} & Weight by age, 0-4 yr\tabularnewline
-C & A & \texttt{wfh} & Weight for height, 1-21 yr\tabularnewline
-& & \texttt{hgt} & height by age, 1-21 yr\tabularnewline
-& B & \texttt{bmi} & BMI by age, 1-21 yr\tabularnewline
-& & \texttt{hdc} & Head circumference by age, 1-21 yr\tabularnewline
-& C & \texttt{bmi} & BMI by age, 1-21 yr\tabularnewline
-& H & \texttt{hgt} & Height by age, 1-21 yr\tabularnewline
-& O & \texttt{hdc} & Head circumference by age, 1-21 yr\tabularnewline
-& Q & \texttt{bmi} & Body mass index by age, 1-21 yr\tabularnewline
-& R & \texttt{wfh} & Weight for height, 1-21 yr\tabularnewline
-E & A & \texttt{wgt} & Weight by age, 0-4 yr\tabularnewline
-& & \texttt{hgt} & height by age, 0-4 yr\tabularnewline
-& B & \texttt{hdc} & Head circumference by age, 0-4 yr\tabularnewline
-& H & \texttt{hgt} & Height by age, 0-4 yr\tabularnewline
-& O & \texttt{hdc} & Head circumference by age, 0-4 yr\tabularnewline
-& W & \texttt{wgt} & Weight by age, 0-4 yr\tabularnewline
+A & A & \texttt{hdc} & Head circumference by age, 0-15 mo \\
+& & \texttt{hgt} & Length by age, 0-15 mo \\
+& & \texttt{wgt} & Weight by age, 0-15 mo \\
+& B & & \\
+& H & \texttt{hgt} & Length by age, 0-15 mo \\
+& O & \texttt{hdc} & Head circumference by age, 0-15 mo \\
+& W & \texttt{wgt} & Weight by age, 0-15 mo \\
+B & A & \texttt{wfh} & Weight for height, 0-4 yr \\
+& & \texttt{hgt} & Length by age, 0-4 yr \\
+& B & \texttt{hdc} & Head circumference by age, 0-4 yr \\
+& C & & \\
+& H & \texttt{hgt} & Height by age, 0-4 yr \\
+& O & \texttt{hdc} & Head circumference by age, 0-4 yr \\
+& R & \texttt{wfh} & Weight for height, 0-4 yr \\
+& W & \texttt{wgt} & Weight by age, 0-4 yr \\
+C & A & \texttt{wfh} & Weight for height, 1-21 yr \\
+& & \texttt{hgt} & height by age, 1-21 yr \\
+& B & \texttt{bmi} & BMI by age, 1-21 yr \\
+& & \texttt{hdc} & Head circumference by age, 1-21 yr \\
+& C & \texttt{bmi} & BMI by age, 1-21 yr \\
+& H & \texttt{hgt} & Height by age, 1-21 yr \\
+& O & \texttt{hdc} & Head circumference by age, 1-21 yr \\
+& Q & \texttt{bmi} & Body mass index by age, 1-21 yr \\
+& R & \texttt{wfh} & Weight for height, 1-21 yr \\
+E & A & \texttt{wgt} & Weight by age, 0-4 yr \\
+& & \texttt{hgt} & height by age, 0-4 yr \\
+& B & \texttt{hdc} & Head circumference by age, 0-4 yr \\
+& H & \texttt{hgt} & Height by age, 0-4 yr \\
+& O & \texttt{hdc} & Head circumference by age, 0-4 yr \\
+& W & \texttt{wgt} & Weight by age, 0-4 yr \\
 \bottomrule
 \end{longtable}
 
@@ -498,255 +627,48 @@ This document describes the actions needed to implement the
 \hypertarget{actions}{%
 \section{Actions}\label{actions}}
 
-\begin{longtable}[]{@{}lll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.29}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.32}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.39}}@{}}
 \toprule
-\begin{minipage}[b]{0.26\columnwidth}\raggedright
-Package\strut
-\end{minipage} & \begin{minipage}[b]{0.29\columnwidth}\raggedright
-PR\strut
-\end{minipage} & \begin{minipage}[b]{0.36\columnwidth}\raggedright
-Description\strut
-\end{minipage}\tabularnewline
+Package & PR & Description \\
 \midrule
 \endhead
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-minihealth\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc}{03a32f1}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Create milestones descriptions\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-dscore\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b}{f0013ce}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Link BDS number to Van Wiechen milestones\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-dscore\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0}{6886854}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Fine tuning of milestone labels\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-minihealth\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Create the \texttt{bds\_lexicon} object\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-minihealth\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/minihealth/commit/4893982631717539b070c8d19b88b2b10319f2ee}{4893982}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Add milestones to BDS validation JSON schema\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-minihealth\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/minihealth/commit/0069671c8d09f64f2436faa93b764bd288324fcc}{0069671}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Add \texttt{convert\_ddi\_gsed()} to convert BDS-milestones into GSED items\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-minihealth\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/minihealth/commit/8ab1392fdbe781adfa004fcadb4f661c14487cf2}{8ab1392}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Add a new class \texttt{individualDS} for storing milestones, D-score and DAZ\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-clopus\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/clopus/commit/1182cb02508a3207c0c9bcb35232851c38d24179}{1182cb0}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Add Dutch and GCDG D-score references\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-clopus\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/clopus/commit/7bdbcd9629bb215f466bbc2e2f886b6f16c5b5e9}{7bdbcd9}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Construct age-shifted D-score references for preterms\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-clopus\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/clopus/commit/ceab7f9547b9ae843a97b640d920ea0c36185053}{ceab7f9}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Import the D-score references into \texttt{clopus}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-chartdesigner\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/chartdesigner/commit/68831906cef5cdca0d8851b057a01cc8be4fff6d}{6883190}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Add chart constructor functions for D-score, both terms and pre-terms\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-chartdesigner\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/chartdesigner/commit/511f456884bc62d6bebc9b5ef33cebb940dc126d}{511f456}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Extend internal \texttt{set.axes.design()} to D-score charts\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-chartdesigner\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/chartdesigner/commit/6582af8753331a25d8970683d4523c69d6959f0d}{6582af8}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Extend to \texttt{axes.locations} object to D-score charts\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-chartdesigner\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/chartdesigner/commit/47e3cc39d1253a41d3cc81d3d6dd55bffa842f18}{47e3cc3}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Create \texttt{dchart()} function and extend its helper functions\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-chartdesigner\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/chartdesigner/commit/fbbc7c8647ea010b2292fa9dd9b253ce95b6a54b}{fbbc7c8}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Function \texttt{chartcode()} factory, make one function for each chart code\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-chartcatalog\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c}{cc46788}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Extend the chart naming system to D-score charts\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-chartcatalog\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1}{84aaded}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Extend the lookup table \texttt{ynames\_lookup} to handle new D-score charts\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-chartbox\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f}{aa31067}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Extend chart box with all D-score charts\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-james\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/james/commits/dscore}{6412840}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Add radio button for D-score charts\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-minihealth\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/minihealth/commit/06a04c9ce70546db7998de5147a15897af0c7ddb}{06a04c9}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Calculate D-score and DAZ\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-chartplotter\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16}{4b58638}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Skip the \texttt{dsc} field for finding matches\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-minihealth\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/minihealth/commit/816be33b8921ab8d80d8a750d5c4e11966a58c18}{816be33}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Add D-score and DAZ to class \texttt{individualAN}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-donordata\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/donordata/commit/77e01b40e2be75c19f27423092aa5626b0d5d3c3}{77e01b4}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Add milestones to SMOCC donor data\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-donordata\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/donordata/commit/ecb3413b115c3193135b1af118597768b083dc41}{ecb3413}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Calculate D-score and DAZ for SMOCC data\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-donordata\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/donordata/commit/3fa9d4de347d09ccff32a887cf6bd8dadfdfaeb6}{3fa9d4d}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Fit and store brokenstick model for D-score on SMOCC data\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-donorloader\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/donorloader/commit/c22c44607b40ff6bda2009c25894362b68831275}{c22c446}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Update internal data after changes in donordata\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-jamesdocs\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-TBD\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Document steps (this file)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-donordata\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/donordata/commit/7983c3d81a69eb9c6b81a3e0f0668e892c5abf5a}{7983c3}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Saves the item scores to create JSON files\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-donordata\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/donordata/commit/1537182a0df4180e0000d59225c6355a9c506472}{1537182}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Save mapping between SMOCC and BDS coding scheme\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-donorloader\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2}{e9a8ed}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Make \texttt{smocc\_bds} available to JAMES\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-jamestest\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/jamestest/commit/6484191fd8de0d93b35354aa3ee846447aa81df6}{648419}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Regenerate smocc JSON files to include DDI scores\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-jamestest\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/jamestest/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc}{ce1dbe}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Update the \texttt{installed.cabinets} object with the new individual milestones data\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-minihealth\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/minihealth/commit/4dda8daabca8811a4cc321c66aaccf31c4aba83f}{4dda8d}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Add class \texttt{individualRW} to store and convert raw milestones data\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.26\columnwidth}\raggedright
-minihealth\strut
-\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedright
-\href{https://github.com/stefvanbuuren/minihealth/commit/9e03e7e39b007a9687d21efbaa13e77283866d5c}{9e03e7}\strut
-\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\raggedright
-Complete the JSON validator schema\strut
-\end{minipage}\tabularnewline
+minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc}{03a32f1} & Create milestones descriptions \\
+dscore & \href{https://github.com/stefvanbuuren/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b}{f0013ce} & Link BDS number to Van Wiechen milestones \\
+dscore & \href{https://github.com/stefvanbuuren/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0}{6886854} & Fine tuning of milestone labels \\
+minihealth & & Create the \texttt{bds\_lexicon} object \\
+minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/4893982631717539b070c8d19b88b2b10319f2ee}{4893982} & Add milestones to BDS validation JSON schema \\
+minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/0069671c8d09f64f2436faa93b764bd288324fcc}{0069671} & Add \texttt{convert\_ddi\_gsed()} to convert BDS-milestones into GSED items \\
+minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/8ab1392fdbe781adfa004fcadb4f661c14487cf2}{8ab1392} & Add a new class \texttt{individualDS} for storing milestones, D-score and DAZ \\
+clopus & \href{https://github.com/stefvanbuuren/clopus/commit/1182cb02508a3207c0c9bcb35232851c38d24179}{1182cb0} & Add Dutch and GCDG D-score references \\
+clopus & \href{https://github.com/stefvanbuuren/clopus/commit/7bdbcd9629bb215f466bbc2e2f886b6f16c5b5e9}{7bdbcd9} & Construct age-shifted D-score references for preterms \\
+clopus & \href{https://github.com/stefvanbuuren/clopus/commit/ceab7f9547b9ae843a97b640d920ea0c36185053}{ceab7f9} & Import the D-score references into \texttt{clopus} \\
+chartdesigner & \href{https://github.com/stefvanbuuren/chartdesigner/commit/68831906cef5cdca0d8851b057a01cc8be4fff6d}{6883190} & Add chart constructor functions for D-score, both terms and pre-terms \\
+chartdesigner & \href{https://github.com/stefvanbuuren/chartdesigner/commit/511f456884bc62d6bebc9b5ef33cebb940dc126d}{511f456} & Extend internal \texttt{set.axes.design()} to D-score charts \\
+chartdesigner & \href{https://github.com/stefvanbuuren/chartdesigner/commit/6582af8753331a25d8970683d4523c69d6959f0d}{6582af8} & Extend to \texttt{axes.locations} object to D-score charts \\
+chartdesigner & \href{https://github.com/stefvanbuuren/chartdesigner/commit/47e3cc39d1253a41d3cc81d3d6dd55bffa842f18}{47e3cc3} & Create \texttt{dchart()} function and extend its helper functions \\
+chartdesigner & \href{https://github.com/stefvanbuuren/chartdesigner/commit/fbbc7c8647ea010b2292fa9dd9b253ce95b6a54b}{fbbc7c8} & Function \texttt{chartcode()} factory, make one function for each chart code \\
+chartcatalog & \href{https://github.com/stefvanbuuren/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c}{cc46788} & Extend the chart naming system to D-score charts \\
+chartcatalog & \href{https://github.com/stefvanbuuren/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1}{84aaded} & Extend the lookup table \texttt{ynames\_lookup} to handle new D-score charts \\
+chartbox & \href{https://github.com/stefvanbuuren/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f}{aa31067} & Extend chart box with all D-score charts \\
+james & \href{https://github.com/stefvanbuuren/james/commits/dscore}{6412840} & Add radio button for D-score charts \\
+minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/06a04c9ce70546db7998de5147a15897af0c7ddb}{06a04c9} & Calculate D-score and DAZ \\
+chartplotter & \href{https://github.com/stefvanbuuren/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16}{4b58638} & Skip the \texttt{dsc} field for finding matches \\
+minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/816be33b8921ab8d80d8a750d5c4e11966a58c18}{816be33} & Add D-score and DAZ to class \texttt{individualAN} \\
+donordata & \href{https://github.com/stefvanbuuren/donordata/commit/77e01b40e2be75c19f27423092aa5626b0d5d3c3}{77e01b4} & Add milestones to SMOCC donor data \\
+donordata & \href{https://github.com/stefvanbuuren/donordata/commit/ecb3413b115c3193135b1af118597768b083dc41}{ecb3413} & Calculate D-score and DAZ for SMOCC data \\
+donordata & \href{https://github.com/stefvanbuuren/donordata/commit/3fa9d4de347d09ccff32a887cf6bd8dadfdfaeb6}{3fa9d4d} & Fit and store brokenstick model for D-score on SMOCC data \\
+donorloader & \href{https://github.com/stefvanbuuren/donorloader/commit/c22c44607b40ff6bda2009c25894362b68831275}{c22c446} & Update internal data after changes in donordata \\
+jamesdocs & TBD & Document steps (this file) \\
+donordata & \href{https://github.com/stefvanbuuren/donordata/commit/7983c3d81a69eb9c6b81a3e0f0668e892c5abf5a}{7983c3} & Saves the item scores to create JSON files \\
+donordata & \href{https://github.com/stefvanbuuren/donordata/commit/1537182a0df4180e0000d59225c6355a9c506472}{1537182} & Save mapping between SMOCC and BDS coding scheme \\
+donorloader & \href{https://github.com/stefvanbuuren/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2}{e9a8ed} & Make \texttt{smocc\_bds} available to JAMES \\
+jamestest & \href{https://github.com/stefvanbuuren/jamestest/commit/6484191fd8de0d93b35354aa3ee846447aa81df6}{648419} & Regenerate smocc JSON files to include DDI scores \\
+jamestest & \href{https://github.com/stefvanbuuren/jamestest/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc}{ce1dbe} & Update the \texttt{installed.cabinets} object with the new individual milestones data \\
+minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/4dda8daabca8811a4cc321c66aaccf31c4aba83f}{4dda8d} & Add class \texttt{individualRW} to store and convert raw milestones data \\
+minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/9e03e7e39b007a9687d21efbaa13e77283866d5c}{9e03e7} & Complete the JSON validator schema \\
 \bottomrule
 \end{longtable}
 
@@ -791,33 +713,46 @@ The following is needed to build and run a JAMES image:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{FROM}\NormalTok{ opencpu/rstudio as intermediate}
+\ExtensionTok{FROM}\NormalTok{ opencpu/base as intermediate}
 
-\CommentTok{# install for V8 package}
-\ExtensionTok{RUN}\NormalTok{ apt-get update }\KeywordTok{&&} \ExtensionTok{apt-get}\NormalTok{ install -y }\DataTypeTok{\textbackslash{} }
-    \ExtensionTok{libv8-dev}
+\CommentTok{\# install for V8 package}
+\ExtensionTok{RUN}\NormalTok{ apt{-}get update }\KeywordTok{\&\&} \ExtensionTok{apt{-}get}\NormalTok{ install }\AttributeTok{{-}y}\NormalTok{ libnode{-}dev}
 
-\CommentTok{# repo_token.txt should be something like "GITHUB_PAT=624adeaa..."}
-\CommentTok{# to be able to install packages from private repo's}
-\ExtensionTok{COPY}\NormalTok{ repo_token.txt .Renviron}
+\CommentTok{\# repo\_token.txt should be something like "GITHUB\_PAT=624adeaa..."}
+\CommentTok{\# to be able to install packages from private repo\textquotesingle{}s}
+\ExtensionTok{COPY}\NormalTok{ repo\_token.txt .Renviron}
 
-\CommentTok{# install R packages needed for JAMES}
-\ExtensionTok{RUN}\NormalTok{ \textbackslash{}}
-\NormalTok{    R -e }\StringTok{'install.packages("remotes")'}\NormalTok{ \textbackslash{}}
-\NormalTok{    R -e }\StringTok{'remotes::install_github("stefvanbuuren/james")'}
+\CommentTok{\# install R packages needed for JAMES}
+\ExtensionTok{RUN} \DataTypeTok{\textbackslash{}}
+\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}install.packages("remotes")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
+\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/clopus")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
+\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/dscore")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
+\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/chartbox")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
+\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/brokenstick")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
+\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/minihealth")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
+\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/jamestest")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
+\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/growthscreener")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
+\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/james")\textquotesingle{}}
 
-\CommentTok{# rebuild the layer}
-\ExtensionTok{FROM}\NormalTok{ opencpu/rstudio}
+\CommentTok{\# rebuild layer without .Renviron}
+\ExtensionTok{FROM}\NormalTok{ opencpu/base}
 
 \ExtensionTok{LABEL}\NormalTok{ maintainer=}\StringTok{"stef.vanbuuren@tno.nl"} 
 
-\CommentTok{# re-install for V8 package}
-\ExtensionTok{RUN}\NormalTok{ apt-get update }\KeywordTok{&&} \ExtensionTok{apt-get}\NormalTok{ install -y }\DataTypeTok{\textbackslash{} }
-    \ExtensionTok{libv8-dev}
+\CommentTok{\# re{-}install for V8 package}
+\ExtensionTok{RUN}\NormalTok{ apt{-}get update }\KeywordTok{\&\&} \ExtensionTok{apt{-}get}\NormalTok{ install }\AttributeTok{{-}y}\NormalTok{ libnode{-}dev}
 
-\ExtensionTok{COPY}\NormalTok{ --from=intermediate /usr/local/lib/R/site-library /usr/local/lib/R/site-library}
+\CommentTok{\# copy R libraries}
+\ExtensionTok{COPY} \AttributeTok{{-}{-}from}\OperatorTok{=}\NormalTok{intermediate /usr/local/lib/R/site{-}library /usr/local/lib/R/site{-}library}
 
-\ExtensionTok{CMD}\NormalTok{ service cron start }\KeywordTok{&&} \ExtensionTok{/usr/lib/rstudio-server/bin/rserver} \KeywordTok{&&} \ExtensionTok{apachectl}\NormalTok{ -DFOREGROUND}
+\CommentTok{\# modify preload section}
+\ExtensionTok{COPY}\NormalTok{ james.conf /etc/opencpu/server.conf.d/james.conf}
+
+\CommentTok{\# install Arial}
+\ExtensionTok{RUN}\NormalTok{ mkdir /usr/share/fonts/truetype/arial/}
+\ExtensionTok{COPY}\NormalTok{ fonts/truetype/arial/}\PreprocessorTok{*}\NormalTok{ /usr/share/fonts/truetype/arial/}
+
+\ExtensionTok{CMD}\NormalTok{ service cron start }\KeywordTok{\&\&} \ExtensionTok{apachectl} \AttributeTok{{-}DFOREGROUND}
 \end{Highlighting}
 \end{Shaded}
 
@@ -829,7 +764,42 @@ The following is needed to build and run a JAMES image:
   Store the script given above in a file named \texttt{Dockerfile}
 \item
   Create a file named \texttt{repo\_token.txt} with one line: \texttt{GITHUB\_PAT=624adeaa...} with your token
+\item
+  Create \texttt{fonts/truetype/arial} with the proper \texttt{ttf} files
+\item
+  Create a file \texttt{james.conf} specifying the preload libraries
 \end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{\{}
+    \StringTok{"enable.api.library"}\ExtensionTok{:}\NormalTok{ true,}
+    \StringTok{"enable.api.apps"}\ExtensionTok{:}\NormalTok{ true,}
+    \StringTok{"enable.api.user"}\ExtensionTok{:}\NormalTok{ true,}
+    \StringTok{"enable.api.tmp"}\ExtensionTok{:}\NormalTok{ true,}
+    \StringTok{"enable.cors"}\NormalTok{ : true,}
+    \StringTok{"enable.post.code"}\ExtensionTok{:}\NormalTok{ true,}
+    \StringTok{"enable.rlimits"}\NormalTok{ : true,}
+    \StringTok{"error.showcall"}\ExtensionTok{:}\NormalTok{ true,}
+    \StringTok{"smtp.server"}\NormalTok{ : }\StringTok{"localhost"}\NormalTok{,}
+    \StringTok{"smtp.use.ssl"}\NormalTok{ : }\StringTok{"no"}\NormalTok{,}
+    \StringTok{"httpcache.post"}\ExtensionTok{:}\NormalTok{ 300,}
+    \StringTok{"httpcache.lib"}\ExtensionTok{:}\NormalTok{ 86400,}
+    \StringTok{"httpcache.apps"}\ExtensionTok{:}\NormalTok{ 900,}
+    \StringTok{"httpcache.tmp"}\ExtensionTok{:}\NormalTok{ 86400,}
+    \StringTok{"httpcache.static"}\ExtensionTok{:}\NormalTok{ 31536000,}
+    \StringTok{"key.length"}\NormalTok{ : 13,}
+    \StringTok{"repos"}\ExtensionTok{:} \StringTok{"https://cran.rstudio.com"}\NormalTok{,}
+    \StringTok{"rlimit.as"}\ExtensionTok{:}\NormalTok{ 4e9,}
+    \StringTok{"rlimit.fsize"}\ExtensionTok{:}\NormalTok{ 1e9,}
+    \StringTok{"rlimit.nproc"}\ExtensionTok{:}\NormalTok{ 500,}
+    \StringTok{"timelimit.get"}\ExtensionTok{:}\NormalTok{ 60,}
+    \StringTok{"timelimit.post"}\ExtensionTok{:}\NormalTok{ 90,}
+    \StringTok{"timelimit.webhook"}\ExtensionTok{:}\NormalTok{ 900,}
+    \StringTok{"preload"}\ExtensionTok{:}\NormalTok{ [}\StringTok{"clopus"}\NormalTok{, }\StringTok{"donorloader"}\NormalTok{, }\StringTok{"chartbox"}\NormalTok{, }\StringTok{"brokenstick"}\NormalTok{, }\StringTok{"minihealth"}\NormalTok{, }\StringTok{"growthscreener"}\NormalTok{, }\StringTok{"james"}\NormalTok{]}
+\KeywordTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{docker-commands}{%
 \section{Docker commands}\label{docker-commands}}
@@ -838,15 +808,15 @@ Build the \texttt{james} image, type in a terminal
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ build -t james .}
+\ExtensionTok{docker}\NormalTok{ build }\AttributeTok{{-}t}\NormalTok{ james .}
 \end{Highlighting}
 \end{Shaded}
 
-This may takes a long time (30-60 minutes), in which the entire application is downloaded from various web-locations. After (hopefully succesful) completion, check the image
+This may takes a long time (30 minutes), in which the entire application is downloaded from various web-locations. After (hopefully succesful) completion, check the image
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ images}
+\ExtensionTok{docker}\NormalTok{ images }\AttributeTok{{-}a}
 \end{Highlighting}
 \end{Shaded}
 
@@ -854,7 +824,7 @@ If all is well, the top line is called \texttt{james}. Now run the container on 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ run -t -d -p 80:80 -p 8004:8004 james}
+\ExtensionTok{docker}\NormalTok{ run }\AttributeTok{{-}t} \AttributeTok{{-}d} \AttributeTok{{-}p}\NormalTok{ 80:80 james}
 \end{Highlighting}
 \end{Shaded}
 
@@ -862,8 +832,8 @@ If the ports are already taken by other containers, stop and remove all containe
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ stop }\VariableTok{$(}\ExtensionTok{docker}\NormalTok{ ps -a -q}\VariableTok{)}
-\ExtensionTok{docker}\NormalTok{ rm }\VariableTok{$(}\ExtensionTok{docker}\NormalTok{ ps -a -q}\VariableTok{)}
+\ExtensionTok{docker}\NormalTok{ stop }\VariableTok{$(}\ExtensionTok{docker}\NormalTok{ ps }\AttributeTok{{-}a} \AttributeTok{{-}q}\VariableTok{)}
+\ExtensionTok{docker}\NormalTok{ rm }\VariableTok{$(}\ExtensionTok{docker}\NormalTok{ ps }\AttributeTok{{-}a} \AttributeTok{{-}q}\VariableTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -877,12 +847,30 @@ Reissue the \texttt{docker\ run}, and the container should now run. Check by
 
 which should list a container created from the \texttt{james} image.
 
+If you want to enter the container use
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ exec }\AttributeTok{{-}i} \AttributeTok{{-}t}\NormalTok{ 6c /bin/bash}
+\end{Highlighting}
+\end{Shaded}
+
+where \texttt{6c} are the first two characters of the container ID.
+
+Inside the container, check font matching of Arial as
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{fc{-}match}\NormalTok{ Arial}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{checks-with-the-browser}{%
 \section{Checks with the browser}\label{checks-with-the-browser}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{http}\NormalTok{://localhost}
+\ExtensionTok{http://localhost}
 \end{Highlighting}
 \end{Shaded}
 
@@ -890,7 +878,7 @@ should show Apache2 Ubuntu default screen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{http}\NormalTok{://localhost/ocpu/test/}
+\ExtensionTok{http://localhost/ocpu/test/}
 \end{Highlighting}
 \end{Shaded}
 
@@ -898,15 +886,15 @@ should show \texttt{OpenCPU} test page.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{http}\NormalTok{://localhost/rstudio/}
+\ExtensionTok{http://localhost/rstudio/}
 \end{Highlighting}
 \end{Shaded}
 
-should start the Rstudio IDE on the container. Use \texttt{opencpu:opencpu} to log in.
+should start the Rstudio IDE - \emph{if installed} . Use \texttt{opencpu:opencpu} to log in.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{http}\NormalTok{://localhost/ocpu/library/james/www/}
+\ExtensionTok{http://localhost/ocpu/library/james/www/}
 \end{Highlighting}
 \end{Shaded}
 
@@ -921,11 +909,11 @@ See also \url{https://registry.hub.docker.com/r/opencpu/rstudio}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  The container is shielded from the machine on which it runs. However, the materials within the container are not protected.
+  Don't use the intermediate container, since it will contain your token in \texttt{/.Renviron}. The latest (\texttt{james}) container does not hold your token, and can be shared.
 \item
-  Don't use intermediate containers, since these contain your token in \texttt{/.Renviron}. The latest (\texttt{james}) container does not hold your token, and can be shared, of course, keeping in mind remark 1.
+  The container is shielded from the machine on which it runs. However, the materials within the container are only protected by \texttt{R\_LIMITS}. In general, for production it is wise to add restriction on the \texttt{OpenCPU} server.
 \end{enumerate}
 
-\bibliography{book.bib,packages.bib}
+  \bibliography{book.bib,packages.bib}
 
 \end{document}
