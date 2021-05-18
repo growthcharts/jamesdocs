@@ -10,6 +10,8 @@ link-citations: yes
 description: "Minimal documentation of JAMES internals."
 ---
 
+# Preface {-}
+
 This document contains minimal documentation of JAMES internals.
 
 ```{r include=FALSE}
