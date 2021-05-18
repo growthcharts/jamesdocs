@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Introduction | JAMES internals</title>
+  <title>JAMES internals</title>
   <meta name="description" content="Minimal documentation of JAMES internals." />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Introduction | JAMES internals" />
+  <meta property="og:title" content="JAMES internals" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Introduction | JAMES internals" />
+  <meta name="twitter:title" content="JAMES internals" />
   
   <meta name="twitter:description" content="Minimal documentation of JAMES internals." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="james-data-format.html"/>
+
+<link rel="next" href="intro.html"/>
 <script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -200,214 +200,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="intro" class="section level1" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<div id="overview" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Overview</h2>
-<p>This chapter gives a brief overview the Joint Automatic Measurement and Evaluation System (JAMES).</p>
-<p>JAMES is an experimental web service for creating and interpreting charts of child growth and
-development. The current version</p>
-<ol style="list-style-type: decimal">
-<li>provides access to high-quality over 300 growth charts used by the Dutch youth health care;</li>
-<li>interchanges data coded according to the <a href="https://www.ncj.nl/themadossiers/informatisering/basisdataset/documentatie/?cat=13">Basisdataset JGZ</a>;</li>
-<li>screens for abnormal height, weight and head circumference;</li>
-<li>converts developmental data into the D-score;</li>
-<li>plot D-scores on special D-score charts;</li>
-<li>predicts future growth and development.</li>
-</ol>
-<p>The service can be used by anyone interested in high-quality charts for monitoring and evaluating childhood growth and development. This chapter highlights the components of JAMES.</p>
+<div id="header">
+<h1 class="title">JAMES internals</h1>
+<p class="author"><em>Stef van Buuren</em></p>
+<p class="date"><em>2021-05-18</em></p>
 </div>
-<div id="architecture" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Architecture</h2>
-<p>JAMES provides its services through <a href="https://www.opencpu.org">OpenCPU</a>, an open system for scientific computing and reproducible research. The system allows for easy integration of growth charts into any <code>HTTPS</code> compliant client by means of OpenCPU’s <a href="https://www.opencpu.org/api.html">API</a>. The JAMES webservice is a RESTful Application Programming Interface (API).</p>
-<p>The contents of the system consist of two parts:</p>
-<ul>
-<li><strong>JAMES</strong>: A collection of R packages that provides back-end functionality</li>
-<li><strong>JESSE</strong>: A gateway front-end JAMES that translates incoming and outcoming requests</li>
-</ul>
-</div>
-<div id="r-packages" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> R packages</h2>
-<div id="james-active-packages" class="section level3" number="1.3.1">
-<h3><span class="header-section-number">1.3.1</span> JAMES Active packages</h3>
-<p>Active packages reside on the JAMES server and provide all functionality.</p>
-<table>
-<colgroup>
-<col width="12%" />
-<col width="8%" />
-<col width="78%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Package</th>
-<th align="left">Open</th>
-<th align="left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><a href="https://github.com/growthcharts/james"><code>james</code></a></td>
-<td align="left">Y</td>
-<td align="left">Joint Automatic Measurement and Evaluation System</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/growthcharts/nlreferences"><code>nlreferences</code></a></td>
-<td align="left">Y</td>
-<td align="left">Growth References for Children living in The Netherlands</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/growthcharts/centile"><code>centile</code></a></td>
-<td align="left">Y</td>
-<td align="left">Translate Measurements, Z-Scores and Centiles with the RIF format</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/growthcharts/chartbox"><code>chartbox</code></a></td>
-<td align="left">Y</td>
-<td align="left">Collection of Growth Charts</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/growthcharts/chartcatalog"><code>chartcatalog</code></a></td>
-<td align="left">Y</td>
-<td align="left">Catalog of JAMES Growth Charts</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/growthcharts/chartplotter"><code>chartplotter</code></a></td>
-<td align="left">N</td>
-<td align="left">Analysing and Plotting Growth Curves</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/growthcharts/curvematching"><code>curvematching</code></a></td>
-<td align="left">N</td>
-<td align="left">Personalised Prediction by Matching Invididuals</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/growthcharts/donorloader"><code>donorloader</code></a></td>
-<td align="left">N</td>
-<td align="left">Loads Donor Data from Package or Database</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/growthcharts/brokenstick"><code>brokenstick</code></a></td>
-<td align="left">Y</td>
-<td align="left">Broken Stick Model for Irregular Longitudinal Data</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/D-score/dscore"><code>dscore</code></a></td>
-<td align="left">Y</td>
-<td align="left">D-Score for Child Development</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/growthcharts/bdsreader"><code>bdsreader</code></a></td>
-<td align="left">Y</td>
-<td align="left">Read Data from the Basisdataset Jeugdgezondheidszorg</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/growthcharts/growthscreener"><code>growthscreener</code></a></td>
-<td align="left">Y</td>
-<td align="left">Finding Children with Unusual Growth Patterns</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/growthcharts/jamesclient"><code>jamesclient</code></a></td>
-<td align="left">Y</td>
-<td align="left">Client-side R Functions for JAMES</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/growthcharts/jamesdemodata"><code>jamesdemodata</code></a></td>
-<td align="left">Y</td>
-<td align="left">Demo Data for JAMES</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="james-support-packages" class="section level3" number="1.3.2">
-<h3><span class="header-section-number">1.3.2</span> JAMES Support packages</h3>
-<p>Support packages produce half-fabricated materials, provide testing or store documentation.</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Package</th>
-<th align="left">Open</th>
-<th align="left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><a href="https://github.com/stefvanbuuren/donordata"><code>donordata</code></a></td>
-<td align="left">N</td>
-<td align="left">Longitudinal Data for Curve Matching</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/stefvanbuuren/chartdesigner"><code>chartdesigner</code></a></td>
-<td align="left">N</td>
-<td align="left">Design Growth Charts for JAMES</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/stefvanbuuren/gateway"><code>gateway</code></a></td>
-<td align="left">Y</td>
-<td align="left">Entry to TNO online analytic growth modules</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/stefvanbuuren/jamesdocker"><code>jamesdocker</code></a></td>
-<td align="left">Y</td>
-<td align="left">JAMES Docker API</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/stefvanbuuren/bdsschema"><code>bdsschema</code></a></td>
-<td align="left">Y</td>
-<td align="left">Data Exchange Tools for the Basisdataset JGZ</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/stefvanbuuren/jamestest"><code>jamestest</code></a></td>
-<td align="left">Y</td>
-<td align="left">Shiny app to test JAMES</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/stefvanbuuren/minihealth"><code>minihealth</code></a></td>
-<td align="left">Y</td>
-<td align="left">Mini Dossier for Individual Health Data</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/stefvanbuuren/clopus"><code>clopus</code></a></td>
-<td align="left">N</td>
-<td align="left">Growth reference library</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/stefvanbuuren/jamesdocs"><code>jamesdocs</code></a></td>
-<td align="left">Y</td>
-<td align="left">JAMES internals</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="jesse" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> JESSE</h2>
-</div>
-<div id="james-servers" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> JAMES servers</h2>
-<ul>
-<li>Production: <a href="https://groeidiagrammen.nl/ocpu/test/" class="uri">https://groeidiagrammen.nl/ocpu/test/</a>, Docs (outdated): <a href="https://groeidiagrammen.nl" class="uri">https://groeidiagrammen.nl</a></li>
-<li>Test: <a href="https://vps.stefvanbuuren.nl/ocpu/test/" class="uri">https://vps.stefvanbuuren.nl/ocpu/test/</a></li>
-<li>Future: <code>james.tno.nl</code></li>
-</ul>
-</div>
-<div id="resources" class="section level2" number="1.6">
-<h2><span class="header-section-number">1.6</span> Resources</h2>
-<ul>
-<li>Demo JAMES at <a href="https://tnochildhealthstatistics.shinyapps.io/james_tryout/" class="uri">https://tnochildhealthstatistics.shinyapps.io/james_tryout/</a></li>
-<li><a href="https://www.opencpu.org">OpenCPU system</a></li>
-<li><a href="https://www.opencpu.org/api.html">OpenCPU API</a></li>
-<li><a href="https://www.tno.nl/groei" class="uri">https://www.tno.nl/groei</a>, <a href="https://www.tno.nl/growth" class="uri">https://www.tno.nl/growth</a></li>
-</ul>
+<div id="preface" class="section level1 unnumbered">
+<h1>Preface</h1>
+<p>This document contains minimal documentation of JAMES internals.</p>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="james-data-format.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+
+<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
