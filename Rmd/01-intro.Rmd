@@ -62,7 +62,7 @@ Support packages produce half-fabricated materials, provide testing or store doc
 | [`jamesdemo`](https://github.com/growthcharts/jamesdemo) | Y | App to interact with the JAMES chart site |
 | [`minihealth`](https://github.com/stefvanbuuren/minihealth) | Y | Mini Dossier for Individual Health Data |
 | [`clopus`](https://github.com/stefvanbuuren/clopus) | N | Growth reference library |
-| [`jamesdocs`](https://github.com/stefvanbuuren/jamesdocs) | Y | JAMES internals |
+| [`jamesdocs`](https://github.com/stefvanbuuren/jamesdocs) | Y | JAMES Documentation |
 
 ## JESSE
 

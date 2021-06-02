@@ -1,5 +1,5 @@
 --- 
-title: "JAMES internals"
+title: "JAMES Documentation"
 author: "Stef van Buuren"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -7,12 +7,20 @@ documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
-description: "Minimal documentation of JAMES internals."
+description: "Documentation of JAMES"
 ---
 
 # Preface {-}
 
-This document contains minimal documentation of JAMES internals.
+Hi, welcome to JAMES!
+
+This document contains documentation of the Joint Automatic Measurement and Evaluation System (JAMES). JAMES is fully programmed in `R` and makes it functionality available as an API running under `OpenCPU`.
+
+This contents of the file is fully in the works. It is it neither complete nor garanteed to be accurate, consider it as a journey guide for your travel through JAMES. Nevertheless, I hope that it will help to understand basic ideas, technologies and applications.
+
+Last version: June 2021.
+
+Written by Stef van Buuren
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
