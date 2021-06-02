@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 OpenCPU deployment | JAMES internals</title>
+  <meta name="description" content="Minimal documentation of JAMES internals." />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 OpenCPU deployment | JAMES internals" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Minimal documentation of JAMES internals." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 OpenCPU deployment | JAMES internals" />
+  
+  <meta name="twitter:description" content="Minimal documentation of JAMES internals." />
+  
+
+<meta name="author" content="Stef van Buuren" />
+
+
+<meta name="date" content="2021-06-02" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="d-score-implementation.html"/>
+<link rel="next" href="dockerfile-for-james.html"/>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">JAMES Internals</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#overview"><i class="fa fa-check"></i><b>1.1</b> Overview</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#architecture"><i class="fa fa-check"></i><b>1.2</b> Architecture</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#r-packages"><i class="fa fa-check"></i><b>1.3</b> R packages</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#james-active-packages"><i class="fa fa-check"></i><b>1.3.1</b> JAMES Active packages</a></li>
+<li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#james-support-packages"><i class="fa fa-check"></i><b>1.3.2</b> JAMES Support packages</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#jesse"><i class="fa fa-check"></i><b>1.4</b> JESSE</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#james-servers"><i class="fa fa-check"></i><b>1.5</b> JAMES servers</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#resources"><i class="fa fa-check"></i><b>1.6</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="james-data-format.html"><a href="james-data-format.html"><i class="fa fa-check"></i><b>2</b> JAMES data format</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="james-data-format.html"><a href="james-data-format.html#objective"><i class="fa fa-check"></i><b>2.1</b> Objective</a></li>
+<li class="chapter" data-level="2.2" data-path="james-data-format.html"><a href="james-data-format.html#generic-object-model"><i class="fa fa-check"></i><b>2.2</b> Generic object model</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="james-data-format.html"><a href="james-data-format.html#epremdossier-class"><i class="fa fa-check"></i><b>2.2.1</b> EPremDossier Class</a></li>
+<li class="chapter" data-level="2.2.2" data-path="james-data-format.html"><a href="james-data-format.html#epremgroep-class"><i class="fa fa-check"></i><b>2.2.2</b> EPremGroep Class</a></li>
+<li class="chapter" data-level="2.2.3" data-path="james-data-format.html"><a href="james-data-format.html#epremelement-class"><i class="fa fa-check"></i><b>2.2.3</b> EPremElement Class</a></li>
+<li class="chapter" data-level="2.2.4" data-path="james-data-format.html"><a href="james-data-format.html#epremcontactmoment-class"><i class="fa fa-check"></i><b>2.2.4</b> EPremContactmoment Class</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="james-data-format.html"><a href="james-data-format.html#bds-elements"><i class="fa fa-check"></i><b>2.3</b> BDS-elements</a></li>
+<li class="chapter" data-level="2.4" data-path="james-data-format.html"><a href="james-data-format.html#error-checking"><i class="fa fa-check"></i><b>2.4</b> Error checking</a></li>
+<li class="chapter" data-level="2.5" data-path="james-data-format.html"><a href="james-data-format.html#note-added-june-2-2021"><i class="fa fa-check"></i><b>2.5</b> Note (added June 2, 2021)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html"><i class="fa fa-check"></i><b>3</b> Growth charts in JAMES</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html#chart-naming-conventions"><i class="fa fa-check"></i><b>3.1</b> Chart naming conventions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
+<li class="chapter" data-level="5" data-path="d-score-implementation.html"><a href="d-score-implementation.html"><i class="fa fa-check"></i><b>5</b> D-score implementation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="d-score-implementation.html"><a href="d-score-implementation.html#actions"><i class="fa fa-check"></i><b>5.1</b> Actions</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html"><i class="fa fa-check"></i><b>6</b> OpenCPU deployment</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#objective-1"><i class="fa fa-check"></i><b>6.1</b> Objective</a></li>
+<li class="chapter" data-level="6.2" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#pre-requisites"><i class="fa fa-check"></i><b>6.2</b> Pre-requisites</a></li>
+<li class="chapter" data-level="6.3" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#installation-of-james-in"><i class="fa fa-check"></i><b>6.3</b> Installation of JAMES in</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html"><i class="fa fa-check"></i><b>7</b> Dockerfile for JAMES</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#objective-2"><i class="fa fa-check"></i><b>7.1</b> Objective</a></li>
+<li class="chapter" data-level="7.2" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#pre-requisites-1"><i class="fa fa-check"></i><b>7.2</b> Pre-requisites</a></li>
+<li class="chapter" data-level="7.3" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#dockerfile"><i class="fa fa-check"></i><b>7.3</b> Dockerfile</a></li>
+<li class="chapter" data-level="7.4" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#docker-commands"><i class="fa fa-check"></i><b>7.4</b> Docker commands</a></li>
+<li class="chapter" data-level="7.5" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#checks-with-the-browser"><i class="fa fa-check"></i><b>7.5</b> Checks with the browser</a></li>
+<li class="chapter" data-level="7.6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#security"><i class="fa fa-check"></i><b>7.6</b> Security</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="certificates.html"><a href="certificates.html"><i class="fa fa-check"></i><b>8</b> Certificates</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="certificates.html"><a href="certificates.html#objective-3"><i class="fa fa-check"></i><b>8.1</b> Objective</a></li>
+<li class="chapter" data-level="8.2" data-path="certificates.html"><a href="certificates.html#vps.stefvanbuuren.nl"><i class="fa fa-check"></i><b>8.2</b> vps.stefvanbuuren.nl</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="certificates.html"><a href="certificates.html#step-1-create-the-csr-file"><i class="fa fa-check"></i><b>8.2.1</b> Step 1: Create the CSR file</a></li>
+<li class="chapter" data-level="8.2.2" data-path="certificates.html"><a href="certificates.html#step-2-buy-new-certificate"><i class="fa fa-check"></i><b>8.2.2</b> Step 2: Buy new certificate</a></li>
+<li class="chapter" data-level="8.2.3" data-path="certificates.html"><a href="certificates.html#step-3-create-the-crt-file"><i class="fa fa-check"></i><b>8.2.3</b> Step 3: Create the crt file</a></li>
+<li class="chapter" data-level="8.2.4" data-path="certificates.html"><a href="certificates.html#step-4-transfer-to-server"><i class="fa fa-check"></i><b>8.2.4</b> Step 4: Transfer to server</a></li>
+<li class="chapter" data-level="8.2.5" data-path="certificates.html"><a href="certificates.html#step-5-restart-apache2"><i class="fa fa-check"></i><b>8.2.5</b> Step 5: Restart Apache2</a></li>
+<li class="chapter" data-level="8.2.6" data-path="certificates.html"><a href="certificates.html#troubleshooting"><i class="fa fa-check"></i><b>8.2.6</b> Troubleshooting</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">JAMES internals</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="opencpu-deployment" class="section level1" number="6">
+<h1><span class="header-section-number">Chapter 6</span> OpenCPU deployment</h1>
+<div id="objective-1" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Objective</h2>
+<p>This chapter describes how to install JAMES on the server that run OpenCPU. This is the classic way to install and run OpenCPU applications, and has the advantage that AppArmor prevents various types of malicious behaviour. In the future, we will replace this procedure by containerised deployment using Docker.</p>
+</div>
+<div id="pre-requisites" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Pre-requisites</h2>
+<ul>
+<li>The server runs <code>Ubuntu 18.04</code> (or later, not tested on Ubuntu 20.04).</li>
+<li>The user needs sudo access to the server that run <code>OpenCPU</code>.</li>
+</ul>
+</div>
+<div id="installation-of-james-in" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Installation of JAMES in</h2>
+<p>Here is a set of commands that removes R and its libraries, installs the latest
+R fresh from source, install JAMES and puts the machine to work.</p>
+<p>A lot can go wrong. Please be patient to check each step.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="opencpu-deployment.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb5-2"><a href="opencpu-deployment.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Re-install opencpu-server, R and the libs</span></span>
+<span id="cb5-3"><a href="opencpu-deployment.html#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="opencpu-deployment.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make system up to date</span></span>
+<span id="cb5-5"><a href="opencpu-deployment.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get update</span>
+<span id="cb5-6"><a href="opencpu-deployment.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get upgrade</span>
+<span id="cb5-7"><a href="opencpu-deployment.html#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="opencpu-deployment.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># disable opencpu</span></span>
+<span id="cb5-9"><a href="opencpu-deployment.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2dissite opencpu</span>
+<span id="cb5-10"><a href="opencpu-deployment.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb5-11"><a href="opencpu-deployment.html#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="opencpu-deployment.html#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># disable pubertyplot &amp; webtool (only on testserver)</span></span>
+<span id="cb5-13"><a href="opencpu-deployment.html#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2dissite puberty</span>
+<span id="cb5-14"><a href="opencpu-deployment.html#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2dissite webtool</span>
+<span id="cb5-15"><a href="opencpu-deployment.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb5-16"><a href="opencpu-deployment.html#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="opencpu-deployment.html#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># save configuration files</span></span>
+<span id="cb5-18"><a href="opencpu-deployment.html#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> conf</span>
+<span id="cb5-19"><a href="opencpu-deployment.html#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-rv</span> /etc/opencpu/ ~/conf/</span>
+<span id="cb5-20"><a href="opencpu-deployment.html#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-rv</span> /etc/apache2/ ~/conf/</span>
+<span id="cb5-21"><a href="opencpu-deployment.html#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="opencpu-deployment.html#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># uninstall opencpu server &amp; full</span></span>
+<span id="cb5-23"><a href="opencpu-deployment.html#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge opencpu-server</span>
+<span id="cb5-24"><a href="opencpu-deployment.html#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge opencpu-full</span>
+<span id="cb5-25"><a href="opencpu-deployment.html#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="opencpu-deployment.html#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># remove all R libs</span></span>
+<span id="cb5-27"><a href="opencpu-deployment.html#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-e</span> <span class="st">&#39;.libPaths()&#39;</span></span>
+<span id="cb5-28"><a href="opencpu-deployment.html#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /usr/local/lib/R/site-library</span>
+<span id="cb5-29"><a href="opencpu-deployment.html#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /usr/lib/R/site-library</span>
+<span id="cb5-30"><a href="opencpu-deployment.html#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /usr/lib/R/library</span>
+<span id="cb5-31"><a href="opencpu-deployment.html#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-32"><a href="opencpu-deployment.html#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co"># remove R</span></span>
+<span id="cb5-33"><a href="opencpu-deployment.html#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge r-base-core</span>
+<span id="cb5-34"><a href="opencpu-deployment.html#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge r-base</span>
+<span id="cb5-35"><a href="opencpu-deployment.html#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get autoremove</span>
+<span id="cb5-36"><a href="opencpu-deployment.html#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="opencpu-deployment.html#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="co"># add backport repositories for Ubuntu packages required by some R packages</span></span>
+<span id="cb5-38"><a href="opencpu-deployment.html#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="st">&#39;deb https://mirror.nl.datapacket.com/ubuntu/ bionic main&#39;</span></span>
+<span id="cb5-39"><a href="opencpu-deployment.html#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="st">&#39;deb-src https://mirror.nl.datapacket.com/ubuntu/ bionic main&#39;</span></span>
+<span id="cb5-40"><a href="opencpu-deployment.html#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="opencpu-deployment.html#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="co"># install R. See https://cran.r-project.org/bin/linux/ubuntu/</span></span>
+<span id="cb5-42"><a href="opencpu-deployment.html#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="co"># update indices</span></span>
+<span id="cb5-43"><a href="opencpu-deployment.html#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="at">-qq</span></span>
+<span id="cb5-44"><a href="opencpu-deployment.html#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co"># install two helper packages we need</span></span>
+<span id="cb5-45"><a href="opencpu-deployment.html#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">--no-install-recommends</span> software-properties-common dirmngr</span>
+<span id="cb5-46"><a href="opencpu-deployment.html#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="co"># import the signing key (by Michael Rutter) for these repo</span></span>
+<span id="cb5-47"><a href="opencpu-deployment.html#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-key adv <span class="at">--keyserver</span> keyserver.ubuntu.com <span class="at">--recv-keys</span> E298A3A825C0D65DFD57CBB651716619E084DAB9</span>
+<span id="cb5-48"><a href="opencpu-deployment.html#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="co"># we use R 4.0 (however note this actually installs R 4.1!! (May 2021))</span></span>
+<span id="cb5-49"><a href="opencpu-deployment.html#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="st">&#39;deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/&#39;</span></span>
+<span id="cb5-50"><a href="opencpu-deployment.html#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="co"># in the future: use cran-41</span></span>
+<span id="cb5-51"><a href="opencpu-deployment.html#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install r-base</span>
+<span id="cb5-52"><a href="opencpu-deployment.html#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="co"># install r-base-dev because we want to compile from source</span></span>
+<span id="cb5-53"><a href="opencpu-deployment.html#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install r-base-dev</span>
+<span id="cb5-54"><a href="opencpu-deployment.html#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-55"><a href="opencpu-deployment.html#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="co"># install opencpu-server</span></span>
+<span id="cb5-56"><a href="opencpu-deployment.html#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="at">-y</span> ppa:opencpu/opencpu-2.2</span>
+<span id="cb5-57"><a href="opencpu-deployment.html#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get update</span>
+<span id="cb5-58"><a href="opencpu-deployment.html#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get upgrade</span>
+<span id="cb5-59"><a href="opencpu-deployment.html#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install <span class="at">-y</span> opencpu-server</span>
+<span id="cb5-60"><a href="opencpu-deployment.html#cb5-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-61"><a href="opencpu-deployment.html#cb5-61" aria-hidden="true" tabindex="-1"></a><span class="co"># restart opencpu</span></span>
+<span id="cb5-62"><a href="opencpu-deployment.html#cb5-62" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2ensite opencpu</span>
+<span id="cb5-63"><a href="opencpu-deployment.html#cb5-63" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb5-64"><a href="opencpu-deployment.html#cb5-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-65"><a href="opencpu-deployment.html#cb5-65" aria-hidden="true" tabindex="-1"></a><span class="co"># manually check https://vps.stefvanbuuren.nl/ocpu </span></span>
+<span id="cb5-66"><a href="opencpu-deployment.html#cb5-66" aria-hidden="true" tabindex="-1"></a><span class="co"># or https://www.groeidiagrammen.nl/ocpu</span></span>
+<span id="cb5-67"><a href="opencpu-deployment.html#cb5-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-68"><a href="opencpu-deployment.html#cb5-68" aria-hidden="true" tabindex="-1"></a><span class="co"># install application package: pubertyplot - only on dev server</span></span>
+<span id="cb5-69"><a href="opencpu-deployment.html#cb5-69" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;/home/stef/packages/pubertyplot_1.3.tar.gz&quot;, repos = NULL)&#39;</span></span>
+<span id="cb5-70"><a href="opencpu-deployment.html#cb5-70" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2ensite puberty</span>
+<span id="cb5-71"><a href="opencpu-deployment.html#cb5-71" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb5-72"><a href="opencpu-deployment.html#cb5-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-73"><a href="opencpu-deployment.html#cb5-73" aria-hidden="true" tabindex="-1"></a><span class="co"># install application package: webtool - only on dev server</span></span>
+<span id="cb5-74"><a href="opencpu-deployment.html#cb5-74" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;RMySQL&quot;)&#39;</span></span>
+<span id="cb5-75"><a href="opencpu-deployment.html#cb5-75" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;/home/stef/packages/webtool_1.1.tar.gz&quot;, repos = NULL)&#39;</span></span>
+<span id="cb5-76"><a href="opencpu-deployment.html#cb5-76" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2ensite webtool</span>
+<span id="cb5-77"><a href="opencpu-deployment.html#cb5-77" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb5-78"><a href="opencpu-deployment.html#cb5-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-79"><a href="opencpu-deployment.html#cb5-79" aria-hidden="true" tabindex="-1"></a><span class="co"># install JAMES packages - this may take a while - you need the right priveledges</span></span>
+<span id="cb5-80"><a href="opencpu-deployment.html#cb5-80" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;remotes&quot;)&#39;</span></span>
+<span id="cb5-81"><a href="opencpu-deployment.html#cb5-81" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;remotes::install_github(&quot;growthcharts/james&quot;)&#39;</span></span>
+<span id="cb5-82"><a href="opencpu-deployment.html#cb5-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-83"><a href="opencpu-deployment.html#cb5-83" aria-hidden="true" tabindex="-1"></a><span class="co"># remove duplicate packages</span></span>
+<span id="cb5-84"><a href="opencpu-deployment.html#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="co"># evade errors: &quot;namespace &#39;vctrs&#39; 0.3.6 is already loaded, but &gt;= 0.3.8 is required&quot;</span></span>
+<span id="cb5-85"><a href="opencpu-deployment.html#cb5-85" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;remove.packages(c(&quot;ellipsis&quot;, &quot;pillar&quot;, &quot;vctrs&quot;), &quot;/usr/lib/opencpu/library&quot;)&#39;</span></span>
+<span id="cb5-86"><a href="opencpu-deployment.html#cb5-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-87"><a href="opencpu-deployment.html#cb5-87" aria-hidden="true" tabindex="-1"></a><span class="co"># copy back opencpu configuration for JAMES (if they were OK, otherwise tweak)</span></span>
+<span id="cb5-88"><a href="opencpu-deployment.html#cb5-88" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /etc/opencpu</span>
+<span id="cb5-89"><a href="opencpu-deployment.html#cb5-89" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> cp <span class="at">-rv</span> ~/conf/opencpu /etc/opencpu/</span>
+<span id="cb5-90"><a href="opencpu-deployment.html#cb5-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-91"><a href="opencpu-deployment.html#cb5-91" aria-hidden="true" tabindex="-1"></a><span class="co"># active JAMES</span></span>
+<span id="cb5-92"><a href="opencpu-deployment.html#cb5-92" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb5-93"><a href="opencpu-deployment.html#cb5-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-94"><a href="opencpu-deployment.html#cb5-94" aria-hidden="true" tabindex="-1"></a><span class="co"># check on https://tnochildhealthstatistics.shinyapps.io/james_tryout/ </span></span>
+<span id="cb5-95"><a href="opencpu-deployment.html#cb5-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-96"><a href="opencpu-deployment.html#cb5-96" aria-hidden="true" tabindex="-1"></a><span class="co"># clean up: delete ~/conf/ after everything works</span></span>
+<span id="cb5-97"><a href="opencpu-deployment.html#cb5-97" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> /conf</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="d-score-implementation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="dockerfile-for-james.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["jamesdocs.pdf", "jamesdocs.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

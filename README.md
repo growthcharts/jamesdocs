@@ -3,7 +3,7 @@
 
 The `jamesdocs` repository contains documentation for the **Joint Anthropometric Measurement and Evaluation System (JAMES)**, an **experimental** online resource for creating growth charts.
 
-See [JAMES](https://github.com/stefvanbuuren/james) for more information.
+See [JAMES](https://github.com/growthcharts/james) for more information.
 
 ## About
 

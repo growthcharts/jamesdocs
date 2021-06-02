@@ -1,0 +1,121 @@
+
+```{r setup7, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+```
+
+# Dockerfile for JAMES
+
+## Objective
+
+This chapter describes how to build and deploy JAMES as a Docker container.
+
+## Pre-requisites
+
+JAMES is currently constructed from a collection of `R` packages. The top-level package at <https://github.com/growthcharts/james> also defines a Javascript interface in the `inst/www` directory. Deployment of JAMES relies on the `OpenCPU` server. In principle, it is enough to install the `james` package on the `OpenCPU` server, and will also install all dependencies. 
+
+The following is needed to build and run a JAMES image:
+
+- Permission to read from the following private repo's: 
+
+    - `growthcharts/chartplotter`
+    - `growthcharts/curvematching`
+    - `growthcharts/donorloader`
+    - `growthcharts/jamesdocker`
+    
+- If needed, a personal Github token with repo scope from [here](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line), Generate a token with only scope repo.
+
+- Install `Docker Desktop` on your local machine, and run some tutorials
+
+## Dockerfile
+
+The Dockerfile is at <https://raw.githubusercontent.com/growthcharts/jamesdocker/master/Dockerfile>, which is located in the private repo <https://github.com/growthcharts/jamesdocker>. You need authentication to use this resource.
+
+- Clone the `growthcharts/jamesdocker` repo to your machine
+- Set working directory to root of `jamesdocker`
+- If needed: Add the file `docker/opencpu_config/Renviron` with contents `GITHUB_PAT=fa2...` with your own GITHUB_PAT.
+
+## Docker commands 
+
+Build the `james` image, type in a terminal
+
+```{bash}
+docker build -t james .
+```
+
+This may takes a long time (30 minutes), in which the entire application is downloaded from various web-locations. After (hopefully successful) completion, check the image
+
+```{bash}
+docker images -a
+```
+
+If all is well, the top line is called `james`. Now run the container on your local machine:
+
+```{bash}
+docker run -t -d -p 80:80 james
+```
+
+If the ports are already taken by other containers, stop and remove all containers:
+
+```{bash}
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+```
+
+Reissue the `docker run`, and the container should now run. Check by
+
+```{bash}
+docker ps
+```
+
+which should list a container created from the `james` image.
+
+If you want to enter the container use
+
+```{bash}
+docker exec -i -t 6c /bin/bash
+```
+
+where `6c` are the first two characters of the container ID.
+
+Inside the container, check font matching of Arial as
+
+```{bash}
+fc-match Arial
+```
+
+
+## Checks with the browser
+
+```{bash}
+http://localhost
+```
+
+should show Apache2 Ubuntu default screen.
+
+```{bash}
+http://localhost/ocpu/test/
+```
+
+should show `OpenCPU` test page.
+
+```{bash}
+http://localhost/rstudio/
+```
+
+should start the Rstudio IDE - *if installed* . Use `opencpu:opencpu` to log in.
+
+
+```{bash}
+http://localhost/ocpu/library/james/www/
+```
+
+should start the JAMES javascript interface. 
+
+See also <https://registry.hub.docker.com/r/opencpu/rstudio>
+
+## Security
+
+1. Don't use the intermediate container, since it will contain your token in `/.Renviron`. The latest (`james`) container does not hold your token, and can be shared.
+2. The container is shielded from the machine on which it runs. However, the materials within the container are only protected by `R_LIMITS`. In general, for production it is wise to add restriction on the `OpenCPU` server.
+
+

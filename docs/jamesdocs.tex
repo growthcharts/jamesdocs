@@ -117,7 +117,7 @@
 
 \title{JAMES internals}
 \author{Stef van Buuren}
-\date{2021-05-18}
+\date{2021-06-02}
 
 \begin{document}
 \maketitle
@@ -174,7 +174,7 @@ The contents of the system consist of two parts:
 \item
   \textbf{JAMES}: A collection of R packages that provides back-end functionality
 \item
-  \textbf{JESSE}: A gateway front-end JAMES that translates incoming and outcoming requests
+  \textbf{JESSE}: A gateway front-end JAMES that translates incoming and outcoming requests (not yet realised)
 \end{itemize}
 
 \hypertarget{r-packages}{%
@@ -222,10 +222,10 @@ Package & Open & Description \\
 \endhead
 \href{https://github.com/stefvanbuuren/donordata}{\texttt{donordata}} & N & Longitudinal Data for Curve Matching \\
 \href{https://github.com/stefvanbuuren/chartdesigner}{\texttt{chartdesigner}} & N & Design Growth Charts for JAMES \\
-\href{https://github.com/stefvanbuuren/gateway}{\texttt{gateway}} & Y & Entry to TNO online analytic growth modules \\
-\href{https://github.com/stefvanbuuren/jamesdocker}{\texttt{jamesdocker}} & Y & JAMES Docker API \\
+\href{https://github.com/stefvanbuuren/gateway}{\texttt{gateway}} & N & Entry to TNO online analytic growth modules \\
+\href{https://github.com/growtcharts/jamesdocker}{\texttt{jamesdocker}} & N & JAMES Docker API \\
 \href{https://github.com/stefvanbuuren/bdsschema}{\texttt{bdsschema}} & Y & Data Exchange Tools for the Basisdataset JGZ \\
-\href{https://github.com/stefvanbuuren/jamestest}{\texttt{jamestest}} & Y & Shiny app to test JAMES \\
+\href{https://github.com/growthcharts/jamesdemo}{\texttt{jamesdemo}} & Y & App to interact with the JAMES chart site \\
 \href{https://github.com/stefvanbuuren/minihealth}{\texttt{minihealth}} & Y & Mini Dossier for Individual Health Data \\
 \href{https://github.com/stefvanbuuren/clopus}{\texttt{clopus}} & N & Growth reference library \\
 \href{https://github.com/stefvanbuuren/jamesdocs}{\texttt{jamesdocs}} & Y & JAMES internals \\
@@ -486,7 +486,12 @@ Error checking of the JSON data occurs in three phases:
   values, but continues using the specified values.
 \end{enumerate}
 
-The default JSON schema in phase 2 is the built-in JSON schema \texttt{bds\_schema\_str.json}, a data format implementing a version that accepts strings as values for BDS-elements.
+The default JSON schema in phase 2 is the built-in JSON schema \texttt{bds\_schema\_str.json}, a data format implementing a version that accepts strings as values for BDS-elements. You may also choose JSON schema \texttt{bds\_schema.json}, which requires numeric input to be specified as numeric (and not as string).
+
+\hypertarget{note-added-june-2-2021}{%
+\section{Note (added June 2, 2021)}\label{note-added-june-2-2021}}
+
+The JAMES function now also reads, validates and interprets BDS fields related to the Van Wiechenschema (Dutch Development Instrument). See \url{https://growthcharts.org/bdsreader/index.html} and \url{https://github.com/growthcharts/jamesdemodata}.
 
 \hypertarget{growth-charts-in-james}{%
 \chapter{Growth charts in JAMES}\label{growth-charts-in-james}}
@@ -494,9 +499,9 @@ The default JSON schema in phase 2 is the built-in JSON schema \texttt{bds\_sche
 \hypertarget{chart-naming-conventions}{%
 \section{Chart naming conventions}\label{chart-naming-conventions}}
 
-The link \url{https://groeidiagrammen.nl/ocpu/lib/james/www/} contains an interactive overview of the available growth charts. There are 342 different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart has a chart code, a character code identifying the design. This section explains the construction of the chart codes.
+The link \url{https://groeidiagrammen.nl/ocpu/lib/james/www/} contains an interactive overview of the available growth charts. There are many different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart has a chart code, a character code identifying the design. This section explains the construction of the chart codes.
 
-The GitHub repository \url{https://github.com/stefvanbuuren/chartbox} contains the chart libraries that are available to JAMES. The \texttt{list\_charts()} function produces a tabular overview.
+The GitHub repository \url{https://github.com/growthcharts/chartbox} contains the chart libraries that are available to JAMES. The \texttt{list\_charts()} function produces a tabular overview.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -529,11 +534,11 @@ The \texttt{chartbox} package currently contains three chart groups: \texttt{nl2
 
 \begin{longtable}[]{@{}lrlll@{}}
 \toprule
-Chart Group & Charts & Chart code & Description & Source \\
+Chart Group & N & Chart code & Description & Source \\
 \midrule
 \endhead
-\texttt{nl2010} & 136 & CCCC & Dutch children 0-21 years, including minorities & \citet{talma2010} \\
-\texttt{preterm} & 192 & CCCCCNN & Dutch preterms, ga \textless= 36 weeks, 0-4 years & \citet{bocca2012} \\
+\texttt{nl2010} & 140 & CCCC & Dutch children 0-21 years, including minorities & \citet{talma2010} \\
+\texttt{preterm} & 240 & CCCCCNN & Dutch preterms, ga \textless= 36 weeks, 0-4 years & \citet{bocca2012} \\
 \texttt{who} & 14 & CCCC & WHO Child Growth Standards 0-4 years & \href{https://www.who.int/childgrowth/en/}{WHO} \\
 \bottomrule
 \end{longtable}
@@ -561,6 +566,7 @@ Position & Field & Value & Description \\
 4 & Side & A & A4, front \\
 & & B & A4, back \\
 & & C & A4, back, no \texttt{hdc} \\
+& & D & square, \texttt{dsc} \\
 & & H & square, \texttt{hgt} \\
 & & O & square, \texttt{hdc} \\
 & & Q & square, \texttt{bmi} \\
@@ -575,7 +581,7 @@ Position & Field & Value & Description \\
 
 For illustration, code \texttt{NJAA} references to Dutch (\texttt{N}), boys (\texttt{J}), 0-15 month (\texttt{A}), front side (\texttt{A}). Likewise, \texttt{PMEAN33} codes for the chart of preterm (\texttt{M}), girls (\texttt{M}), 0-4 years (\texttt{E}), front side (\texttt{A}), Dutch language (\texttt{N}) born at 33 weeks of gestation (\texttt{33}).
 
-Some forms hold multiple growth charts. For example, the \texttt{NJAA} chart is designed for A4 paper size (297mm \(\times\) 210mm) and contains three growth charts: head circumference by age, length by age, and weight by age. Some others have no diagram, like \texttt{NJAB} with explanations. All square formats hold one growth chart. All of the square forms have equal sizes (160mm \(\times\) 160mm).
+Some forms hold multiple growth charts. For example, the \texttt{NJAA} chart is designed for A4 paper size (297mm \(\times\) 210mm) and contains three growth charts: head circumference by age, length by age, and weight by age. Some others have no diagram, like \texttt{NJAB}. All square formats hold just one growth chart. All of the square forms have equal sizes (160mm \(\times\) 160mm).
 
 The following table lists the measures per design-form combination.
 
@@ -587,14 +593,16 @@ Design & Side & Measure & Description \\
 A & A & \texttt{hdc} & Head circumference by age, 0-15 mo \\
 & & \texttt{hgt} & Length by age, 0-15 mo \\
 & & \texttt{wgt} & Weight by age, 0-15 mo \\
-& B & & \\
+& B & & Backside explanations \\
+& D & \texttt{dsc} & D-score by age, 0-15 mo \\
 & H & \texttt{hgt} & Length by age, 0-15 mo \\
 & O & \texttt{hdc} & Head circumference by age, 0-15 mo \\
 & W & \texttt{wgt} & Weight by age, 0-15 mo \\
 B & A & \texttt{wfh} & Weight for height, 0-4 yr \\
 & & \texttt{hgt} & Length by age, 0-4 yr \\
 & B & \texttt{hdc} & Head circumference by age, 0-4 yr \\
-& C & & \\
+& C & & Backside explanations \\
+& D & \texttt{dsc} & D-score by age, 0-4 yr \\
 & H & \texttt{hgt} & Height by age, 0-4 yr \\
 & O & \texttt{hdc} & Head circumference by age, 0-4 yr \\
 & R & \texttt{wfh} & Weight for height, 0-4 yr \\
@@ -625,8 +633,7 @@ We describe our methods in this chapter.
 \hypertarget{d-score-implementation}{%
 \chapter{D-score implementation}\label{d-score-implementation}}
 
-This document describes the actions needed to implement the
-\href{https://stefvanbuuren.name/dbook1/}{D-score} into JAMES. The functionality of JAMES is distributed over multiple packages. This set of actions may be of interest when implementing new features.
+This document describes the actions taken to implement the \href{https://d-score.org/dbook1/}{D-score} into JAMES. The functionality of JAMES is distributed over multiple packages. This set of actions may be of interest when implementing new features.
 
 \hypertarget{actions}{%
 \section{Actions}\label{actions}}
@@ -639,9 +646,9 @@ This document describes the actions needed to implement the
 Package & PR & Description \\
 \midrule
 \endhead
-minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc}{03a32f1} & Create milestones descriptions \\
-dscore & \href{https://github.com/stefvanbuuren/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b}{f0013ce} & Link BDS number to Van Wiechen milestones \\
-dscore & \href{https://github.com/stefvanbuuren/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0}{6886854} & Fine tuning of milestone labels \\
+minihealth & \href{https://github.com/growthcharts/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc}{03a32f1} & Create milestones descriptions \\
+dscore & \href{https://github.com/D-score/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b}{f0013ce} & Link BDS number to Van Wiechen milestones \\
+dscore & \href{https://github.com/D-score/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0}{6886854} & Fine tuning of milestone labels \\
 minihealth & & Create the \texttt{bds\_lexicon} object \\
 minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/4893982631717539b070c8d19b88b2b10319f2ee}{4893982} & Add milestones to BDS validation JSON schema \\
 minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/0069671c8d09f64f2436faa93b764bd288324fcc}{0069671} & Add \texttt{convert\_ddi\_gsed()} to convert BDS-milestones into GSED items \\
@@ -654,40 +661,169 @@ chartdesigner & \href{https://github.com/stefvanbuuren/chartdesigner/commit/511f
 chartdesigner & \href{https://github.com/stefvanbuuren/chartdesigner/commit/6582af8753331a25d8970683d4523c69d6959f0d}{6582af8} & Extend to \texttt{axes.locations} object to D-score charts \\
 chartdesigner & \href{https://github.com/stefvanbuuren/chartdesigner/commit/47e3cc39d1253a41d3cc81d3d6dd55bffa842f18}{47e3cc3} & Create \texttt{dchart()} function and extend its helper functions \\
 chartdesigner & \href{https://github.com/stefvanbuuren/chartdesigner/commit/fbbc7c8647ea010b2292fa9dd9b253ce95b6a54b}{fbbc7c8} & Function \texttt{chartcode()} factory, make one function for each chart code \\
-chartcatalog & \href{https://github.com/stefvanbuuren/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c}{cc46788} & Extend the chart naming system to D-score charts \\
-chartcatalog & \href{https://github.com/stefvanbuuren/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1}{84aaded} & Extend the lookup table \texttt{ynames\_lookup} to handle new D-score charts \\
-chartbox & \href{https://github.com/stefvanbuuren/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f}{aa31067} & Extend chart box with all D-score charts \\
-james & \href{https://github.com/stefvanbuuren/james/commits/dscore}{6412840} & Add radio button for D-score charts \\
+chartcatalog & \href{https://github.com/growthcharts/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c}{cc46788} & Extend the chart naming system to D-score charts \\
+chartcatalog & \href{https://github.com/growthcharts/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1}{84aaded} & Extend the lookup table \texttt{ynames\_lookup} to handle new D-score charts \\
+chartbox & \href{https://github.com/growthcharts/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f}{aa31067} & Extend chart box with all D-score charts \\
+james & \href{https://github.com/growthcharts/james/commits/dscore}{6412840} & Add radio button for D-score charts \\
 minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/06a04c9ce70546db7998de5147a15897af0c7ddb}{06a04c9} & Calculate D-score and DAZ \\
-chartplotter & \href{https://github.com/stefvanbuuren/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16}{4b58638} & Skip the \texttt{dsc} field for finding matches \\
+chartplotter & \href{https://github.com/growthcharts/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16}{4b58638} & Skip the \texttt{dsc} field for finding matches \\
 minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/816be33b8921ab8d80d8a750d5c4e11966a58c18}{816be33} & Add D-score and DAZ to class \texttt{individualAN} \\
 donordata & \href{https://github.com/stefvanbuuren/donordata/commit/77e01b40e2be75c19f27423092aa5626b0d5d3c3}{77e01b4} & Add milestones to SMOCC donor data \\
 donordata & \href{https://github.com/stefvanbuuren/donordata/commit/ecb3413b115c3193135b1af118597768b083dc41}{ecb3413} & Calculate D-score and DAZ for SMOCC data \\
 donordata & \href{https://github.com/stefvanbuuren/donordata/commit/3fa9d4de347d09ccff32a887cf6bd8dadfdfaeb6}{3fa9d4d} & Fit and store brokenstick model for D-score on SMOCC data \\
-donorloader & \href{https://github.com/stefvanbuuren/donorloader/commit/c22c44607b40ff6bda2009c25894362b68831275}{c22c446} & Update internal data after changes in donordata \\
+donorloader & \href{https://github.com/growthcharts/donorloader/commit/c22c44607b40ff6bda2009c25894362b68831275}{c22c446} & Update internal data after changes in donordata \\
 jamesdocs & TBD & Document steps (this file) \\
 donordata & \href{https://github.com/stefvanbuuren/donordata/commit/7983c3d81a69eb9c6b81a3e0f0668e892c5abf5a}{7983c3} & Saves the item scores to create JSON files \\
 donordata & \href{https://github.com/stefvanbuuren/donordata/commit/1537182a0df4180e0000d59225c6355a9c506472}{1537182} & Save mapping between SMOCC and BDS coding scheme \\
-donorloader & \href{https://github.com/stefvanbuuren/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2}{e9a8ed} & Make \texttt{smocc\_bds} available to JAMES \\
-jamestest & \href{https://github.com/stefvanbuuren/jamestest/commit/6484191fd8de0d93b35354aa3ee846447aa81df6}{648419} & Regenerate smocc JSON files to include DDI scores \\
-jamestest & \href{https://github.com/stefvanbuuren/jamestest/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc}{ce1dbe} & Update the \texttt{installed.cabinets} object with the new individual milestones data \\
+donorloader & \href{https://github.com/growthcharts/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2}{e9a8ed} & Make \texttt{smocc\_bds} available to JAMES \\
+jamestest & \href{https://github.com/growthcharts/jamesdemo/commit/6484191fd8de0d93b35354aa3ee846447aa81df6}{648419} & Regenerate smocc JSON files to include DDI scores \\
+jamestest & \href{https://github.com/growthcharts/jamesdemo/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc}{ce1dbe} & Update the \texttt{installed.cabinets} object with the new individual milestones data \\
 minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/4dda8daabca8811a4cc321c66aaccf31c4aba83f}{4dda8d} & Add class \texttt{individualRW} to store and convert raw milestones data \\
 minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/9e03e7e39b007a9687d21efbaa13e77283866d5c}{9e03e7} & Complete the JSON validator schema \\
 \bottomrule
 \end{longtable}
 
-\hypertarget{dockerfile-for-james}{%
-\chapter{Dockerfile for JAMES}\label{dockerfile-for-james}}
+\hypertarget{opencpu-deployment}{%
+\chapter{OpenCPU deployment}\label{opencpu-deployment}}
 
 \hypertarget{objective-1}{%
 \section{Objective}\label{objective-1}}
 
-This chapter describes how to build and deploy JAMES as a Docker container.
+This chapter describes how to install JAMES on the server that run OpenCPU. This is the classic way to install and run OpenCPU applications, and has the advantage that AppArmor prevents various types of malicious behaviour. In the future, we will replace this procedure by containerised deployment using Docker.
 
 \hypertarget{pre-requisites}{%
 \section{Pre-requisites}\label{pre-requisites}}
 
-JAMES is currently constructed from a collection of \texttt{R} packages. The top-level package at \url{https://github.com/stefvanbuuren/james} also defines a Javascript interface in the \texttt{inst/www} directory. Deployment of JAMES relies on the \texttt{OpenCPU} server. In principle, it is enough to install the \texttt{james} package on the \texttt{OpenCPU} server, and will also install all dependencies.
+\begin{itemize}
+\tightlist
+\item
+  The server runs \texttt{Ubuntu\ 18.04} (or later, not tested on Ubuntu 20.04).
+\item
+  The user needs sudo access to the server that run \texttt{OpenCPU}.
+\end{itemize}
+
+\hypertarget{installation-of-james-in}{%
+\section{Installation of JAMES in}\label{installation-of-james-in}}
+
+Here is a set of commands that removes R and its libraries, installs the latest
+R fresh from source, install JAMES and puts the machine to work.
+
+A lot can go wrong. Please be patient to check each step.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#!/bin/bash}
+\CommentTok{\# Re{-}install opencpu{-}server, R and the libs}
+
+\CommentTok{\# make system up to date}
+\FunctionTok{sudo}\NormalTok{ apt{-}get update}
+\FunctionTok{sudo}\NormalTok{ apt{-}get upgrade}
+
+\CommentTok{\# disable opencpu}
+\FunctionTok{sudo}\NormalTok{ a2dissite opencpu}
+\FunctionTok{sudo}\NormalTok{ apachectl restart}
+
+\CommentTok{\# disable pubertyplot \& webtool (only on testserver)}
+\FunctionTok{sudo}\NormalTok{ a2dissite puberty}
+\FunctionTok{sudo}\NormalTok{ a2dissite webtool}
+\FunctionTok{sudo}\NormalTok{ apachectl restart}
+
+\CommentTok{\# save configuration files}
+\FunctionTok{mkdir}\NormalTok{ conf}
+\FunctionTok{cp} \AttributeTok{{-}rv}\NormalTok{ /etc/opencpu/ \textasciitilde{}/conf/}
+\FunctionTok{cp} \AttributeTok{{-}rv}\NormalTok{ /etc/apache2/ \textasciitilde{}/conf/}
+
+\CommentTok{\# uninstall opencpu server \& full}
+\FunctionTok{sudo}\NormalTok{ apt{-}get purge opencpu{-}server}
+\FunctionTok{sudo}\NormalTok{ apt{-}get purge opencpu{-}full}
+
+\CommentTok{\# remove all R libs}
+\ExtensionTok{R} \AttributeTok{{-}e} \StringTok{\textquotesingle{}.libPaths()\textquotesingle{}}
+\FunctionTok{sudo}\NormalTok{ rm }\AttributeTok{{-}rf}\NormalTok{ /usr/local/lib/R/site{-}library}
+\FunctionTok{sudo}\NormalTok{ rm }\AttributeTok{{-}rf}\NormalTok{ /usr/lib/R/site{-}library}
+\FunctionTok{sudo}\NormalTok{ rm }\AttributeTok{{-}rf}\NormalTok{ /usr/lib/R/library}
+
+\CommentTok{\# remove R}
+\FunctionTok{sudo}\NormalTok{ apt{-}get purge r{-}base{-}core}
+\FunctionTok{sudo}\NormalTok{ apt{-}get purge r{-}base}
+\FunctionTok{sudo}\NormalTok{ apt{-}get autoremove}
+
+\CommentTok{\# add backport repositories for Ubuntu packages required by some R packages}
+\FunctionTok{sudo}\NormalTok{ add{-}apt{-}repository }\StringTok{\textquotesingle{}deb https://mirror.nl.datapacket.com/ubuntu/ bionic main\textquotesingle{}}
+\FunctionTok{sudo}\NormalTok{ add{-}apt{-}repository }\StringTok{\textquotesingle{}deb{-}src https://mirror.nl.datapacket.com/ubuntu/ bionic main\textquotesingle{}}
+
+\CommentTok{\# install R. See https://cran.r{-}project.org/bin/linux/ubuntu/}
+\CommentTok{\# update indices}
+\FunctionTok{sudo}\NormalTok{ apt update }\AttributeTok{{-}qq}
+\CommentTok{\# install two helper packages we need}
+\FunctionTok{sudo}\NormalTok{ apt install }\AttributeTok{{-}{-}no{-}install{-}recommends}\NormalTok{ software{-}properties{-}common dirmngr}
+\CommentTok{\# import the signing key (by Michael Rutter) for these repo}
+\FunctionTok{sudo}\NormalTok{ apt{-}key adv }\AttributeTok{{-}{-}keyserver}\NormalTok{ keyserver.ubuntu.com }\AttributeTok{{-}{-}recv{-}keys}\NormalTok{ E298A3A825C0D65DFD57CBB651716619E084DAB9}
+\CommentTok{\# we use R 4.0 (however note this actually installs R 4.1!! (May 2021))}
+\FunctionTok{sudo}\NormalTok{ add{-}apt{-}repository }\StringTok{\textquotesingle{}deb https://cloud.r{-}project.org/bin/linux/ubuntu bionic{-}cran40/\textquotesingle{}}
+\CommentTok{\# in the future: use cran{-}41}
+\FunctionTok{sudo}\NormalTok{ apt install r{-}base}
+\CommentTok{\# install r{-}base{-}dev because we want to compile from source}
+\FunctionTok{sudo}\NormalTok{ apt{-}get install r{-}base{-}dev}
+
+\CommentTok{\# install opencpu{-}server}
+\FunctionTok{sudo}\NormalTok{ add{-}apt{-}repository }\AttributeTok{{-}y}\NormalTok{ ppa:opencpu/opencpu{-}2.2}
+\FunctionTok{sudo}\NormalTok{ apt{-}get update}
+\FunctionTok{sudo}\NormalTok{ apt{-}get upgrade}
+\FunctionTok{sudo}\NormalTok{ apt{-}get install }\AttributeTok{{-}y}\NormalTok{ opencpu{-}server}
+
+\CommentTok{\# restart opencpu}
+\FunctionTok{sudo}\NormalTok{ a2ensite opencpu}
+\FunctionTok{sudo}\NormalTok{ apachectl restart}
+
+\CommentTok{\# manually check https://vps.stefvanbuuren.nl/ocpu }
+\CommentTok{\# or https://www.groeidiagrammen.nl/ocpu}
+
+\CommentTok{\# install application package: pubertyplot {-} only on dev server}
+\FunctionTok{sudo}\NormalTok{ R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}install.packages("/home/stef/packages/pubertyplot\_1.3.tar.gz", repos = NULL)\textquotesingle{}}
+\FunctionTok{sudo}\NormalTok{ a2ensite puberty}
+\FunctionTok{sudo}\NormalTok{ apachectl restart}
+
+\CommentTok{\# install application package: webtool {-} only on dev server}
+\FunctionTok{sudo}\NormalTok{ R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}install.packages("RMySQL")\textquotesingle{}}
+\FunctionTok{sudo}\NormalTok{ R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}install.packages("/home/stef/packages/webtool\_1.1.tar.gz", repos = NULL)\textquotesingle{}}
+\FunctionTok{sudo}\NormalTok{ a2ensite webtool}
+\FunctionTok{sudo}\NormalTok{ apachectl restart}
+
+\CommentTok{\# install JAMES packages {-} this may take a while {-} you need the right priveledges}
+\FunctionTok{sudo}\NormalTok{ R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}install.packages("remotes")\textquotesingle{}}
+\FunctionTok{sudo}\NormalTok{ R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("growthcharts/james")\textquotesingle{}}
+
+\CommentTok{\# remove duplicate packages}
+\CommentTok{\# evade errors: "namespace \textquotesingle{}vctrs\textquotesingle{} 0.3.6 is already loaded, but \textgreater{}= 0.3.8 is required"}
+\FunctionTok{sudo}\NormalTok{ R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remove.packages(c("ellipsis", "pillar", "vctrs"), "/usr/lib/opencpu/library")\textquotesingle{}}
+
+\CommentTok{\# copy back opencpu configuration for JAMES (if they were OK, otherwise tweak)}
+\FunctionTok{sudo}\NormalTok{ rm }\AttributeTok{{-}rf}\NormalTok{ /etc/opencpu}
+\FunctionTok{sudo}\NormalTok{ cp }\AttributeTok{{-}rv}\NormalTok{ \textasciitilde{}/conf/opencpu /etc/opencpu/}
+
+\CommentTok{\# active JAMES}
+\FunctionTok{sudo}\NormalTok{ apachectl restart}
+
+\CommentTok{\# check on https://tnochildhealthstatistics.shinyapps.io/james\_tryout/ }
+
+\CommentTok{\# clean up: delete \textasciitilde{}/conf/ after everything works}
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ /conf}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{dockerfile-for-james}{%
+\chapter{Dockerfile for JAMES}\label{dockerfile-for-james}}
+
+\hypertarget{objective-2}{%
+\section{Objective}\label{objective-2}}
+
+This chapter describes how to build and deploy JAMES as a Docker container.
+
+\hypertarget{pre-requisites-1}{%
+\section{Pre-requisites}\label{pre-requisites-1}}
+
+JAMES is currently constructed from a collection of \texttt{R} packages. The top-level package at \url{https://github.com/growthcharts/james} also defines a Javascript interface in the \texttt{inst/www} directory. Deployment of JAMES relies on the \texttt{OpenCPU} server. In principle, it is enough to install the \texttt{james} package on the \texttt{OpenCPU} server, and will also install all dependencies.
 
 The following is needed to build and run a JAMES image:
 
@@ -698,16 +834,16 @@ The following is needed to build and run a JAMES image:
   \begin{itemize}
   \tightlist
   \item
-    \texttt{stefvanbuuren/chartplotter}
+    \texttt{growthcharts/chartplotter}
   \item
-    \texttt{stefvanbuuren/clopus}
+    \texttt{growthcharts/curvematching}
   \item
-    \texttt{stefvanbuuren/curvematching}
+    \texttt{growthcharts/donorloader}
   \item
-    \texttt{stefvanbuuren/donorloader}
+    \texttt{growthcharts/jamesdocker}
   \end{itemize}
 \item
-  Personal Github token with repo scope from \href{https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line}{here}, Generate a token with only scope repo.
+  If needed, a personal Github token with repo scope from \href{https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line}{here}, Generate a token with only scope repo.
 \item
   Install \texttt{Docker\ Desktop} on your local machine, and run some tutorials
 \end{itemize}
@@ -715,95 +851,17 @@ The following is needed to build and run a JAMES image:
 \hypertarget{dockerfile}{%
 \section{Dockerfile}\label{dockerfile}}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{FROM}\NormalTok{ opencpu/base as intermediate}
-
-\CommentTok{\# install for V8 package}
-\ExtensionTok{RUN}\NormalTok{ apt{-}get update }\KeywordTok{\&\&} \ExtensionTok{apt{-}get}\NormalTok{ install }\AttributeTok{{-}y}\NormalTok{ libnode{-}dev}
-
-\CommentTok{\# repo\_token.txt should be something like "GITHUB\_PAT=624adeaa..."}
-\CommentTok{\# to be able to install packages from private repo\textquotesingle{}s}
-\ExtensionTok{COPY}\NormalTok{ repo\_token.txt .Renviron}
-
-\CommentTok{\# install R packages needed for JAMES}
-\ExtensionTok{RUN} \DataTypeTok{\textbackslash{}}
-\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}install.packages("remotes")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
-\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/clopus")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
-\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/dscore")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
-\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/chartbox")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
-\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/brokenstick")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
-\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/minihealth")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
-\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/jamestest")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
-\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/growthscreener")\textquotesingle{}} \DataTypeTok{\textbackslash{}}
-\NormalTok{    R }\AttributeTok{{-}e} \StringTok{\textquotesingle{}remotes::install\_github("stefvanbuuren/james")\textquotesingle{}}
-
-\CommentTok{\# rebuild layer without .Renviron}
-\ExtensionTok{FROM}\NormalTok{ opencpu/base}
-
-\ExtensionTok{LABEL}\NormalTok{ maintainer=}\StringTok{"stef.vanbuuren@tno.nl"} 
-
-\CommentTok{\# re{-}install for V8 package}
-\ExtensionTok{RUN}\NormalTok{ apt{-}get update }\KeywordTok{\&\&} \ExtensionTok{apt{-}get}\NormalTok{ install }\AttributeTok{{-}y}\NormalTok{ libnode{-}dev}
-
-\CommentTok{\# copy R libraries}
-\ExtensionTok{COPY} \AttributeTok{{-}{-}from}\OperatorTok{=}\NormalTok{intermediate /usr/local/lib/R/site{-}library /usr/local/lib/R/site{-}library}
-
-\CommentTok{\# modify preload section}
-\ExtensionTok{COPY}\NormalTok{ james.conf /etc/opencpu/server.conf.d/james.conf}
-
-\CommentTok{\# install Arial}
-\ExtensionTok{RUN}\NormalTok{ mkdir /usr/share/fonts/truetype/arial/}
-\ExtensionTok{COPY}\NormalTok{ fonts/truetype/arial/}\PreprocessorTok{*}\NormalTok{ /usr/share/fonts/truetype/arial/}
-
-\ExtensionTok{CMD}\NormalTok{ service cron start }\KeywordTok{\&\&} \ExtensionTok{apachectl} \AttributeTok{{-}DFOREGROUND}
-\end{Highlighting}
-\end{Shaded}
+The Dockerfile is at \url{https://raw.githubusercontent.com/growthcharts/jamesdocker/master/Dockerfile}, which is located in the private repo \url{https://github.com/growthcharts/jamesdocker}. You need authentication to use this resource.
 
 \begin{itemize}
 \tightlist
 \item
-  Create a fresh directory, and \texttt{cd} to this directory in your terminal
+  Clone the \texttt{growthcharts/jamesdocker} repo to your machine
 \item
-  Store the script given above in a file named \texttt{Dockerfile}
+  Set working directory to root of \texttt{jamesdocker}
 \item
-  Create a file named \texttt{repo\_token.txt} with one line: \texttt{GITHUB\_PAT=624adeaa...} with your token
-\item
-  Create \texttt{fonts/truetype/arial} with the proper \texttt{ttf} files
-\item
-  Create a file \texttt{james.conf} specifying the preload libraries
+  If needed: Add the file \texttt{docker/opencpu\_config/Renviron} with contents \texttt{GITHUB\_PAT=fa2...} with your own GITHUB\_PAT.
 \end{itemize}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{\{}
-    \StringTok{"enable.api.library"}\ExtensionTok{:}\NormalTok{ true,}
-    \StringTok{"enable.api.apps"}\ExtensionTok{:}\NormalTok{ true,}
-    \StringTok{"enable.api.user"}\ExtensionTok{:}\NormalTok{ true,}
-    \StringTok{"enable.api.tmp"}\ExtensionTok{:}\NormalTok{ true,}
-    \StringTok{"enable.cors"}\NormalTok{ : true,}
-    \StringTok{"enable.post.code"}\ExtensionTok{:}\NormalTok{ true,}
-    \StringTok{"enable.rlimits"}\NormalTok{ : true,}
-    \StringTok{"error.showcall"}\ExtensionTok{:}\NormalTok{ true,}
-    \StringTok{"smtp.server"}\NormalTok{ : }\StringTok{"localhost"}\NormalTok{,}
-    \StringTok{"smtp.use.ssl"}\NormalTok{ : }\StringTok{"no"}\NormalTok{,}
-    \StringTok{"httpcache.post"}\ExtensionTok{:}\NormalTok{ 300,}
-    \StringTok{"httpcache.lib"}\ExtensionTok{:}\NormalTok{ 86400,}
-    \StringTok{"httpcache.apps"}\ExtensionTok{:}\NormalTok{ 900,}
-    \StringTok{"httpcache.tmp"}\ExtensionTok{:}\NormalTok{ 86400,}
-    \StringTok{"httpcache.static"}\ExtensionTok{:}\NormalTok{ 31536000,}
-    \StringTok{"key.length"}\NormalTok{ : 13,}
-    \StringTok{"repos"}\ExtensionTok{:} \StringTok{"https://cran.rstudio.com"}\NormalTok{,}
-    \StringTok{"rlimit.as"}\ExtensionTok{:}\NormalTok{ 4e9,}
-    \StringTok{"rlimit.fsize"}\ExtensionTok{:}\NormalTok{ 1e9,}
-    \StringTok{"rlimit.nproc"}\ExtensionTok{:}\NormalTok{ 500,}
-    \StringTok{"timelimit.get"}\ExtensionTok{:}\NormalTok{ 60,}
-    \StringTok{"timelimit.post"}\ExtensionTok{:}\NormalTok{ 90,}
-    \StringTok{"timelimit.webhook"}\ExtensionTok{:}\NormalTok{ 900,}
-    \StringTok{"preload"}\ExtensionTok{:}\NormalTok{ [}\StringTok{"clopus"}\NormalTok{, }\StringTok{"donorloader"}\NormalTok{, }\StringTok{"chartbox"}\NormalTok{, }\StringTok{"brokenstick"}\NormalTok{, }\StringTok{"minihealth"}\NormalTok{, }\StringTok{"growthscreener"}\NormalTok{, }\StringTok{"james"}\NormalTok{]}
-\KeywordTok{\}}
-\end{Highlighting}
-\end{Shaded}
 
 \hypertarget{docker-commands}{%
 \section{Docker commands}\label{docker-commands}}
@@ -816,7 +874,7 @@ Build the \texttt{james} image, type in a terminal
 \end{Highlighting}
 \end{Shaded}
 
-This may takes a long time (30 minutes), in which the entire application is downloaded from various web-locations. After (hopefully succesful) completion, check the image
+This may takes a long time (30 minutes), in which the entire application is downloaded from various web-locations. After (hopefully successful) completion, check the image
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -917,6 +975,139 @@ See also \url{https://registry.hub.docker.com/r/opencpu/rstudio}
 \item
   The container is shielded from the machine on which it runs. However, the materials within the container are only protected by \texttt{R\_LIMITS}. In general, for production it is wise to add restriction on the \texttt{OpenCPU} server.
 \end{enumerate}
+
+\hypertarget{certificates}{%
+\chapter{Certificates}\label{certificates}}
+
+\hypertarget{objective-3}{%
+\section{Objective}\label{objective-3}}
+
+The use of \texttt{htpps} requires that Apache runs with proper and validated certificates. Users can assess the status of the certificate by clicking on the slot in the browser bar. Certificates are issues by a Certificate Authority (CA) and are valid for one year. The period of one year is just enough to forget how to install and update certificates. This text shows how to renew the certificate.
+
+\hypertarget{vps.stefvanbuuren.nl}{%
+\section{vps.stefvanbuuren.nl}\label{vps.stefvanbuuren.nl}}
+
+The server runs \texttt{Ubuntu\ 18.04\ LTS}. The Apache configuration file \texttt{/etc/apache2/sites-enabled/default-ssl.conf} contains the following lines
+
+\begin{Shaded}
+\begin{Highlighting}[]
+        \ExtensionTok{SSLCertificateFile}\NormalTok{  /etc/ssl/crt/vps.stefvanbuuren.nl.chained.crt}
+        \ExtensionTok{SSLCertificateKeyFile}\NormalTok{   /etc/ssl/crt/vps.stefvanbuuren.nl.key}
+\end{Highlighting}
+\end{Shaded}
+
+The file \texttt{.key} is the private key, which should not leave the machine and only be read/write by sudoers. The file \texttt{..chained.crt} is the certificate file, which needs to be updated after expiry. There is some hand work involved in creating this file.
+
+\hypertarget{step-1-create-the-csr-file}{%
+\subsection{Step 1: Create the CSR file}\label{step-1-create-the-csr-file}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ssh}\NormalTok{ into vps.stefvanbuuren.nl}
+\BuiltInTok{cd}\NormalTok{ /etc/ssl/crt}
+\ExtensionTok{openssl}\NormalTok{ req }\AttributeTok{{-}new} \AttributeTok{{-}newkey}\NormalTok{ rsa:2048 }\AttributeTok{{-}nodes} \AttributeTok{{-}keyout}\NormalTok{ vps.stefvanbuuren.nl.key }\AttributeTok{{-}out}\NormalTok{ vps.stefvanbuuren.nl.csr}
+\end{Highlighting}
+\end{Shaded}
+
+You need to answer some questions (See \url{http://edtechchris.com/2020/02/11/generate-csr-with-openssl-on-ubuntu/}). Show the result:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{ vps.stefvanbuuren.nl.csr}
+\end{Highlighting}
+\end{Shaded}
+
+Copy the contents of the CSR file onto the clipboard. Save also on desktop under \texttt{Package/james/certificates\_vps.stefvanbuuren.nl/\{expiryyear\}} for archiving.
+
+\hypertarget{step-2-buy-new-certificate}{%
+\subsection{Step 2: Buy new certificate}\label{step-2-buy-new-certificate}}
+
+The current CA is Network Solutions. Log into their website, and pay their renewal fee (about \$86 per year). Select Apache/Ubuntu, paste CSR clipboard file into appropriate box, and submit.
+
+Within 30 minutes you get a request to validate in the mailbox. After that is done, you get a new mail saying that certificates are available. Download everything.
+
+\hypertarget{step-3-create-the-crt-file}{%
+\subsection{Step 3: Create the crt file}\label{step-3-create-the-crt-file}}
+
+Collect the following four files into \texttt{Package/james/certificates\_vps.stefvanbuuren.nl/\{expiryyear\}}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{dv\_chain.txt}
+\ExtensionTok{DV\_NetworkSolutionsDVServerCA2.crt}
+\ExtensionTok{DV\_USERTrustRSACertificationAuthority.crt}
+\ExtensionTok{VPS.STEFVANBUUREN.NL.crt}
+\end{Highlighting}
+\end{Shaded}
+
+Create a new file as follows:
+
+\begin{itemize}
+\tightlist
+\item
+  Open with text editor \texttt{dv\_chain.txt} and \texttt{VPS.STEFVANBUUREN.NL.crt}
+\item
+  Paste the contents of \texttt{VPS.STEFVANBUUREN.NL.crt} \emph{before} the contents of \texttt{dv\_chain.txt}. There will be three sections.
+\item
+  Save the result under file name \texttt{vps.stefvanbuuren.nl.chained.crt}
+\end{itemize}
+
+\hypertarget{step-4-transfer-to-server}{%
+\subsection{Step 4: Transfer to server}\label{step-4-transfer-to-server}}
+
+Copy the file onto the server, home directory, by \texttt{ftp}. Move it in place by
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo}\NormalTok{ mv vps.stefvanbuuren.nl.chained.crt /etc/ssl/crt/vps.stefvanbuuren.nl.chained.crt}
+\end{Highlighting}
+\end{Shaded}
+
+This overwrites the expired certificate.
+
+\hypertarget{step-5-restart-apache2}{%
+\subsection{Step 5: Restart Apache2}\label{step-5-restart-apache2}}
+
+If you changed \texttt{/etc/apache2/sites-enabled/default-ssl.conf} check for syntactic validity.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apachectl}\NormalTok{ configtest}
+\end{Highlighting}
+\end{Shaded}
+
+If OK, then
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo}\NormalTok{ apachectl restart}
+\end{Highlighting}
+\end{Shaded}
+
+If all is well, Apache restarts and uses the updated certificate.
+
+\hypertarget{troubleshooting}{%
+\subsection{Troubleshooting}\label{troubleshooting}}
+
+If it doesn't work, check whether the results of the following statements are identical.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{openssl}\NormalTok{ x509 }\AttributeTok{{-}noout} \AttributeTok{{-}modulus} \AttributeTok{{-}in}\NormalTok{ vps.stefvanbuuren.nl.chained.crt }\KeywordTok{|} \ExtensionTok{openssl}\NormalTok{ md5}
+\FunctionTok{sudo}\NormalTok{ openssl rsa }\AttributeTok{{-}noout} \AttributeTok{{-}modulus} \AttributeTok{{-}in}\NormalTok{ vps.stefvanbuuren.nl.key }\KeywordTok{|} \ExtensionTok{openssl}\NormalTok{ md5}
+\end{Highlighting}
+\end{Shaded}
+
+If not, there is a mismatch between private key and certificate. See \url{https://stackoverflow.com/questions/26191463/ssl-error0b080074x509-certificate-routinesx509-check-private-keykey-values?rq=1} for fixes.
+
+For others errors, consult the standard log
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo}\NormalTok{ tail }\AttributeTok{{-}f}\NormalTok{ /var/log/apache2/error.log}
+\end{Highlighting}
+\end{Shaded}
+
 
   \bibliography{book.bib,packages.bib}
 

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>References | JAMES internals</title>
   <meta name="description" content="Minimal documentation of JAMES internals." />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="References | JAMES internals" />
   <meta property="og:type" content="book" />
@@ -24,16 +24,16 @@
 <meta name="author" content="Stef van Buuren" />
 
 
-<meta name="date" content="2021-05-18" />
+<meta name="date" content="2021-06-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="dockerfile-for-james.html"/>
+<link rel="prev" href="certificates.html"/>
 
-<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,6 +51,8 @@
 
 
 
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -118,6 +120,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -160,6 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="james-data-format.html"><a href="james-data-format.html#bds-elements"><i class="fa fa-check"></i><b>2.3</b> BDS-elements</a></li>
 <li class="chapter" data-level="2.4" data-path="james-data-format.html"><a href="james-data-format.html#error-checking"><i class="fa fa-check"></i><b>2.4</b> Error checking</a></li>
+<li class="chapter" data-level="2.5" data-path="james-data-format.html"><a href="james-data-format.html#note-added-june-2-2021"><i class="fa fa-check"></i><b>2.5</b> Note (added June 2, 2021)</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html"><i class="fa fa-check"></i><b>3</b> Growth charts in JAMES</a>
 <ul>
@@ -170,14 +196,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="d-score-implementation.html"><a href="d-score-implementation.html#actions"><i class="fa fa-check"></i><b>5.1</b> Actions</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html"><i class="fa fa-check"></i><b>6</b> Dockerfile for JAMES</a>
+<li class="chapter" data-level="6" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html"><i class="fa fa-check"></i><b>6</b> OpenCPU deployment</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#objective-1"><i class="fa fa-check"></i><b>6.1</b> Objective</a></li>
-<li class="chapter" data-level="6.2" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#pre-requisites"><i class="fa fa-check"></i><b>6.2</b> Pre-requisites</a></li>
-<li class="chapter" data-level="6.3" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#dockerfile"><i class="fa fa-check"></i><b>6.3</b> Dockerfile</a></li>
-<li class="chapter" data-level="6.4" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#docker-commands"><i class="fa fa-check"></i><b>6.4</b> Docker commands</a></li>
-<li class="chapter" data-level="6.5" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#checks-with-the-browser"><i class="fa fa-check"></i><b>6.5</b> Checks with the browser</a></li>
-<li class="chapter" data-level="6.6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#security"><i class="fa fa-check"></i><b>6.6</b> Security</a></li>
+<li class="chapter" data-level="6.1" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#objective-1"><i class="fa fa-check"></i><b>6.1</b> Objective</a></li>
+<li class="chapter" data-level="6.2" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#pre-requisites"><i class="fa fa-check"></i><b>6.2</b> Pre-requisites</a></li>
+<li class="chapter" data-level="6.3" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#installation-of-james-in"><i class="fa fa-check"></i><b>6.3</b> Installation of JAMES in</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html"><i class="fa fa-check"></i><b>7</b> Dockerfile for JAMES</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#objective-2"><i class="fa fa-check"></i><b>7.1</b> Objective</a></li>
+<li class="chapter" data-level="7.2" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#pre-requisites-1"><i class="fa fa-check"></i><b>7.2</b> Pre-requisites</a></li>
+<li class="chapter" data-level="7.3" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#dockerfile"><i class="fa fa-check"></i><b>7.3</b> Dockerfile</a></li>
+<li class="chapter" data-level="7.4" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#docker-commands"><i class="fa fa-check"></i><b>7.4</b> Docker commands</a></li>
+<li class="chapter" data-level="7.5" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#checks-with-the-browser"><i class="fa fa-check"></i><b>7.5</b> Checks with the browser</a></li>
+<li class="chapter" data-level="7.6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#security"><i class="fa fa-check"></i><b>7.6</b> Security</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="certificates.html"><a href="certificates.html"><i class="fa fa-check"></i><b>8</b> Certificates</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="certificates.html"><a href="certificates.html#objective-3"><i class="fa fa-check"></i><b>8.1</b> Objective</a></li>
+<li class="chapter" data-level="8.2" data-path="certificates.html"><a href="certificates.html#vps.stefvanbuuren.nl"><i class="fa fa-check"></i><b>8.2</b> vps.stefvanbuuren.nl</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="certificates.html"><a href="certificates.html#step-1-create-the-csr-file"><i class="fa fa-check"></i><b>8.2.1</b> Step 1: Create the CSR file</a></li>
+<li class="chapter" data-level="8.2.2" data-path="certificates.html"><a href="certificates.html#step-2-buy-new-certificate"><i class="fa fa-check"></i><b>8.2.2</b> Step 2: Buy new certificate</a></li>
+<li class="chapter" data-level="8.2.3" data-path="certificates.html"><a href="certificates.html#step-3-create-the-crt-file"><i class="fa fa-check"></i><b>8.2.3</b> Step 3: Create the crt file</a></li>
+<li class="chapter" data-level="8.2.4" data-path="certificates.html"><a href="certificates.html#step-4-transfer-to-server"><i class="fa fa-check"></i><b>8.2.4</b> Step 4: Transfer to server</a></li>
+<li class="chapter" data-level="8.2.5" data-path="certificates.html"><a href="certificates.html#step-5-restart-apache2"><i class="fa fa-check"></i><b>8.2.5</b> Step 5: Restart Apache2</a></li>
+<li class="chapter" data-level="8.2.6" data-path="certificates.html"><a href="certificates.html#troubleshooting"><i class="fa fa-check"></i><b>8.2.6</b> Troubleshooting</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -204,10 +249,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>References</h1>
 
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-bocca2012" class="csl-entry">
+<div class="csl-entry">
 Bocca-Tjeertes, I. F. A., S. van Buuren, A. F. Bos, J. M. Kerstens, E. M. ten Vergert, and Reijneveld.S. A. 2012. <span>“Growth of Preterm and Fullterm Children Aged 0-4 Years: Integrating Median Growth and Variability in Growth Charts.”</span> <em>Journal of Pediatrics</em> 161 (3): 460–65.
 </div>
-<div id="ref-talma2010" class="csl-entry">
+<div class="csl-entry">
 Talma, H., Y. Schonbeck, B. Bakker, R. A. Hirasing, and S. van Buuren. 2010. <em>Groeidiagrammen 2010: Handleiding Bij Het Meten En Wegen van Kinderen En Het Invullen van Groeidiagrammen</em>. Leiden: TNO Kwaliteit van Leven.
 </div>
 </div>
@@ -217,7 +262,7 @@ Talma, H., Y. Schonbeck, B. Bakker, R. A. Hirasing, and S. van Buuren. 2010. <em
           </div>
         </div>
       </div>
-<a href="dockerfile-for-james.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="certificates.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
@@ -241,6 +286,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {

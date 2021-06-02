@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 Growth charts in JAMES | JAMES internals</title>
   <meta name="description" content="Minimal documentation of JAMES internals." />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Growth charts in JAMES | JAMES internals" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Stef van Buuren" />
 
 
-<meta name="date" content="2021-05-18" />
+<meta name="date" content="2021-06-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
   
 <link rel="prev" href="james-data-format.html"/>
 <link rel="next" href="methods.html"/>
-<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,6 +51,8 @@
 
 
 
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -118,6 +120,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -160,6 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="james-data-format.html"><a href="james-data-format.html#bds-elements"><i class="fa fa-check"></i><b>2.3</b> BDS-elements</a></li>
 <li class="chapter" data-level="2.4" data-path="james-data-format.html"><a href="james-data-format.html#error-checking"><i class="fa fa-check"></i><b>2.4</b> Error checking</a></li>
+<li class="chapter" data-level="2.5" data-path="james-data-format.html"><a href="james-data-format.html#note-added-june-2-2021"><i class="fa fa-check"></i><b>2.5</b> Note (added June 2, 2021)</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html"><i class="fa fa-check"></i><b>3</b> Growth charts in JAMES</a>
 <ul>
@@ -170,14 +196,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="d-score-implementation.html"><a href="d-score-implementation.html#actions"><i class="fa fa-check"></i><b>5.1</b> Actions</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html"><i class="fa fa-check"></i><b>6</b> Dockerfile for JAMES</a>
+<li class="chapter" data-level="6" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html"><i class="fa fa-check"></i><b>6</b> OpenCPU deployment</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#objective-1"><i class="fa fa-check"></i><b>6.1</b> Objective</a></li>
-<li class="chapter" data-level="6.2" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#pre-requisites"><i class="fa fa-check"></i><b>6.2</b> Pre-requisites</a></li>
-<li class="chapter" data-level="6.3" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#dockerfile"><i class="fa fa-check"></i><b>6.3</b> Dockerfile</a></li>
-<li class="chapter" data-level="6.4" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#docker-commands"><i class="fa fa-check"></i><b>6.4</b> Docker commands</a></li>
-<li class="chapter" data-level="6.5" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#checks-with-the-browser"><i class="fa fa-check"></i><b>6.5</b> Checks with the browser</a></li>
-<li class="chapter" data-level="6.6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#security"><i class="fa fa-check"></i><b>6.6</b> Security</a></li>
+<li class="chapter" data-level="6.1" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#objective-1"><i class="fa fa-check"></i><b>6.1</b> Objective</a></li>
+<li class="chapter" data-level="6.2" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#pre-requisites"><i class="fa fa-check"></i><b>6.2</b> Pre-requisites</a></li>
+<li class="chapter" data-level="6.3" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#installation-of-james-in"><i class="fa fa-check"></i><b>6.3</b> Installation of JAMES in</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html"><i class="fa fa-check"></i><b>7</b> Dockerfile for JAMES</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#objective-2"><i class="fa fa-check"></i><b>7.1</b> Objective</a></li>
+<li class="chapter" data-level="7.2" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#pre-requisites-1"><i class="fa fa-check"></i><b>7.2</b> Pre-requisites</a></li>
+<li class="chapter" data-level="7.3" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#dockerfile"><i class="fa fa-check"></i><b>7.3</b> Dockerfile</a></li>
+<li class="chapter" data-level="7.4" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#docker-commands"><i class="fa fa-check"></i><b>7.4</b> Docker commands</a></li>
+<li class="chapter" data-level="7.5" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#checks-with-the-browser"><i class="fa fa-check"></i><b>7.5</b> Checks with the browser</a></li>
+<li class="chapter" data-level="7.6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#security"><i class="fa fa-check"></i><b>7.6</b> Security</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="certificates.html"><a href="certificates.html"><i class="fa fa-check"></i><b>8</b> Certificates</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="certificates.html"><a href="certificates.html#objective-3"><i class="fa fa-check"></i><b>8.1</b> Objective</a></li>
+<li class="chapter" data-level="8.2" data-path="certificates.html"><a href="certificates.html#vps.stefvanbuuren.nl"><i class="fa fa-check"></i><b>8.2</b> vps.stefvanbuuren.nl</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="certificates.html"><a href="certificates.html#step-1-create-the-csr-file"><i class="fa fa-check"></i><b>8.2.1</b> Step 1: Create the CSR file</a></li>
+<li class="chapter" data-level="8.2.2" data-path="certificates.html"><a href="certificates.html#step-2-buy-new-certificate"><i class="fa fa-check"></i><b>8.2.2</b> Step 2: Buy new certificate</a></li>
+<li class="chapter" data-level="8.2.3" data-path="certificates.html"><a href="certificates.html#step-3-create-the-crt-file"><i class="fa fa-check"></i><b>8.2.3</b> Step 3: Create the crt file</a></li>
+<li class="chapter" data-level="8.2.4" data-path="certificates.html"><a href="certificates.html#step-4-transfer-to-server"><i class="fa fa-check"></i><b>8.2.4</b> Step 4: Transfer to server</a></li>
+<li class="chapter" data-level="8.2.5" data-path="certificates.html"><a href="certificates.html#step-5-restart-apache2"><i class="fa fa-check"></i><b>8.2.5</b> Step 5: Restart Apache2</a></li>
+<li class="chapter" data-level="8.2.6" data-path="certificates.html"><a href="certificates.html#troubleshooting"><i class="fa fa-check"></i><b>8.2.6</b> Troubleshooting</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -204,8 +249,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 3</span> Growth charts in JAMES</h1>
 <div id="chart-naming-conventions" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Chart naming conventions</h2>
-<p>The link <a href="https://groeidiagrammen.nl/ocpu/lib/james/www/" class="uri">https://groeidiagrammen.nl/ocpu/lib/james/www/</a> contains an interactive overview of the available growth charts. There are 342 different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart has a chart code, a character code identifying the design. This section explains the construction of the chart codes.</p>
-<p>The GitHub repository <a href="https://github.com/stefvanbuuren/chartbox" class="uri">https://github.com/stefvanbuuren/chartbox</a> contains the chart libraries that are available to JAMES. The <code>list_charts()</code> function produces a tabular overview.</p>
+<p>The link <a href="https://groeidiagrammen.nl/ocpu/lib/james/www/" class="uri">https://groeidiagrammen.nl/ocpu/lib/james/www/</a> contains an interactive overview of the available growth charts. There are many different charts: for boys and girls, for preterms, for different age ranges, for specific ethnic groups, for height, weight, BMI, and so on. Each chart has a chart code, a character code identifying the design. This section explains the construction of the chart codes.</p>
+<p>The GitHub repository <a href="https://github.com/growthcharts/chartbox" class="uri">https://github.com/growthcharts/chartbox</a> contains the chart libraries that are available to JAMES. The <code>list_charts()</code> function produces a tabular overview.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="growth-charts-in-james.html#cb1-1" aria-hidden="true" tabindex="-1"></a>charts <span class="ot">&lt;-</span> chartbox<span class="sc">::</span><span class="fu">list_charts</span>()</span>
 <span id="cb1-2"><a href="growth-charts-in-james.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(charts)</span></code></pre></div>
 <pre><code>## [1] 394   8</code></pre>
@@ -222,7 +267,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <thead>
 <tr class="header">
 <th align="left">Chart Group</th>
-<th align="right">Charts</th>
+<th align="right">N</th>
 <th align="left">Chart code</th>
 <th align="left">Description</th>
 <th align="left">Source</th>
@@ -231,17 +276,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tbody>
 <tr class="odd">
 <td align="left"><code>nl2010</code></td>
-<td align="right">136</td>
+<td align="right">140</td>
 <td align="left">CCCC</td>
 <td align="left">Dutch children 0-21 years, including minorities</td>
-<td align="left"><span class="citation"><a href="references.html#ref-talma2010" role="doc-biblioref">Talma et al.</a> (<a href="references.html#ref-talma2010" role="doc-biblioref">2010</a>)</span></td>
+<td align="left"><span class="citation"><a href="#ref-talma2010" role="doc-biblioref">Talma et al.</a> (<a href="#ref-talma2010" role="doc-biblioref">2010</a>)</span></td>
 </tr>
 <tr class="even">
 <td align="left"><code>preterm</code></td>
-<td align="right">192</td>
+<td align="right">240</td>
 <td align="left">CCCCCNN</td>
 <td align="left">Dutch preterms, ga &lt;= 36 weeks, 0-4 years</td>
-<td align="left"><span class="citation"><a href="references.html#ref-bocca2012" role="doc-biblioref">Bocca-Tjeertes et al.</a> (<a href="references.html#ref-bocca2012" role="doc-biblioref">2012</a>)</span></td>
+<td align="left"><span class="citation"><a href="#ref-bocca2012" role="doc-biblioref">Bocca-Tjeertes et al.</a> (<a href="#ref-bocca2012" role="doc-biblioref">2012</a>)</span></td>
 </tr>
 <tr class="odd">
 <td align="left"><code>who</code></td>
@@ -362,52 +407,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td align="center"></td>
 <td align="left"></td>
+<td align="left">D</td>
+<td align="left">square, <code>dsc</code></td>
+</tr>
+<tr class="even">
+<td align="center"></td>
+<td align="left"></td>
 <td align="left">H</td>
 <td align="left">square, <code>hgt</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="center"></td>
 <td align="left"></td>
 <td align="left">O</td>
 <td align="left">square, <code>hdc</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="center"></td>
 <td align="left"></td>
 <td align="left">Q</td>
 <td align="left">square, <code>bmi</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="center"></td>
 <td align="left"></td>
 <td align="left">R</td>
 <td align="left">square, <code>wfh</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="center"></td>
 <td align="left"></td>
 <td align="left">W</td>
 <td align="left">square, <code>wgt</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="center"></td>
 <td align="left"></td>
 <td align="left">X</td>
 <td align="left">A4, double sided</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="center">5</td>
 <td align="left">Language</td>
 <td align="left">N</td>
 <td align="left">Dutch</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="center"></td>
 <td align="left"></td>
 <td align="left">E</td>
 <td align="left">English</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="center">6-7</td>
 <td align="left">Week</td>
 <td align="left">25-36</td>
@@ -416,7 +467,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p>For illustration, code <code>NJAA</code> references to Dutch (<code>N</code>), boys (<code>J</code>), 0-15 month (<code>A</code>), front side (<code>A</code>). Likewise, <code>PMEAN33</code> codes for the chart of preterm (<code>M</code>), girls (<code>M</code>), 0-4 years (<code>E</code>), front side (<code>A</code>), Dutch language (<code>N</code>) born at 33 weeks of gestation (<code>33</code>).</p>
-<p>Some forms hold multiple growth charts. For example, the <code>NJAA</code> chart is designed for A4 paper size (297mm <span class="math inline">\(\times\)</span> 210mm) and contains three growth charts: head circumference by age, length by age, and weight by age. Some others have no diagram, like <code>NJAB</code> with explanations. All square formats hold one growth chart. All of the square forms have equal sizes (160mm <span class="math inline">\(\times\)</span> 160mm).</p>
+<p>Some forms hold multiple growth charts. For example, the <code>NJAA</code> chart is designed for A4 paper size (297mm <span class="math inline">\(\times\)</span> 210mm) and contains three growth charts: head circumference by age, length by age, and weight by age. Some others have no diagram, like <code>NJAB</code>. All square formats hold just one growth chart. All of the square forms have equal sizes (160mm <span class="math inline">\(\times\)</span> 160mm).</p>
 <p>The following table lists the measures per design-form combination.</p>
 <table>
 <thead>
@@ -450,49 +501,61 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="center"></td>
 <td align="center">B</td>
 <td align="left"></td>
-<td align="left"></td>
+<td align="left">Backside explanations</td>
 </tr>
 <tr class="odd">
+<td align="center"></td>
+<td align="center">D</td>
+<td align="left"><code>dsc</code></td>
+<td align="left">D-score by age, 0-15 mo</td>
+</tr>
+<tr class="even">
 <td align="center"></td>
 <td align="center">H</td>
 <td align="left"><code>hgt</code></td>
 <td align="left">Length by age, 0-15 mo</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="center"></td>
 <td align="center">O</td>
 <td align="left"><code>hdc</code></td>
 <td align="left">Head circumference by age, 0-15 mo</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="center"></td>
 <td align="center">W</td>
 <td align="left"><code>wgt</code></td>
 <td align="left">Weight by age, 0-15 mo</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="center">B</td>
 <td align="center">A</td>
 <td align="left"><code>wfh</code></td>
 <td align="left">Weight for height, 0-4 yr</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="center"></td>
 <td align="center"></td>
 <td align="left"><code>hgt</code></td>
 <td align="left">Length by age, 0-4 yr</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="center"></td>
 <td align="center">B</td>
 <td align="left"><code>hdc</code></td>
 <td align="left">Head circumference by age, 0-4 yr</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="center"></td>
 <td align="center">C</td>
 <td align="left"></td>
-<td align="left"></td>
+<td align="left">Backside explanations</td>
+</tr>
+<tr class="odd">
+<td align="center"></td>
+<td align="center">D</td>
+<td align="left"><code>dsc</code></td>
+<td align="left">D-score by age, 0-4 yr</td>
 </tr>
 <tr class="even">
 <td align="center"></td>
@@ -613,6 +676,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </div>
 </div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-bocca2012" class="csl-entry">
+Bocca-Tjeertes, I. F. A., S. van Buuren, A. F. Bos, J. M. Kerstens, E. M. ten Vergert, and Reijneveld.S. A. 2012. <span>“Growth of Preterm and Fullterm Children Aged 0-4 Years: Integrating Median Growth and Variability in Growth Charts.”</span> <em>Journal of Pediatrics</em> 161 (3): 460–65.
+</div>
+<div id="ref-talma2010" class="csl-entry">
+Talma, H., Y. Schonbeck, B. Bakker, R. A. Hirasing, and S. van Buuren. 2010. <em>Groeidiagrammen 2010: Handleiding Bij Het Meten En Wegen van Kinderen En Het Invullen van Groeidiagrammen</em>. Leiden: TNO Kwaliteit van Leven.
+</div>
+</div>
             </section>
 
           </div>
@@ -642,6 +714,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {

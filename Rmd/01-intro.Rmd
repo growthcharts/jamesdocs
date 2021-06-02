@@ -23,7 +23,7 @@ JAMES provides its services through [OpenCPU](https://www.opencpu.org), an open 
 The contents of the system consist of two parts:
 
 - **JAMES**: A collection of R packages that provides back-end functionality
-- **JESSE**: A gateway front-end JAMES that translates incoming and outcoming requests
+- **JESSE**: A gateway front-end JAMES that translates incoming and outcoming requests (not yet realised)
 
 ## R packages
 
@@ -56,10 +56,10 @@ Support packages produce half-fabricated materials, provide testing or store doc
 |:--------|:-----|:-------------------------------------------------------|
 | [`donordata`](https://github.com/stefvanbuuren/donordata) | N | Longitudinal Data for Curve Matching |
 | [`chartdesigner`](https://github.com/stefvanbuuren/chartdesigner) | N | Design Growth Charts for JAMES |
-| [`gateway`](https://github.com/stefvanbuuren/gateway) | Y | Entry to TNO online analytic growth modules |
-| [`jamesdocker`](https://github.com/stefvanbuuren/jamesdocker) | Y | JAMES Docker API |
+| [`gateway`](https://github.com/stefvanbuuren/gateway) | N | Entry to TNO online analytic growth modules |
+| [`jamesdocker`](https://github.com/growtcharts/jamesdocker) | N | JAMES Docker API |
 | [`bdsschema`](https://github.com/stefvanbuuren/bdsschema) | Y | Data Exchange Tools for the Basisdataset JGZ |
-| [`jamestest`](https://github.com/stefvanbuuren/jamestest) | Y | Shiny app to test JAMES |
+| [`jamesdemo`](https://github.com/growthcharts/jamesdemo) | Y | App to interact with the JAMES chart site |
 | [`minihealth`](https://github.com/stefvanbuuren/minihealth) | Y | Mini Dossier for Individual Health Data |
 | [`clopus`](https://github.com/stefvanbuuren/clopus) | N | Growth reference library |
 | [`jamesdocs`](https://github.com/stefvanbuuren/jamesdocs) | Y | JAMES internals |

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 D-score implementation | JAMES internals</title>
   <meta name="description" content="Minimal documentation of JAMES internals." />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 D-score implementation | JAMES internals" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Stef van Buuren" />
 
 
-<meta name="date" content="2021-05-18" />
+<meta name="date" content="2021-06-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,8 +32,8 @@
   
   
 <link rel="prev" href="methods.html"/>
-<link rel="next" href="dockerfile-for-james.html"/>
-<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<link rel="next" href="opencpu-deployment.html"/>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,6 +51,8 @@
 
 
 
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -118,6 +120,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -160,6 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="james-data-format.html"><a href="james-data-format.html#bds-elements"><i class="fa fa-check"></i><b>2.3</b> BDS-elements</a></li>
 <li class="chapter" data-level="2.4" data-path="james-data-format.html"><a href="james-data-format.html#error-checking"><i class="fa fa-check"></i><b>2.4</b> Error checking</a></li>
+<li class="chapter" data-level="2.5" data-path="james-data-format.html"><a href="james-data-format.html#note-added-june-2-2021"><i class="fa fa-check"></i><b>2.5</b> Note (added June 2, 2021)</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html"><i class="fa fa-check"></i><b>3</b> Growth charts in JAMES</a>
 <ul>
@@ -170,14 +196,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="d-score-implementation.html"><a href="d-score-implementation.html#actions"><i class="fa fa-check"></i><b>5.1</b> Actions</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html"><i class="fa fa-check"></i><b>6</b> Dockerfile for JAMES</a>
+<li class="chapter" data-level="6" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html"><i class="fa fa-check"></i><b>6</b> OpenCPU deployment</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#objective-1"><i class="fa fa-check"></i><b>6.1</b> Objective</a></li>
-<li class="chapter" data-level="6.2" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#pre-requisites"><i class="fa fa-check"></i><b>6.2</b> Pre-requisites</a></li>
-<li class="chapter" data-level="6.3" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#dockerfile"><i class="fa fa-check"></i><b>6.3</b> Dockerfile</a></li>
-<li class="chapter" data-level="6.4" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#docker-commands"><i class="fa fa-check"></i><b>6.4</b> Docker commands</a></li>
-<li class="chapter" data-level="6.5" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#checks-with-the-browser"><i class="fa fa-check"></i><b>6.5</b> Checks with the browser</a></li>
-<li class="chapter" data-level="6.6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#security"><i class="fa fa-check"></i><b>6.6</b> Security</a></li>
+<li class="chapter" data-level="6.1" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#objective-1"><i class="fa fa-check"></i><b>6.1</b> Objective</a></li>
+<li class="chapter" data-level="6.2" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#pre-requisites"><i class="fa fa-check"></i><b>6.2</b> Pre-requisites</a></li>
+<li class="chapter" data-level="6.3" data-path="opencpu-deployment.html"><a href="opencpu-deployment.html#installation-of-james-in"><i class="fa fa-check"></i><b>6.3</b> Installation of JAMES in</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html"><i class="fa fa-check"></i><b>7</b> Dockerfile for JAMES</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#objective-2"><i class="fa fa-check"></i><b>7.1</b> Objective</a></li>
+<li class="chapter" data-level="7.2" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#pre-requisites-1"><i class="fa fa-check"></i><b>7.2</b> Pre-requisites</a></li>
+<li class="chapter" data-level="7.3" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#dockerfile"><i class="fa fa-check"></i><b>7.3</b> Dockerfile</a></li>
+<li class="chapter" data-level="7.4" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#docker-commands"><i class="fa fa-check"></i><b>7.4</b> Docker commands</a></li>
+<li class="chapter" data-level="7.5" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#checks-with-the-browser"><i class="fa fa-check"></i><b>7.5</b> Checks with the browser</a></li>
+<li class="chapter" data-level="7.6" data-path="dockerfile-for-james.html"><a href="dockerfile-for-james.html#security"><i class="fa fa-check"></i><b>7.6</b> Security</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="certificates.html"><a href="certificates.html"><i class="fa fa-check"></i><b>8</b> Certificates</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="certificates.html"><a href="certificates.html#objective-3"><i class="fa fa-check"></i><b>8.1</b> Objective</a></li>
+<li class="chapter" data-level="8.2" data-path="certificates.html"><a href="certificates.html#vps.stefvanbuuren.nl"><i class="fa fa-check"></i><b>8.2</b> vps.stefvanbuuren.nl</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="certificates.html"><a href="certificates.html#step-1-create-the-csr-file"><i class="fa fa-check"></i><b>8.2.1</b> Step 1: Create the CSR file</a></li>
+<li class="chapter" data-level="8.2.2" data-path="certificates.html"><a href="certificates.html#step-2-buy-new-certificate"><i class="fa fa-check"></i><b>8.2.2</b> Step 2: Buy new certificate</a></li>
+<li class="chapter" data-level="8.2.3" data-path="certificates.html"><a href="certificates.html#step-3-create-the-crt-file"><i class="fa fa-check"></i><b>8.2.3</b> Step 3: Create the crt file</a></li>
+<li class="chapter" data-level="8.2.4" data-path="certificates.html"><a href="certificates.html#step-4-transfer-to-server"><i class="fa fa-check"></i><b>8.2.4</b> Step 4: Transfer to server</a></li>
+<li class="chapter" data-level="8.2.5" data-path="certificates.html"><a href="certificates.html#step-5-restart-apache2"><i class="fa fa-check"></i><b>8.2.5</b> Step 5: Restart Apache2</a></li>
+<li class="chapter" data-level="8.2.6" data-path="certificates.html"><a href="certificates.html#troubleshooting"><i class="fa fa-check"></i><b>8.2.6</b> Troubleshooting</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -202,8 +247,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="d-score-implementation" class="section level1" number="5">
 <h1><span class="header-section-number">Chapter 5</span> D-score implementation</h1>
-<p>This document describes the actions needed to implement the
-<a href="https://stefvanbuuren.name/dbook1/">D-score</a> into JAMES. The functionality of JAMES is distributed over multiple packages. This set of actions may be of interest when implementing new features.</p>
+<p>This document describes the actions taken to implement the <a href="https://d-score.org/dbook1/">D-score</a> into JAMES. The functionality of JAMES is distributed over multiple packages. This set of actions may be of interest when implementing new features.</p>
 <div id="actions" class="section level2" number="5.1">
 <h2><span class="header-section-number">5.1</span> Actions</h2>
 <table>
@@ -222,17 +266,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tbody>
 <tr class="odd">
 <td>minihealth</td>
-<td><a href="https://github.com/stefvanbuuren/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc">03a32f1</a></td>
+<td><a href="https://github.com/growthcharts/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc">03a32f1</a></td>
 <td>Create milestones descriptions</td>
 </tr>
 <tr class="even">
 <td>dscore</td>
-<td><a href="https://github.com/stefvanbuuren/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b">f0013ce</a></td>
+<td><a href="https://github.com/D-score/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b">f0013ce</a></td>
 <td>Link BDS number to Van Wiechen milestones</td>
 </tr>
 <tr class="odd">
 <td>dscore</td>
-<td><a href="https://github.com/stefvanbuuren/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0">6886854</a></td>
+<td><a href="https://github.com/D-score/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0">6886854</a></td>
 <td>Fine tuning of milestone labels</td>
 </tr>
 <tr class="even">
@@ -297,22 +341,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 <tr class="even">
 <td>chartcatalog</td>
-<td><a href="https://github.com/stefvanbuuren/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c">cc46788</a></td>
+<td><a href="https://github.com/growthcharts/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c">cc46788</a></td>
 <td>Extend the chart naming system to D-score charts</td>
 </tr>
 <tr class="odd">
 <td>chartcatalog</td>
-<td><a href="https://github.com/stefvanbuuren/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1">84aaded</a></td>
+<td><a href="https://github.com/growthcharts/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1">84aaded</a></td>
 <td>Extend the lookup table <code>ynames_lookup</code> to handle new D-score charts</td>
 </tr>
 <tr class="even">
 <td>chartbox</td>
-<td><a href="https://github.com/stefvanbuuren/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f">aa31067</a></td>
+<td><a href="https://github.com/growthcharts/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f">aa31067</a></td>
 <td>Extend chart box with all D-score charts</td>
 </tr>
 <tr class="odd">
 <td>james</td>
-<td><a href="https://github.com/stefvanbuuren/james/commits/dscore">6412840</a></td>
+<td><a href="https://github.com/growthcharts/james/commits/dscore">6412840</a></td>
 <td>Add radio button for D-score charts</td>
 </tr>
 <tr class="even">
@@ -322,7 +366,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 <tr class="odd">
 <td>chartplotter</td>
-<td><a href="https://github.com/stefvanbuuren/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16">4b58638</a></td>
+<td><a href="https://github.com/growthcharts/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16">4b58638</a></td>
 <td>Skip the <code>dsc</code> field for finding matches</td>
 </tr>
 <tr class="even">
@@ -347,7 +391,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 <tr class="even">
 <td>donorloader</td>
-<td><a href="https://github.com/stefvanbuuren/donorloader/commit/c22c44607b40ff6bda2009c25894362b68831275">c22c446</a></td>
+<td><a href="https://github.com/growthcharts/donorloader/commit/c22c44607b40ff6bda2009c25894362b68831275">c22c446</a></td>
 <td>Update internal data after changes in donordata</td>
 </tr>
 <tr class="odd">
@@ -367,17 +411,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 <tr class="even">
 <td>donorloader</td>
-<td><a href="https://github.com/stefvanbuuren/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2">e9a8ed</a></td>
+<td><a href="https://github.com/growthcharts/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2">e9a8ed</a></td>
 <td>Make <code>smocc_bds</code> available to JAMES</td>
 </tr>
 <tr class="odd">
 <td>jamestest</td>
-<td><a href="https://github.com/stefvanbuuren/jamestest/commit/6484191fd8de0d93b35354aa3ee846447aa81df6">648419</a></td>
+<td><a href="https://github.com/growthcharts/jamesdemo/commit/6484191fd8de0d93b35354aa3ee846447aa81df6">648419</a></td>
 <td>Regenerate smocc JSON files to include DDI scores</td>
 </tr>
 <tr class="even">
 <td>jamestest</td>
-<td><a href="https://github.com/stefvanbuuren/jamestest/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc">ce1dbe</a></td>
+<td><a href="https://github.com/growthcharts/jamesdemo/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc">ce1dbe</a></td>
 <td>Update the <code>installed.cabinets</code> object with the new individual milestones data</td>
 </tr>
 <tr class="odd">
@@ -401,7 +445,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="dockerfile-for-james.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="opencpu-deployment.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -424,6 +468,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {

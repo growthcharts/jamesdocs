@@ -1,0 +1,105 @@
+
+```{r setup8, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+```
+
+# Certificates
+
+## Objective
+
+The use of `htpps` requires that Apache runs with proper and validated certificates. Users can assess the status of the certificate by clicking on the slot in the browser bar. Certificates are issues by a Certificate Authority (CA) and are valid for one year. The period of one year is just enough to forget how to install and update certificates. This text shows how to renew the certificate.
+
+## vps.stefvanbuuren.nl
+
+The server runs `Ubuntu 18.04 LTS`. The Apache configuration file `/etc/apache2/sites-enabled/default-ssl.conf` contains the following lines
+
+```{bash, eval = FALSE}
+		SSLCertificateFile	/etc/ssl/crt/vps.stefvanbuuren.nl.chained.crt
+		SSLCertificateKeyFile	/etc/ssl/crt/vps.stefvanbuuren.nl.key
+```
+
+The file `.key` is the private key, which should not leave the machine and only be read/write by sudoers. The file `..chained.crt` is the certificate file, which needs to be updated after expiry. There is some hand work involved in creating this file.
+
+### Step 1: Create the CSR file
+
+```{bash, eval = FALSE}
+ssh into vps.stefvanbuuren.nl
+cd /etc/ssl/crt
+openssl req -new -newkey rsa:2048 -nodes -keyout vps.stefvanbuuren.nl.key -out vps.stefvanbuuren.nl.csr
+```
+
+You need to answer some questions (See <http://edtechchris.com/2020/02/11/generate-csr-with-openssl-on-ubuntu/>). Show the result:
+
+```{bash, eval = FALSE}
+cat vps.stefvanbuuren.nl.csr
+```
+
+Copy the contents of the CSR file onto the clipboard. Save also on desktop under `Package/james/certificates_vps.stefvanbuuren.nl/{expiryyear}` for archiving.
+
+### Step 2: Buy new certificate
+
+The current CA is Network Solutions. Log into their website, and pay their renewal fee (about $86 per year). Select Apache/Ubuntu, paste CSR clipboard file into appropriate box, and submit.
+
+Within 30 minutes you get a request to validate in the mailbox. After that is done, you get a new mail saying that certificates are available. Download everything.
+
+### Step 3: Create the crt file
+
+Collect the following four files into `Package/james/certificates_vps.stefvanbuuren.nl/{expiryyear}`. 
+
+```{bash, eval = FALSE}
+dv_chain.txt
+DV_NetworkSolutionsDVServerCA2.crt
+DV_USERTrustRSACertificationAuthority.crt
+VPS.STEFVANBUUREN.NL.crt
+```
+
+Create a new file as follows:
+
+- Open with text editor `dv_chain.txt` and `VPS.STEFVANBUUREN.NL.crt`
+- Paste the contents of `VPS.STEFVANBUUREN.NL.crt` *before*  the contents of `dv_chain.txt`. There will be three sections.
+- Save the result under file name `vps.stefvanbuuren.nl.chained.crt`
+
+### Step 4: Transfer to server
+
+Copy the file onto the server, home directory, by `ftp`. Move it in place by
+
+```{bash, eval = FALSE}
+sudo mv vps.stefvanbuuren.nl.chained.crt /etc/ssl/crt/vps.stefvanbuuren.nl.chained.crt
+```
+
+This overwrites the expired certificate.
+
+### Step 5: Restart Apache2
+
+If you changed `/etc/apache2/sites-enabled/default-ssl.conf` check for syntactic validity.
+
+```{bash, eval = FALSE}
+apachectl configtest
+```
+
+If OK, then
+
+```{bash, eval = FALSE}
+sudo apachectl restart
+```
+
+If all is well, Apache restarts and uses the updated certificate.
+
+### Troubleshooting
+
+If it doesn't work, check whether the results of the following statements are identical.
+
+```{bash, eval = FALSE}
+openssl x509 -noout -modulus -in vps.stefvanbuuren.nl.chained.crt | openssl md5
+sudo openssl rsa -noout -modulus -in vps.stefvanbuuren.nl.key | openssl md5
+```
+
+If not, there is a mismatch between private key and certificate. See <https://stackoverflow.com/questions/26191463/ssl-error0b080074x509-certificate-routinesx509-check-private-keykey-values?rq=1> for fixes.
+
+For others errors, consult the standard log
+
+```{bash, eval = FALSE}
+sudo tail -f /var/log/apache2/error.log
+```
+
+

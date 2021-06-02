@@ -156,8 +156,8 @@ that do not conform to the JSON schema, but continues.
 3. PHASE 3: Check the range of the numeric data. The process generates messages for out-of-range
 values, but continues using the specified values.
 
-The default JSON schema in phase 2 is the built-in JSON schema `bds_schema_str.json`, a data format implementing a version that accepts strings as values for BDS-elements.
+The default JSON schema in phase 2 is the built-in JSON schema `bds_schema_str.json`, a data format implementing a version that accepts strings as values for BDS-elements. You may also choose JSON schema `bds_schema.json`, which requires numeric input to be specified as numeric (and not as string).
 
+## Note (added June 2, 2021)
 
-
-
+The JAMES function now also reads, validates and interprets BDS fields related to the Van Wiechenschema (Dutch Development Instrument). See <https://growthcharts.org/bdsreader/index.html> and <https://github.com/growthcharts/jamesdemodata>.

@@ -1,16 +1,15 @@
 
 # D-score implementation
 
-This document describes the actions needed to implement the 
-[D-score](https://stefvanbuuren.name/dbook1/) into JAMES. The functionality of JAMES is distributed over multiple packages. This set of actions may be of interest when implementing new features.
+This document describes the actions taken to implement the [D-score](https://d-score.org/dbook1/) into JAMES. The functionality of JAMES is distributed over multiple packages. This set of actions may be of interest when implementing new features.
 
 ## Actions
 
 Package  | PR        | Description
 -------- | --------- | -----------
-minihealth | [03a32f1](https://github.com/stefvanbuuren/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc) | Create milestones descriptions
-dscore     | [f0013ce](https://github.com/stefvanbuuren/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b) | Link BDS number to Van Wiechen milestones
-dscore     | [6886854](https://github.com/stefvanbuuren/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0) | Fine tuning of milestone labels
+minihealth | [03a32f1](https://github.com/growthcharts/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc) | Create milestones descriptions
+dscore     | [f0013ce](https://github.com/D-score/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b) | Link BDS number to Van Wiechen milestones
+dscore     | [6886854](https://github.com/D-score/dscore/commit/688685477082ac6c040b9d18035b5178a39a5cc0) | Fine tuning of milestone labels
 minihealth | | Create the `bds_lexicon` object
 minihealth | [4893982](https://github.com/stefvanbuuren/minihealth/commit/4893982631717539b070c8d19b88b2b10319f2ee) | Add milestones to BDS validation JSON schema
 minihealth | [0069671](https://github.com/stefvanbuuren/minihealth/commit/0069671c8d09f64f2436faa93b764bd288324fcc) | Add `convert_ddi_gsed()` to convert BDS-milestones into GSED items
@@ -23,22 +22,22 @@ chartdesigner | [511f456](https://github.com/stefvanbuuren/chartdesigner/commit/
 chartdesigner | [6582af8](https://github.com/stefvanbuuren/chartdesigner/commit/6582af8753331a25d8970683d4523c69d6959f0d) | Extend to `axes.locations` object to D-score charts
 chartdesigner | [47e3cc3](https://github.com/stefvanbuuren/chartdesigner/commit/47e3cc39d1253a41d3cc81d3d6dd55bffa842f18) | Create `dchart()` function and extend its helper functions
 chartdesigner | [fbbc7c8](https://github.com/stefvanbuuren/chartdesigner/commit/fbbc7c8647ea010b2292fa9dd9b253ce95b6a54b) | Function `chartcode()` factory, make one function for each chart code 
-chartcatalog | [cc46788](https://github.com/stefvanbuuren/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c) | Extend the chart naming system to D-score charts
-chartcatalog | [84aaded](https://github.com/stefvanbuuren/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1) | Extend the lookup table `ynames_lookup` to handle new D-score charts
-chartbox | [aa31067](https://github.com/stefvanbuuren/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f) | Extend chart box with all D-score charts
-james       | [6412840](https://github.com/stefvanbuuren/james/commits/dscore) | Add radio button for D-score charts
+chartcatalog | [cc46788](https://github.com/growthcharts/chartcatalog/commit/cc467888dd5346d7ed2c0a78b976a8fa818f712c) | Extend the chart naming system to D-score charts
+chartcatalog | [84aaded](https://github.com/growthcharts/chartcatalog/commit/84aaded206a5050660bd347d2e093af93b6b7ae1) | Extend the lookup table `ynames_lookup` to handle new D-score charts
+chartbox | [aa31067](https://github.com/growthcharts/chartbox/commit/aa310672a717f9777e2daac409d5ec40f3db509f) | Extend chart box with all D-score charts
+james       | [6412840](https://github.com/growthcharts/james/commits/dscore) | Add radio button for D-score charts
 minihealth | [06a04c9](https://github.com/stefvanbuuren/minihealth/commit/06a04c9ce70546db7998de5147a15897af0c7ddb) | Calculate D-score and DAZ
-chartplotter | [4b58638](https://github.com/stefvanbuuren/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16) | Skip the `dsc` field for finding matches
+chartplotter | [4b58638](https://github.com/growthcharts/chartplotter/commit/4b5863813da5304ab5117feba216b7a0822fcd16) | Skip the `dsc` field for finding matches
 minihealth | [816be33](https://github.com/stefvanbuuren/minihealth/commit/816be33b8921ab8d80d8a750d5c4e11966a58c18) | Add D-score and DAZ to class `individualAN`
 donordata  | [77e01b4](https://github.com/stefvanbuuren/donordata/commit/77e01b40e2be75c19f27423092aa5626b0d5d3c3) | Add milestones to SMOCC donor data
 donordata  | [ecb3413](https://github.com/stefvanbuuren/donordata/commit/ecb3413b115c3193135b1af118597768b083dc41) | Calculate D-score and DAZ for SMOCC data
 donordata  | [3fa9d4d](https://github.com/stefvanbuuren/donordata/commit/3fa9d4de347d09ccff32a887cf6bd8dadfdfaeb6) | Fit and store brokenstick model for D-score on SMOCC data
-donorloader | [c22c446](https://github.com/stefvanbuuren/donorloader/commit/c22c44607b40ff6bda2009c25894362b68831275) | Update internal data after changes in donordata
+donorloader | [c22c446](https://github.com/growthcharts/donorloader/commit/c22c44607b40ff6bda2009c25894362b68831275) | Update internal data after changes in donordata
 jamesdocs  | TBD | Document steps (this file)
 donordata  | [7983c3](https://github.com/stefvanbuuren/donordata/commit/7983c3d81a69eb9c6b81a3e0f0668e892c5abf5a) | Saves the item scores to create JSON files
 donordata  | [1537182](https://github.com/stefvanbuuren/donordata/commit/1537182a0df4180e0000d59225c6355a9c506472) | Save mapping between SMOCC and BDS coding scheme
-donorloader | [e9a8ed](https://github.com/stefvanbuuren/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2) | Make `smocc_bds` available to JAMES
-jamestest  | [648419](https://github.com/stefvanbuuren/jamestest/commit/6484191fd8de0d93b35354aa3ee846447aa81df6) | Regenerate smocc JSON files to include DDI scores
-jamestest  | [ce1dbe](https://github.com/stefvanbuuren/jamestest/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc) | Update the `installed.cabinets` object with the new individual milestones data
+donorloader | [e9a8ed](https://github.com/growthcharts/donorloader/commit/e9a8ed9054ebe1ba3a060883d53cfa0ce1f963d2) | Make `smocc_bds` available to JAMES
+jamestest  | [648419](https://github.com/growthcharts/jamesdemo/commit/6484191fd8de0d93b35354aa3ee846447aa81df6) | Regenerate smocc JSON files to include DDI scores
+jamestest  | [ce1dbe](https://github.com/growthcharts/jamesdemo/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc) | Update the `installed.cabinets` object with the new individual milestones data
 minihealth | [4dda8d](https://github.com/stefvanbuuren/minihealth/commit/4dda8daabca8811a4cc321c66aaccf31c4aba83f) | Add class `individualRW` to store and convert raw milestones data
 minihealth | [9e03e7](https://github.com/stefvanbuuren/minihealth/commit/9e03e7e39b007a9687d21efbaa13e77283866d5c) | Complete the JSON validator schema
