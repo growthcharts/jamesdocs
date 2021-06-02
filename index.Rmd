@@ -1,6 +1,6 @@
 --- 
 title: "JAMES Documentation"
-author: "Stef van Buuren"
+author: "Stef van Buuren, Arjan Huizing"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
@@ -20,7 +20,6 @@ This contents of the file is fully in the works. It is it neither complete nor g
 
 Last version: June 2021.
 
-Written by Stef van Buuren
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
