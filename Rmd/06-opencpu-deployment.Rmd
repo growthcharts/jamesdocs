@@ -118,6 +118,6 @@ sudo apachectl restart
 # check on https://tnochildhealthstatistics.shinyapps.io/james_tryout/ 
 
 # clean up: delete ~/conf/ after everything works
-rm -rf /conf
+rm -rf conf
 ```
 
