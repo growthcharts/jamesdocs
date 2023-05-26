@@ -3,146 +3,29 @@
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# JAMES data format
+# JAMES data formats
 
 ## Objective
 
-This chapter describes the format of the input data accepted by JAMES. The specification
+This chapter describes 
 
-- closely follows the definition of the [Basisdataset JGZ 3.25 (2018)](https://www.ncj.nl/themadossiers/informatisering/basisdataset/);
+1. the format of the input child data accepted by JAMES;
+2. the internal format used in the code in the `R` packages on <https://github.com/growthcharts>.
+
+## Input child data accepted by JAMES
+
+The specification for the input data
+
+- follows the definition of the [Basisdataset JGZ 4.0.1](https://decor.nictiz.nl/pub/jeugdgezondheidszorg/BDS401/);
 - defines data objects;
 - defines the actions taken by JAMES in case of incorrect, missing or out-of-range data;
 - defines the error messages for informing the client.
 
-## Generic object model
+Data accepted by JAMES should follow the JSON schema defined at <https://raw.githubusercontent.com/growthcharts/bdsreader/srm/inst/schemas/bds_v3.0.json>. 
 
-### EPremDossier Class
+For backward compatibility, JAMES supports older versions of the schema (v1.0, v1.1 and v2.0). Do not use these deprecated formats for new applications.
 
-#### Object model 
-
-EPremDossier  | Instance       | Class
-------------- | -------------- | ------------ 
-         ->   | Clientgegevens | EPremGroep
-         ->   | Contactmomenten| EPremContactmoment
-
-#### Syntax `C#`
-
-`public class EPremDossier`
-
-#### Public properties
-
-Name            | Description                                   | Required
---------------- | --------------------------------------------- | -----
-Clientgegevens  | Class with basic child data                   | Y
-Contactmomenten | Class with data per visit                     | N
-InstrumentCode  | Integer identifying the instrument            | Ignored
-OrganisatieCode | Integer identifying the care organisation     | Y
-Referentie      | String identifying the request                | N
-
-
-### EPremGroep Class
-
-#### Object model 
-
-EPremGroep    | Instance       | Class
-------------- | -------------- | ------------
-         ->   | Elementen      | EPremElement
-         ->   | Groepen        | EPremGroep
-
-#### Syntax `C#`
-
-`public class EPremGroep`
-
-#### Public properties
-
-Name            | Description                        | Required
---------------- | ---------------------------------- | --------
-Elementen       | Class with BDS-elements            | Y
-Groepen         | Class with groups of BDS-elements  | N
-
-### EPremElement Class
-
-#### Syntax `C#`
-
-`public class EPremElement`
-
-#### Public properties
-
-Name               | Description                                   | Required
------------------- | --------------------------------------------- | ------
-Bdsnummer          | Integer identifying the BDS-field             | Y
-InternNummer       | Integer identifying internal field            | Ignored
-Waarde             | Value of the BDS-field                        | Y
-Waardeomschrijving | Descriptive label for value                   | Ignored
-
-### EPremContactmoment Class
-
-#### Object model 
-
-EPremContactmoment  | Instance       | Class
-------------------- | -------------- | ------------ 
-               ->   | Elementen      | EPremElement 
-               ->   | Groepen        | EPremGroep
-
-#### Syntax `C#`
-
-`public class EPremContactmoment : EPremGroep`
-
-#### Public properties
-
-Name            | Description                        | Required
---------------- | ---------------------------------- | --------
-Elementen       | Class with BDS-elements            |    Y 
-Groepen         | Class with groups of BDS-elements  |    N
-Tijdstip        | Date of visit                      |    Y
-
-## BDS-elements
-
-| BDS   | Description             | Value  | Label                     | Required
-| -----:|:----------------------- | ------:|:------------------------- | --------
-| 19    | Sex of child            | "0"    | Unknown                   | Y
-|       |                         | "1"    | Male                      |
-|       |                         | "2"    | Female                    |
-|       |                         | "3"    | Not specified             |
-| 20    | Date of birth           | "yyyymmdd" | year-month-day        | Y
-| 62    | Caretaker relation      | "01"   | biological father         | N
-|       |                         | "02"   | biological mother         |
-|       |                         | "03"   | male partner, stepfather  |
-|       |                         | "04"   | female partner, stepmother|
-|       |                         | "05"   | adoptive father           |
-|       |                         | "06"   | adoptive mother           |
-|       |                         | "07"   | foster father             |
-|       |                         | "08"   | foster mother             |
-|       |                         | "98"   | other                     |
-| 63    | Caretaker date of birth | "yyyymmdd" | year-month-day        | N
-| 66    | Caretaker education     | "01"   | no primary school         | N
-|       |                         | "02"   | primary school, special ed|
-|       |                         | "03"   | VSO-MLK/IVBO/VMBO-LWOO    |
-|       |                         | "04"   | LBO/VBO/VMBO-BBL&KBL      |
-|       |                         | "05"   | MAVO/VMBO-GL&TL           |
-|       |                         | "06"   | MBO                       |
-|       |                         | "07"   | HAVO/VWO                  |
-|       |                         | "08"   | HBO/HTS/HEAO              |
-|       |                         | "09"   | WO                        |
-|       |                         | "98"   | Other                     |
-|       |                         | "00"   | Unknown                   |
-| 71    | Caretaker birth country | "dddd" | [4-digit code, Table 34](https://publicaties.rvig.nl/Landelijke_tabellen/Landelijke_tabellen_32_t_m_60_excl_tabel_35/Landelijke_Tabellen_32_t_m_60_in_csv_formaat)| N 
-| 82    | Gestational age         | "ddd"  | in days                   | N
-| 91    | Smoking during pregnancy| "1"    | yes                       | N
-|       |                         | "2"    | no                        |
-|       |                         | "99"   | unknown                   |
-| 110   | Birth weight            | "dddd" | 3-4 digits, grammes       | N
-| 235   | Length/height           | "dddd" | 3-4 digits, millimeters   | N
-| 245   | Body weight             | "dddddd" | 3-6 digits, grammes     | N
-| 252   | Head circumference      | "ddd"  | 2-3 digits, millimeters   | N
-| 238   | Height biological mother| "dddd" | 3-4 digits, millimeters   | N
-| 240   | Height biological father| "dddd" | 3-4 digits, millimeters   | N
-| 510   | Passive smoking         | "01"   | No smoking in house       | N
-|       |                         | "02"   | Never with child          |
-|       |                         | "03"   | Not in last 7 days        |
-|       |                         | "04"   | Yes                       |
-
-## Error checking
+## Error checking policy
 
 Error checking of the JSON data occurs in three phases: 
 
@@ -156,8 +39,218 @@ that do not conform to the JSON schema, but continues.
 3. PHASE 3: Check the range of the numeric data. The process generates messages for out-of-range
 values, but continues using the specified values.
 
-The default JSON schema in phase 2 is the built-in JSON schema `bds_schema_str.json`, a data format implementing a version that accepts strings as values for BDS-elements. You may also choose JSON schema `bds_schema.json`, which requires numeric input to be specified as numeric (and not as string).
+The default JSON schema in PHASE 2 is the built-in JSON schema `bds_v3.0.json`, a data format implementing a version that accepts strings as values for BDS-elements.
 
-## Note (added June 2, 2021)
+## Checking structure of the input data against the JSON schema
 
-The JAMES function now also reads, validates and interprets BDS fields related to the Van Wiechenschema (Dutch Development Instrument). See <https://growthcharts.org/bdsreader/index.html> and <https://github.com/growthcharts/jamesdemodata>.
+The `inst/extdata/bds_v3.0` directory of the [`jamesdemodata`](https://github.com/growthcharts/jamesdemodata) package contains examples of input data in JSON format. Non-R user can access these from GitHub from link <https://github.com/growthcharts/jamesdemodata/tree/master/inst/extdata/bds_v3.0>.
+
+Manual checking the structure of your child data can be done as follows. Surf to <https://www.jsonschemavalidator.net>, paste the JSON schema definition in the left panel and paste the child data in the right panel. You should see something like the Figure \@ref(fig:jsonschema).
+
+```{r jsonschema, fig.cap = '(ref:jsonschema)', echo=FALSE}
+knitr::include_graphics("fig/JSON-schema-validator.png")
+```
+
+(ref:jsonschema) Manual validation of a child dataset (right side) according JSON schema `bds_v3.0.json`.
+
+Experiment with your child file (e.g. remove the required Format field) to see what types errors the validator can catch.
+
+## BDS-elements supported by JAMES
+
+
+| BDS   | Description             | Value  | Label                     | `R` name
+| -----:|:----------------------- | ------:|:------------------------- | -----------
+| 19    | Sex of child            | "0"    | Unknown                   | `sex` 
+|       |                         | "1"    | Male                      |
+|       |                         | "2"    | Female                    |
+|       |                         | "3"    | Not specified             |
+| 20    | Date of birth           | "yyyymmdd" | year-month-day        | `dob`
+| 62    | Caretaker relation      | "01"   | biological father         | 
+|       |                         | "02"   | biological mother         |
+|       |                         | "03"   | male partner, stepfather  |
+|       |                         | "04"   | female partner, stepmother|
+|       |                         | "05"   | adoptive father           |
+|       |                         | "06"   | adoptive mother           |
+|       |                         | "07"   | foster father             |
+|       |                         | "08"   | foster mother             |
+|       |                         | "98"   | other                     |
+| 63    | Caretaker date of birth | "yyyymmdd" | year-month-day        | `dobf` 
+|       |                         |        |                           | `dobm`
+|       |                         |        |                           | `agem`
+| 66    | Caretaker education     | "01"   | no primary school         | `-`
+|       |                         | "02"   | primary school, special ed|
+|       |                         | "03"   | VSO-MLK/IVBO/VMBO-LWOO    |
+|       |                         | "04"   | LBO/VBO/VMBO-BBL&KBL      |
+|       |                         | "05"   | MAVO/VMBO-GL&TL           |
+|       |                         | "06"   | MBO                       |
+|       |                         | "07"   | HAVO/VWO                  |
+|       |                         | "08"   | HBO/HTS/HEAO              |
+|       |                         | "09"   | WO                        |
+|       |                         | "98"   | Other                     |
+|       |                         | "00"   | Unknown                   |
+| 71    | Caretaker birth country | "dddd" | [4-digit code, Table 34](https://publicaties.rvig.nl/dsresource?objectid=29b66cb2-02ef-4a11-baf4-316ae00d8fa1)| `etn` (always `NL`)
+| 82    | Gestational age         | "ddd"  | in days                   | `gad`
+| 91    | Smoking during pregnancy| "1"    | yes                       | `smo`
+|       |                         | "2"    | no                        |
+|       |                         | "99"   | unknown                   |
+| 110   | Birth weight            | "dddd" | 3-4 digits, grammes       | `bw` (g)
+| 235   | Length/height           | "dddd" | 3-4 digits, millimeters   | `hgt` (cm)
+| 245   | Body weight             | "dddddd" | 3-6 digits, grammes     | `wgt` (kg)
+| 252   | Head circumference      | "ddd"  | 2-3 digits, millimeters   | `hdc` (cm)
+| 238   | Height biological mother| "dddd" | 3-4 digits, millimeters   | `hgtf` (cm)
+| 240   | Height biological father| "dddd" | 3-4 digits, millimeters   | `hgtm` (cm)
+| 510   | Passive smoking         | "01"   | No smoking in house       | `-`
+|       |                         | "02"   | Never with child          |
+|       |                         | "03"   | Not in last 7 days        |
+|       |                         | "04"   | Yes                       |
+
+JAMES supports the following BDS numbers with Van Wiechen items: 879, 881, 883, 884, 885, 887, 888, 889, 890, 891, 894, 896, 897, 898, 902, 903, 906, 907, 910, 912, 914, 916, 917, 918, 920, 922, 923, 926, 945, 951, 955, 956, 958, 959, 961, 962, 964, 966, 968, 970, 971, 973, 975, 977, 978, 986, 989, 991, 993, 994, 996, 999, 1002, 886, 892, 893, 900, 905, 909, 913, 921, 927, 928, 930, 931, 932, 933, 934, 935, 936, 937, 938, 939, 940, 941, 943, 947, 948, 949, 950, 953, 954, 972, 980, 982, 984, 998, 1001, 1278.
+
+The results of the Van Wiechen items are converted into 0/1 codes (by [bdsreader:::convert_ddi_gsed](https://github.com/growthcharts/bdsreader/blob/master/R/convert_ddi_gsed.R)) and stored with GSED 9-position names as defined by the [`dscore`](https://d-score.org/dscore/) package.
+
+In addition, JAMES reads the following non-BDS fields:
+
+| Fields            | Description             | Type           | `R` name
+| -----------------:|:----------------------- | --------------:|:---------
+| Reference         | Description (opt)       | String         | `name`
+| Format            | JSON schema number (req)| Number.Number  | `-`
+| organisationCode  | Organisation code (opt) | Integer        | `src`
+
+
+## JAMES internal data
+
+Suppose we coded the following data set.
+
+```{}
+{
+  "Format": "3.0",
+  "organisationCode": 1234,
+  "Reference": "Maria",
+  "clientDetails": [
+    {
+      "bdsNumber": 19,
+      "value": "2"
+    },
+    {
+      "bdsNumber": 20,
+      "value": "20181011"
+    },
+    {
+      "bdsNumber": 82,
+      "value": 189
+    },
+    {
+      "bdsNumber": 91,
+      "value": "1"
+    },
+    {
+      "bdsNumber": 110,
+      "value": 990
+    },
+    {
+      "bdsNumber": 238,
+      "value": 1670
+    },
+    {
+      "bdsNumber": 240,
+      "value": 1900
+    }
+  ],
+  "clientMeasurements": [
+    {
+      "bdsNumber": 235,
+      "values": [
+        {
+          "date": "20181111",
+          "value": 380
+        },
+        {
+          "date": "20181211",
+          "value": 435
+        }
+      ]
+    },
+    {
+      "bdsNumber": 245,
+      "values": [
+        {
+          "date": "20181011",
+          "value": 990
+        },
+        {
+          "date": "20181111",
+          "value": 1250
+        },
+        {
+          "date": "20181211",
+          "value": 2100
+        }
+      ]
+    },
+    {
+      "bdsNumber": 252,
+      "values": [
+        {
+          "date": "20181111",
+          "value": 270
+        },
+        {
+          "date": "20181211",
+          "value": 305
+        }
+      ]
+    }
+  ],
+  "nestedDetails": [
+    {
+      "nestingBdsNumber": 62,
+      "nestingCode": "01",
+      "clientDetails": [
+        {
+          "bdsNumber": 63,
+          "value": "19950704"
+        }
+      ],
+      "clientMeasurements": [
+
+      ]
+    },
+    {
+      "nestingBdsNumber": 62,
+      "nestingCode": "02",
+      "clientDetails": [
+        {
+          "bdsNumber": 63,
+          "value": "19901202"
+        }
+      ],
+      "clientMeasurements": [
+
+      ]
+    }
+  ]
+}
+```
+
+
+The following R script shows reading and conversion of the data.
+
+```{r}
+library(bdsreader)
+fn <- system.file("examples/maria.json", package = "bdsreader")
+m <- read_bds(fn)
+```
+
+Object `m` object is a list with two components: 
+
+- `m$psn` a tibble with one row containing fixed covariates
+- `m$xyz` a tibble with multiple rows with time-varying data
+
+```{r}
+m$psn
+```
+
+```{r}
+m$xyz
+```
+

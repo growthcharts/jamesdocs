@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 OpenCPU deployment | JAMES Documentation</title>
   <meta name="description" content="Documentation of JAMES" />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 OpenCPU deployment | JAMES Documentation" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="Documentation of JAMES" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Stef van Buuren, Arjan Huizing" />
 
 
-<meta name="date" content="2021-06-27" />
+<meta name="date" content="2023-05-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,8 +32,8 @@
   
 <link rel="prev" href="d-score-implementation.html"/>
 <link rel="next" href="dockerfile-for-james.html"/>
-<script src="libs/header-attrs-2.8/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -50,9 +49,9 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -93,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -106,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -173,19 +172,14 @@ div.csl-indent {
 <li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#james-servers"><i class="fa fa-check"></i><b>1.5</b> JAMES servers</a></li>
 <li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#resources"><i class="fa fa-check"></i><b>1.6</b> Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="james-data-format.html"><a href="james-data-format.html"><i class="fa fa-check"></i><b>2</b> JAMES data format</a>
+<li class="chapter" data-level="2" data-path="james-data-formats.html"><a href="james-data-formats.html"><i class="fa fa-check"></i><b>2</b> JAMES data formats</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="james-data-format.html"><a href="james-data-format.html#objective"><i class="fa fa-check"></i><b>2.1</b> Objective</a></li>
-<li class="chapter" data-level="2.2" data-path="james-data-format.html"><a href="james-data-format.html#generic-object-model"><i class="fa fa-check"></i><b>2.2</b> Generic object model</a>
-<ul>
-<li class="chapter" data-level="2.2.1" data-path="james-data-format.html"><a href="james-data-format.html#epremdossier-class"><i class="fa fa-check"></i><b>2.2.1</b> EPremDossier Class</a></li>
-<li class="chapter" data-level="2.2.2" data-path="james-data-format.html"><a href="james-data-format.html#epremgroep-class"><i class="fa fa-check"></i><b>2.2.2</b> EPremGroep Class</a></li>
-<li class="chapter" data-level="2.2.3" data-path="james-data-format.html"><a href="james-data-format.html#epremelement-class"><i class="fa fa-check"></i><b>2.2.3</b> EPremElement Class</a></li>
-<li class="chapter" data-level="2.2.4" data-path="james-data-format.html"><a href="james-data-format.html#epremcontactmoment-class"><i class="fa fa-check"></i><b>2.2.4</b> EPremContactmoment Class</a></li>
-</ul></li>
-<li class="chapter" data-level="2.3" data-path="james-data-format.html"><a href="james-data-format.html#bds-elements"><i class="fa fa-check"></i><b>2.3</b> BDS-elements</a></li>
-<li class="chapter" data-level="2.4" data-path="james-data-format.html"><a href="james-data-format.html#error-checking"><i class="fa fa-check"></i><b>2.4</b> Error checking</a></li>
-<li class="chapter" data-level="2.5" data-path="james-data-format.html"><a href="james-data-format.html#note-added-june-2-2021"><i class="fa fa-check"></i><b>2.5</b> Note (added June 2, 2021)</a></li>
+<li class="chapter" data-level="2.1" data-path="james-data-formats.html"><a href="james-data-formats.html#objective"><i class="fa fa-check"></i><b>2.1</b> Objective</a></li>
+<li class="chapter" data-level="2.2" data-path="james-data-formats.html"><a href="james-data-formats.html#input-child-data-accepted-by-james"><i class="fa fa-check"></i><b>2.2</b> Input child data accepted by JAMES</a></li>
+<li class="chapter" data-level="2.3" data-path="james-data-formats.html"><a href="james-data-formats.html#error-checking-policy"><i class="fa fa-check"></i><b>2.3</b> Error checking policy</a></li>
+<li class="chapter" data-level="2.4" data-path="james-data-formats.html"><a href="james-data-formats.html#checking-structure-of-the-input-data-against-the-json-schema"><i class="fa fa-check"></i><b>2.4</b> Checking structure of the input data against the JSON schema</a></li>
+<li class="chapter" data-level="2.5" data-path="james-data-formats.html"><a href="james-data-formats.html#bds-elements-supported-by-james"><i class="fa fa-check"></i><b>2.5</b> BDS-elements supported by JAMES</a></li>
+<li class="chapter" data-level="2.6" data-path="james-data-formats.html"><a href="james-data-formats.html#james-internal-data"><i class="fa fa-check"></i><b>2.6</b> JAMES internal data</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="growth-charts-in-james.html"><a href="growth-charts-in-james.html"><i class="fa fa-check"></i><b>3</b> Growth charts in JAMES</a>
 <ul>
@@ -245,121 +239,121 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="opencpu-deployment" class="section level1" number="6">
-<h1><span class="header-section-number">Chapter 6</span> OpenCPU deployment</h1>
-<div id="objective-1" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> Objective</h2>
+<div id="opencpu-deployment" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> OpenCPU deployment<a href="opencpu-deployment.html#opencpu-deployment" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="objective-1" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Objective<a href="opencpu-deployment.html#objective-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This chapter describes how to install JAMES on the server that run OpenCPU. This is the classic way to install and run OpenCPU applications, and has the advantage that AppArmor prevents various types of malicious behaviour. In the future, we will replace this procedure by containerised deployment using Docker.</p>
 </div>
-<div id="pre-requisites" class="section level2" number="6.2">
-<h2><span class="header-section-number">6.2</span> Pre-requisites</h2>
+<div id="pre-requisites" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Pre-requisites<a href="opencpu-deployment.html#pre-requisites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>The server runs <code>Ubuntu 18.04</code> (or later, not tested on Ubuntu 20.04).</li>
 <li>The user needs sudo access to the server that run <code>OpenCPU</code>.</li>
 </ul>
 </div>
-<div id="installation-of-james-in" class="section level2" number="6.3">
-<h2><span class="header-section-number">6.3</span> Installation of JAMES in</h2>
+<div id="installation-of-james-in" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Installation of JAMES in<a href="opencpu-deployment.html#installation-of-james-in" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Here is a set of commands that removes R and its libraries, installs the latest
 R fresh from source, install JAMES and puts the machine to work.</p>
 <p>A lot can go wrong. Please be patient to check each step.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="opencpu-deployment.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb5-2"><a href="opencpu-deployment.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Re-install opencpu-server, R and the libs</span></span>
-<span id="cb5-3"><a href="opencpu-deployment.html#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="opencpu-deployment.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make system up to date</span></span>
-<span id="cb5-5"><a href="opencpu-deployment.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get update</span>
-<span id="cb5-6"><a href="opencpu-deployment.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get upgrade</span>
-<span id="cb5-7"><a href="opencpu-deployment.html#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="opencpu-deployment.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># disable opencpu</span></span>
-<span id="cb5-9"><a href="opencpu-deployment.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2dissite opencpu</span>
-<span id="cb5-10"><a href="opencpu-deployment.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
-<span id="cb5-11"><a href="opencpu-deployment.html#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="opencpu-deployment.html#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># disable pubertyplot &amp; webtool (only on testserver)</span></span>
-<span id="cb5-13"><a href="opencpu-deployment.html#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2dissite puberty</span>
-<span id="cb5-14"><a href="opencpu-deployment.html#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2dissite webtool</span>
-<span id="cb5-15"><a href="opencpu-deployment.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
-<span id="cb5-16"><a href="opencpu-deployment.html#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="opencpu-deployment.html#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># save configuration files</span></span>
-<span id="cb5-18"><a href="opencpu-deployment.html#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> conf</span>
-<span id="cb5-19"><a href="opencpu-deployment.html#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-rv</span> /etc/opencpu/ ~/conf/</span>
-<span id="cb5-20"><a href="opencpu-deployment.html#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-rv</span> /etc/apache2/ ~/conf/</span>
-<span id="cb5-21"><a href="opencpu-deployment.html#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-22"><a href="opencpu-deployment.html#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># uninstall opencpu server &amp; full</span></span>
-<span id="cb5-23"><a href="opencpu-deployment.html#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge opencpu-server</span>
-<span id="cb5-24"><a href="opencpu-deployment.html#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge opencpu-full</span>
-<span id="cb5-25"><a href="opencpu-deployment.html#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="opencpu-deployment.html#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># remove all R libs</span></span>
-<span id="cb5-27"><a href="opencpu-deployment.html#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-e</span> <span class="st">&#39;.libPaths()&#39;</span></span>
-<span id="cb5-28"><a href="opencpu-deployment.html#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /usr/local/lib/R/site-library</span>
-<span id="cb5-29"><a href="opencpu-deployment.html#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /usr/lib/R/site-library</span>
-<span id="cb5-30"><a href="opencpu-deployment.html#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /usr/lib/R/library</span>
-<span id="cb5-31"><a href="opencpu-deployment.html#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-32"><a href="opencpu-deployment.html#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co"># remove R</span></span>
-<span id="cb5-33"><a href="opencpu-deployment.html#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge r-base-core</span>
-<span id="cb5-34"><a href="opencpu-deployment.html#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge r-base</span>
-<span id="cb5-35"><a href="opencpu-deployment.html#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get autoremove</span>
-<span id="cb5-36"><a href="opencpu-deployment.html#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-37"><a href="opencpu-deployment.html#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="co"># add backport repositories for Ubuntu packages required by some R packages</span></span>
-<span id="cb5-38"><a href="opencpu-deployment.html#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="st">&#39;deb https://mirror.nl.datapacket.com/ubuntu/ bionic main&#39;</span></span>
-<span id="cb5-39"><a href="opencpu-deployment.html#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="st">&#39;deb-src https://mirror.nl.datapacket.com/ubuntu/ bionic main&#39;</span></span>
-<span id="cb5-40"><a href="opencpu-deployment.html#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-41"><a href="opencpu-deployment.html#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="co"># install R. See https://cran.r-project.org/bin/linux/ubuntu/</span></span>
-<span id="cb5-42"><a href="opencpu-deployment.html#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="co"># update indices</span></span>
-<span id="cb5-43"><a href="opencpu-deployment.html#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="at">-qq</span></span>
-<span id="cb5-44"><a href="opencpu-deployment.html#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co"># install two helper packages we need</span></span>
-<span id="cb5-45"><a href="opencpu-deployment.html#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">--no-install-recommends</span> software-properties-common dirmngr</span>
-<span id="cb5-46"><a href="opencpu-deployment.html#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="co"># import the signing key (by Michael Rutter) for these repo</span></span>
-<span id="cb5-47"><a href="opencpu-deployment.html#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-key adv <span class="at">--keyserver</span> keyserver.ubuntu.com <span class="at">--recv-keys</span> E298A3A825C0D65DFD57CBB651716619E084DAB9</span>
-<span id="cb5-48"><a href="opencpu-deployment.html#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="co"># we use R 4.0 (however note this actually installs R 4.1!! (May 2021))</span></span>
-<span id="cb5-49"><a href="opencpu-deployment.html#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="st">&#39;deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/&#39;</span></span>
-<span id="cb5-50"><a href="opencpu-deployment.html#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="co"># in the future: use cran-41</span></span>
-<span id="cb5-51"><a href="opencpu-deployment.html#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install r-base</span>
-<span id="cb5-52"><a href="opencpu-deployment.html#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="co"># install r-base-dev because we want to compile from source</span></span>
-<span id="cb5-53"><a href="opencpu-deployment.html#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install r-base-dev</span>
-<span id="cb5-54"><a href="opencpu-deployment.html#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-55"><a href="opencpu-deployment.html#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="co"># install opencpu-server</span></span>
-<span id="cb5-56"><a href="opencpu-deployment.html#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="at">-y</span> ppa:opencpu/opencpu-2.2</span>
-<span id="cb5-57"><a href="opencpu-deployment.html#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get update</span>
-<span id="cb5-58"><a href="opencpu-deployment.html#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get upgrade</span>
-<span id="cb5-59"><a href="opencpu-deployment.html#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install <span class="at">-y</span> opencpu-server</span>
-<span id="cb5-60"><a href="opencpu-deployment.html#cb5-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-61"><a href="opencpu-deployment.html#cb5-61" aria-hidden="true" tabindex="-1"></a><span class="co"># restart opencpu</span></span>
-<span id="cb5-62"><a href="opencpu-deployment.html#cb5-62" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2ensite opencpu</span>
-<span id="cb5-63"><a href="opencpu-deployment.html#cb5-63" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
-<span id="cb5-64"><a href="opencpu-deployment.html#cb5-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-65"><a href="opencpu-deployment.html#cb5-65" aria-hidden="true" tabindex="-1"></a><span class="co"># manually check https://vps.stefvanbuuren.nl/ocpu </span></span>
-<span id="cb5-66"><a href="opencpu-deployment.html#cb5-66" aria-hidden="true" tabindex="-1"></a><span class="co"># or https://www.groeidiagrammen.nl/ocpu</span></span>
-<span id="cb5-67"><a href="opencpu-deployment.html#cb5-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-68"><a href="opencpu-deployment.html#cb5-68" aria-hidden="true" tabindex="-1"></a><span class="co"># install application package: pubertyplot - only on dev server</span></span>
-<span id="cb5-69"><a href="opencpu-deployment.html#cb5-69" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;/home/stef/packages/pubertyplot_1.3.tar.gz&quot;, repos = NULL)&#39;</span></span>
-<span id="cb5-70"><a href="opencpu-deployment.html#cb5-70" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2ensite puberty</span>
-<span id="cb5-71"><a href="opencpu-deployment.html#cb5-71" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
-<span id="cb5-72"><a href="opencpu-deployment.html#cb5-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-73"><a href="opencpu-deployment.html#cb5-73" aria-hidden="true" tabindex="-1"></a><span class="co"># install application package: webtool - only on dev server</span></span>
-<span id="cb5-74"><a href="opencpu-deployment.html#cb5-74" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;RMySQL&quot;)&#39;</span></span>
-<span id="cb5-75"><a href="opencpu-deployment.html#cb5-75" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;/home/stef/packages/webtool_1.1.tar.gz&quot;, repos = NULL)&#39;</span></span>
-<span id="cb5-76"><a href="opencpu-deployment.html#cb5-76" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2ensite webtool</span>
-<span id="cb5-77"><a href="opencpu-deployment.html#cb5-77" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
-<span id="cb5-78"><a href="opencpu-deployment.html#cb5-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-79"><a href="opencpu-deployment.html#cb5-79" aria-hidden="true" tabindex="-1"></a><span class="co"># install JAMES packages - this may take a while - you need the right priveledges</span></span>
-<span id="cb5-80"><a href="opencpu-deployment.html#cb5-80" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;remotes&quot;)&#39;</span></span>
-<span id="cb5-81"><a href="opencpu-deployment.html#cb5-81" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;remotes::install_github(&quot;growthcharts/james&quot;)&#39;</span></span>
-<span id="cb5-82"><a href="opencpu-deployment.html#cb5-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-83"><a href="opencpu-deployment.html#cb5-83" aria-hidden="true" tabindex="-1"></a><span class="co"># remove duplicate packages</span></span>
-<span id="cb5-84"><a href="opencpu-deployment.html#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="co"># evade errors: &quot;namespace &#39;vctrs&#39; 0.3.6 is already loaded, but &gt;= 0.3.8 is required&quot;</span></span>
-<span id="cb5-85"><a href="opencpu-deployment.html#cb5-85" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;remove.packages(c(&quot;ellipsis&quot;, &quot;pillar&quot;, &quot;vctrs&quot;), &quot;/usr/lib/opencpu/library&quot;)&#39;</span></span>
-<span id="cb5-86"><a href="opencpu-deployment.html#cb5-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-87"><a href="opencpu-deployment.html#cb5-87" aria-hidden="true" tabindex="-1"></a><span class="co"># copy back opencpu configuration for JAMES (if they were OK, otherwise tweak)</span></span>
-<span id="cb5-88"><a href="opencpu-deployment.html#cb5-88" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /etc/opencpu</span>
-<span id="cb5-89"><a href="opencpu-deployment.html#cb5-89" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> cp <span class="at">-rv</span> ~/conf/opencpu /etc/opencpu/</span>
-<span id="cb5-90"><a href="opencpu-deployment.html#cb5-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-91"><a href="opencpu-deployment.html#cb5-91" aria-hidden="true" tabindex="-1"></a><span class="co"># active JAMES</span></span>
-<span id="cb5-92"><a href="opencpu-deployment.html#cb5-92" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
-<span id="cb5-93"><a href="opencpu-deployment.html#cb5-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-94"><a href="opencpu-deployment.html#cb5-94" aria-hidden="true" tabindex="-1"></a><span class="co"># check on https://tnochildhealthstatistics.shinyapps.io/james_tryout/ </span></span>
-<span id="cb5-95"><a href="opencpu-deployment.html#cb5-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-96"><a href="opencpu-deployment.html#cb5-96" aria-hidden="true" tabindex="-1"></a><span class="co"># clean up: delete ~/conf/ after everything works</span></span>
-<span id="cb5-97"><a href="opencpu-deployment.html#cb5-97" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> conf</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="opencpu-deployment.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb11-2"><a href="opencpu-deployment.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Re-install opencpu-server, R and the libs</span></span>
+<span id="cb11-3"><a href="opencpu-deployment.html#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="opencpu-deployment.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make system up to date</span></span>
+<span id="cb11-5"><a href="opencpu-deployment.html#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get update</span>
+<span id="cb11-6"><a href="opencpu-deployment.html#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get upgrade</span>
+<span id="cb11-7"><a href="opencpu-deployment.html#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="opencpu-deployment.html#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># disable opencpu</span></span>
+<span id="cb11-9"><a href="opencpu-deployment.html#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2dissite opencpu</span>
+<span id="cb11-10"><a href="opencpu-deployment.html#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb11-11"><a href="opencpu-deployment.html#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="opencpu-deployment.html#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># disable pubertyplot &amp; webtool (only on testserver)</span></span>
+<span id="cb11-13"><a href="opencpu-deployment.html#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2dissite puberty</span>
+<span id="cb11-14"><a href="opencpu-deployment.html#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2dissite webtool</span>
+<span id="cb11-15"><a href="opencpu-deployment.html#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb11-16"><a href="opencpu-deployment.html#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="opencpu-deployment.html#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"># save configuration files</span></span>
+<span id="cb11-18"><a href="opencpu-deployment.html#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> conf</span>
+<span id="cb11-19"><a href="opencpu-deployment.html#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-rv</span> /etc/opencpu/ ~/conf/</span>
+<span id="cb11-20"><a href="opencpu-deployment.html#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-rv</span> /etc/apache2/ ~/conf/</span>
+<span id="cb11-21"><a href="opencpu-deployment.html#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="opencpu-deployment.html#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co"># uninstall opencpu server &amp; full</span></span>
+<span id="cb11-23"><a href="opencpu-deployment.html#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge opencpu-server</span>
+<span id="cb11-24"><a href="opencpu-deployment.html#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge opencpu-full</span>
+<span id="cb11-25"><a href="opencpu-deployment.html#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="opencpu-deployment.html#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co"># remove all R libs</span></span>
+<span id="cb11-27"><a href="opencpu-deployment.html#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> <span class="at">-e</span> <span class="st">&#39;.libPaths()&#39;</span></span>
+<span id="cb11-28"><a href="opencpu-deployment.html#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /usr/local/lib/R/site-library</span>
+<span id="cb11-29"><a href="opencpu-deployment.html#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /usr/lib/R/site-library</span>
+<span id="cb11-30"><a href="opencpu-deployment.html#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /usr/lib/R/library</span>
+<span id="cb11-31"><a href="opencpu-deployment.html#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-32"><a href="opencpu-deployment.html#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co"># remove R</span></span>
+<span id="cb11-33"><a href="opencpu-deployment.html#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge r-base-core</span>
+<span id="cb11-34"><a href="opencpu-deployment.html#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge r-base</span>
+<span id="cb11-35"><a href="opencpu-deployment.html#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get autoremove</span>
+<span id="cb11-36"><a href="opencpu-deployment.html#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-37"><a href="opencpu-deployment.html#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="co"># add backport repositories for Ubuntu packages required by some R packages</span></span>
+<span id="cb11-38"><a href="opencpu-deployment.html#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="st">&#39;deb https://mirror.nl.datapacket.com/ubuntu/ bionic main&#39;</span></span>
+<span id="cb11-39"><a href="opencpu-deployment.html#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="st">&#39;deb-src https://mirror.nl.datapacket.com/ubuntu/ bionic main&#39;</span></span>
+<span id="cb11-40"><a href="opencpu-deployment.html#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="opencpu-deployment.html#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co"># install R. See https://cran.r-project.org/bin/linux/ubuntu/</span></span>
+<span id="cb11-42"><a href="opencpu-deployment.html#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="co"># update indices</span></span>
+<span id="cb11-43"><a href="opencpu-deployment.html#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="at">-qq</span></span>
+<span id="cb11-44"><a href="opencpu-deployment.html#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="co"># install two helper packages we need</span></span>
+<span id="cb11-45"><a href="opencpu-deployment.html#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">--no-install-recommends</span> software-properties-common dirmngr</span>
+<span id="cb11-46"><a href="opencpu-deployment.html#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="co"># import the signing key (by Michael Rutter) for these repo</span></span>
+<span id="cb11-47"><a href="opencpu-deployment.html#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-key adv <span class="at">--keyserver</span> keyserver.ubuntu.com <span class="at">--recv-keys</span> E298A3A825C0D65DFD57CBB651716619E084DAB9</span>
+<span id="cb11-48"><a href="opencpu-deployment.html#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="co"># we use R 4.0 (however note this actually installs R 4.1!! (May 2021))</span></span>
+<span id="cb11-49"><a href="opencpu-deployment.html#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="st">&#39;deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/&#39;</span></span>
+<span id="cb11-50"><a href="opencpu-deployment.html#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="co"># in the future: use cran-41</span></span>
+<span id="cb11-51"><a href="opencpu-deployment.html#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install r-base</span>
+<span id="cb11-52"><a href="opencpu-deployment.html#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="co"># install r-base-dev because we want to compile from source</span></span>
+<span id="cb11-53"><a href="opencpu-deployment.html#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install r-base-dev</span>
+<span id="cb11-54"><a href="opencpu-deployment.html#cb11-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-55"><a href="opencpu-deployment.html#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="co"># install opencpu-server</span></span>
+<span id="cb11-56"><a href="opencpu-deployment.html#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="at">-y</span> ppa:opencpu/opencpu-2.2</span>
+<span id="cb11-57"><a href="opencpu-deployment.html#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get update</span>
+<span id="cb11-58"><a href="opencpu-deployment.html#cb11-58" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get upgrade</span>
+<span id="cb11-59"><a href="opencpu-deployment.html#cb11-59" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install <span class="at">-y</span> opencpu-server</span>
+<span id="cb11-60"><a href="opencpu-deployment.html#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-61"><a href="opencpu-deployment.html#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="co"># restart opencpu</span></span>
+<span id="cb11-62"><a href="opencpu-deployment.html#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2ensite opencpu</span>
+<span id="cb11-63"><a href="opencpu-deployment.html#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb11-64"><a href="opencpu-deployment.html#cb11-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-65"><a href="opencpu-deployment.html#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="co"># manually check https://vps.stefvanbuuren.nl/ocpu </span></span>
+<span id="cb11-66"><a href="opencpu-deployment.html#cb11-66" aria-hidden="true" tabindex="-1"></a><span class="co"># or https://www.groeidiagrammen.nl/ocpu</span></span>
+<span id="cb11-67"><a href="opencpu-deployment.html#cb11-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-68"><a href="opencpu-deployment.html#cb11-68" aria-hidden="true" tabindex="-1"></a><span class="co"># install application package: pubertyplot - only on dev server</span></span>
+<span id="cb11-69"><a href="opencpu-deployment.html#cb11-69" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;/home/stef/packages/pubertyplot_1.3.tar.gz&quot;, repos = NULL)&#39;</span></span>
+<span id="cb11-70"><a href="opencpu-deployment.html#cb11-70" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2ensite puberty</span>
+<span id="cb11-71"><a href="opencpu-deployment.html#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb11-72"><a href="opencpu-deployment.html#cb11-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-73"><a href="opencpu-deployment.html#cb11-73" aria-hidden="true" tabindex="-1"></a><span class="co"># install application package: webtool - only on dev server</span></span>
+<span id="cb11-74"><a href="opencpu-deployment.html#cb11-74" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;RMySQL&quot;)&#39;</span></span>
+<span id="cb11-75"><a href="opencpu-deployment.html#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;/home/stef/packages/webtool_1.1.tar.gz&quot;, repos = NULL)&#39;</span></span>
+<span id="cb11-76"><a href="opencpu-deployment.html#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> a2ensite webtool</span>
+<span id="cb11-77"><a href="opencpu-deployment.html#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb11-78"><a href="opencpu-deployment.html#cb11-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-79"><a href="opencpu-deployment.html#cb11-79" aria-hidden="true" tabindex="-1"></a><span class="co"># install JAMES packages - this may take a while - you need the right priveledges</span></span>
+<span id="cb11-80"><a href="opencpu-deployment.html#cb11-80" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;install.packages(&quot;remotes&quot;)&#39;</span></span>
+<span id="cb11-81"><a href="opencpu-deployment.html#cb11-81" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;remotes::install_github(&quot;growthcharts/james&quot;)&#39;</span></span>
+<span id="cb11-82"><a href="opencpu-deployment.html#cb11-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-83"><a href="opencpu-deployment.html#cb11-83" aria-hidden="true" tabindex="-1"></a><span class="co"># remove duplicate packages</span></span>
+<span id="cb11-84"><a href="opencpu-deployment.html#cb11-84" aria-hidden="true" tabindex="-1"></a><span class="co"># evade errors: &quot;namespace &#39;vctrs&#39; 0.3.6 is already loaded, but &gt;= 0.3.8 is required&quot;</span></span>
+<span id="cb11-85"><a href="opencpu-deployment.html#cb11-85" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R <span class="at">-e</span> <span class="st">&#39;remove.packages(c(&quot;ellipsis&quot;, &quot;pillar&quot;, &quot;vctrs&quot;), &quot;/usr/lib/opencpu/library&quot;)&#39;</span></span>
+<span id="cb11-86"><a href="opencpu-deployment.html#cb11-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-87"><a href="opencpu-deployment.html#cb11-87" aria-hidden="true" tabindex="-1"></a><span class="co"># copy back opencpu configuration for JAMES (if they were OK, otherwise tweak)</span></span>
+<span id="cb11-88"><a href="opencpu-deployment.html#cb11-88" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm <span class="at">-rf</span> /etc/opencpu</span>
+<span id="cb11-89"><a href="opencpu-deployment.html#cb11-89" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> cp <span class="at">-rv</span> ~/conf/opencpu /etc/opencpu/</span>
+<span id="cb11-90"><a href="opencpu-deployment.html#cb11-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-91"><a href="opencpu-deployment.html#cb11-91" aria-hidden="true" tabindex="-1"></a><span class="co"># active JAMES</span></span>
+<span id="cb11-92"><a href="opencpu-deployment.html#cb11-92" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apachectl restart</span>
+<span id="cb11-93"><a href="opencpu-deployment.html#cb11-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-94"><a href="opencpu-deployment.html#cb11-94" aria-hidden="true" tabindex="-1"></a><span class="co"># check on https://tnochildhealthstatistics.shinyapps.io/james_tryout/ </span></span>
+<span id="cb11-95"><a href="opencpu-deployment.html#cb11-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-96"><a href="opencpu-deployment.html#cb11-96" aria-hidden="true" tabindex="-1"></a><span class="co"># clean up: delete ~/conf/ after everything works</span></span>
+<span id="cb11-97"><a href="opencpu-deployment.html#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> conf</span></code></pre></div>
 
 </div>
 </div>
@@ -373,7 +367,6 @@ R fresh from source, install JAMES and puts the machine to work.</p>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -413,6 +406,10 @@ gitbook.start({
 "text": null
 },
 "download": ["jamesdocs.pdf", "jamesdocs.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }
@@ -426,7 +423,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

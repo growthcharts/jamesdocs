@@ -6,8 +6,8 @@
 ]{book}
 \usepackage{amsmath,amssymb}
 \usepackage{lmodern}
-\usepackage{ifxetex,ifluatex}
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+\usepackage{iftex}
+\ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
@@ -33,14 +33,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  pdftitle={JAMES Documentation},
-  pdfauthor={Stef van Buuren, Arjan Huizing},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -109,15 +101,23 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
 \usepackage{booktabs}
-\ifluatex
+\ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={JAMES Documentation},
+  pdfauthor={Stef van Buuren, Arjan Huizing},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
 
 \title{JAMES Documentation}
 \author{Stef van Buuren, Arjan Huizing}
-\date{2021-06-27}
+\date{2023-05-26}
 
 \begin{document}
 \maketitle
@@ -192,12 +192,18 @@ The contents of the system consist of two parts:
 Active packages reside on the JAMES server and provide all functionality.
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.13}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.08}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.79}}@{}}
-\toprule
-Package & Open & Description \\
-\midrule
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1268}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.0845}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.7887}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedright
+Package
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Open
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule()
 \endhead
 \href{https://github.com/growthcharts/james}{\texttt{james}} & Y & Joint Automatic Measurement and Evaluation System \\
 \href{https://github.com/growthcharts/nlreferences}{\texttt{nlreferences}} & Y & Growth References for Children living in The Netherlands \\
@@ -213,7 +219,7 @@ Package & Open & Description \\
 \href{https://github.com/growthcharts/growthscreener}{\texttt{growthscreener}} & Y & Finding Children with Unusual Growth Patterns \\
 \href{https://github.com/growthcharts/jamesclient}{\texttt{jamesclient}} & Y & Client-side R Functions for JAMES \\
 \href{https://github.com/growthcharts/jamesdemodata}{\texttt{jamesdemodata}} & Y & Demo Data for JAMES \\
-\bottomrule
+\bottomrule()
 \end{longtable}
 
 \hypertarget{james-support-packages}{%
@@ -221,10 +227,19 @@ Package & Open & Description \\
 
 Support packages produce half-fabricated materials, provide testing or store documentation.
 
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-Package & Open & Description \\
-\midrule
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1268}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.0845}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.7887}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedright
+Package
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Open
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule()
 \endhead
 \href{https://github.com/stefvanbuuren/donordata}{\texttt{donordata}} & N & Longitudinal Data for Curve Matching \\
 \href{https://github.com/stefvanbuuren/chartdesigner}{\texttt{chartdesigner}} & N & Design Growth Charts for JAMES \\
@@ -235,7 +250,7 @@ Package & Open & Description \\
 \href{https://github.com/stefvanbuuren/minihealth}{\texttt{minihealth}} & Y & Mini Dossier for Individual Health Data \\
 \href{https://github.com/stefvanbuuren/clopus}{\texttt{clopus}} & N & Growth reference library \\
 \href{https://github.com/stefvanbuuren/jamesdocs}{\texttt{jamesdocs}} & Y & JAMES Documentation \\
-\bottomrule
+\bottomrule()
 \end{longtable}
 
 \hypertarget{jesse}{%
@@ -269,18 +284,32 @@ Package & Open & Description \\
   \url{https://www.tno.nl/groei}, \url{https://www.tno.nl/growth}
 \end{itemize}
 
-\hypertarget{james-data-format}{%
-\chapter{JAMES data format}\label{james-data-format}}
+\hypertarget{james-data-formats}{%
+\chapter{JAMES data formats}\label{james-data-formats}}
 
 \hypertarget{objective}{%
 \section{Objective}\label{objective}}
 
-This chapter describes the format of the input data accepted by JAMES. The specification
+This chapter describes
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  the format of the input child data accepted by JAMES;
+\item
+  the internal format used in the code in the \texttt{R} packages on \url{https://github.com/growthcharts}.
+\end{enumerate}
+
+\hypertarget{input-child-data-accepted-by-james}{%
+\section{Input child data accepted by JAMES}\label{input-child-data-accepted-by-james}}
+
+The specification for the input data
 
 \begin{itemize}
 \tightlist
 \item
-  closely follows the definition of the \href{https://www.ncj.nl/themadossiers/informatisering/basisdataset/}{Basisdataset JGZ 3.25 (2018)};
+  follows the definition of the \href{https://decor.nictiz.nl/pub/jeugdgezondheidszorg/BDS401/}{Basisdataset JGZ 4.0.1};
 \item
   defines data objects;
 \item
@@ -289,192 +318,12 @@ This chapter describes the format of the input data accepted by JAMES. The speci
   defines the error messages for informing the client.
 \end{itemize}
 
-\hypertarget{generic-object-model}{%
-\section{Generic object model}\label{generic-object-model}}
+Data accepted by JAMES should follow the JSON schema defined at \url{https://raw.githubusercontent.com/growthcharts/bdsreader/srm/inst/schemas/bds_v3.0.json}.
 
-\hypertarget{epremdossier-class}{%
-\subsection{EPremDossier Class}\label{epremdossier-class}}
+For backward compatibility, JAMES supports older versions of the schema (v1.0, v1.1 and v2.0). Do not use these deprecated formats for new applications.
 
-\hypertarget{object-model}{%
-\subsubsection{Object model}\label{object-model}}
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-EPremDossier & Instance & Class \\
-\midrule
-\endhead
--\textgreater{} & Clientgegevens & EPremGroep \\
--\textgreater{} & Contactmomenten & EPremContactmoment \\
-\bottomrule
-\end{longtable}
-
-\hypertarget{syntax-c}{%
-\subsubsection{\texorpdfstring{Syntax \texttt{C\#}}{Syntax C\#}}\label{syntax-c}}
-
-\texttt{public\ class\ EPremDossier}
-
-\hypertarget{public-properties}{%
-\subsubsection{Public properties}\label{public-properties}}
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-Name & Description & Required \\
-\midrule
-\endhead
-Clientgegevens & Class with basic child data & Y \\
-Contactmomenten & Class with data per visit & N \\
-InstrumentCode & Integer identifying the instrument & Ignored \\
-OrganisatieCode & Integer identifying the care organisation & Y \\
-Referentie & String identifying the request & N \\
-\bottomrule
-\end{longtable}
-
-\hypertarget{epremgroep-class}{%
-\subsection{EPremGroep Class}\label{epremgroep-class}}
-
-\hypertarget{object-model-1}{%
-\subsubsection{Object model}\label{object-model-1}}
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-EPremGroep & Instance & Class \\
-\midrule
-\endhead
--\textgreater{} & Elementen & EPremElement \\
--\textgreater{} & Groepen & EPremGroep \\
-\bottomrule
-\end{longtable}
-
-\hypertarget{syntax-c-1}{%
-\subsubsection{\texorpdfstring{Syntax \texttt{C\#}}{Syntax C\#}}\label{syntax-c-1}}
-
-\texttt{public\ class\ EPremGroep}
-
-\hypertarget{public-properties-1}{%
-\subsubsection{Public properties}\label{public-properties-1}}
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-Name & Description & Required \\
-\midrule
-\endhead
-Elementen & Class with BDS-elements & Y \\
-Groepen & Class with groups of BDS-elements & N \\
-\bottomrule
-\end{longtable}
-
-\hypertarget{epremelement-class}{%
-\subsection{EPremElement Class}\label{epremelement-class}}
-
-\hypertarget{syntax-c-2}{%
-\subsubsection{\texorpdfstring{Syntax \texttt{C\#}}{Syntax C\#}}\label{syntax-c-2}}
-
-\texttt{public\ class\ EPremElement}
-
-\hypertarget{public-properties-2}{%
-\subsubsection{Public properties}\label{public-properties-2}}
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-Name & Description & Required \\
-\midrule
-\endhead
-Bdsnummer & Integer identifying the BDS-field & Y \\
-InternNummer & Integer identifying internal field & Ignored \\
-Waarde & Value of the BDS-field & Y \\
-Waardeomschrijving & Descriptive label for value & Ignored \\
-\bottomrule
-\end{longtable}
-
-\hypertarget{epremcontactmoment-class}{%
-\subsection{EPremContactmoment Class}\label{epremcontactmoment-class}}
-
-\hypertarget{object-model-2}{%
-\subsubsection{Object model}\label{object-model-2}}
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-EPremContactmoment & Instance & Class \\
-\midrule
-\endhead
--\textgreater{} & Elementen & EPremElement \\
--\textgreater{} & Groepen & EPremGroep \\
-\bottomrule
-\end{longtable}
-
-\hypertarget{syntax-c-3}{%
-\subsubsection{\texorpdfstring{Syntax \texttt{C\#}}{Syntax C\#}}\label{syntax-c-3}}
-
-\texttt{public\ class\ EPremContactmoment\ :\ EPremGroep}
-
-\hypertarget{public-properties-3}{%
-\subsubsection{Public properties}\label{public-properties-3}}
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-Name & Description & Required \\
-\midrule
-\endhead
-Elementen & Class with BDS-elements & Y \\
-Groepen & Class with groups of BDS-elements & N \\
-Tijdstip & Date of visit & Y \\
-\bottomrule
-\end{longtable}
-
-\hypertarget{bds-elements}{%
-\section{BDS-elements}\label{bds-elements}}
-
-\begin{longtable}[]{@{}rlrll@{}}
-\toprule
-BDS & Description & Value & Label & Required \\
-\midrule
-\endhead
-19 & Sex of child & ``0'' & Unknown & Y \\
-& & ``1'' & Male & \\
-& & ``2'' & Female & \\
-& & ``3'' & Not specified & \\
-20 & Date of birth & ``yyyymmdd'' & year-month-day & Y \\
-62 & Caretaker relation & ``01'' & biological father & N \\
-& & ``02'' & biological mother & \\
-& & ``03'' & male partner, stepfather & \\
-& & ``04'' & female partner, stepmother & \\
-& & ``05'' & adoptive father & \\
-& & ``06'' & adoptive mother & \\
-& & ``07'' & foster father & \\
-& & ``08'' & foster mother & \\
-& & ``98'' & other & \\
-63 & Caretaker date of birth & ``yyyymmdd'' & year-month-day & N \\
-66 & Caretaker education & ``01'' & no primary school & N \\
-& & ``02'' & primary school, special ed & \\
-& & ``03'' & VSO-MLK/IVBO/VMBO-LWOO & \\
-& & ``04'' & LBO/VBO/VMBO-BBL\&KBL & \\
-& & ``05'' & MAVO/VMBO-GL\&TL & \\
-& & ``06'' & MBO & \\
-& & ``07'' & HAVO/VWO & \\
-& & ``08'' & HBO/HTS/HEAO & \\
-& & ``09'' & WO & \\
-& & ``98'' & Other & \\
-& & ``00'' & Unknown & \\
-71 & Caretaker birth country & ``dddd'' & \href{https://publicaties.rvig.nl/Landelijke_tabellen/Landelijke_tabellen_32_t_m_60_excl_tabel_35/Landelijke_Tabellen_32_t_m_60_in_csv_formaat}{4-digit code, Table 34} & N \\
-82 & Gestational age & ``ddd'' & in days & N \\
-91 & Smoking during pregnancy & ``1'' & yes & N \\
-& & ``2'' & no & \\
-& & ``99'' & unknown & \\
-110 & Birth weight & ``dddd'' & 3-4 digits, grammes & N \\
-235 & Length/height & ``dddd'' & 3-4 digits, millimeters & N \\
-245 & Body weight & ``dddddd'' & 3-6 digits, grammes & N \\
-252 & Head circumference & ``ddd'' & 2-3 digits, millimeters & N \\
-238 & Height biological mother & ``dddd'' & 3-4 digits, millimeters & N \\
-240 & Height biological father & ``dddd'' & 3-4 digits, millimeters & N \\
-510 & Passive smoking & ``01'' & No smoking in house & N \\
-& & ``02'' & Never with child & \\
-& & ``03'' & Not in last 7 days & \\
-& & ``04'' & Yes & \\
-\bottomrule
-\end{longtable}
-
-\hypertarget{error-checking}{%
-\section{Error checking}\label{error-checking}}
+\hypertarget{error-checking-policy}{%
+\section{Error checking policy}\label{error-checking-policy}}
 
 Error checking of the JSON data occurs in three phases:
 
@@ -492,12 +341,296 @@ Error checking of the JSON data occurs in three phases:
   values, but continues using the specified values.
 \end{enumerate}
 
-The default JSON schema in phase 2 is the built-in JSON schema \texttt{bds\_schema\_str.json}, a data format implementing a version that accepts strings as values for BDS-elements. You may also choose JSON schema \texttt{bds\_schema.json}, which requires numeric input to be specified as numeric (and not as string).
+The default JSON schema in PHASE 2 is the built-in JSON schema \texttt{bds\_v3.0.json}, a data format implementing a version that accepts strings as values for BDS-elements.
 
-\hypertarget{note-added-june-2-2021}{%
-\section{Note (added June 2, 2021)}\label{note-added-june-2-2021}}
+\hypertarget{checking-structure-of-the-input-data-against-the-json-schema}{%
+\section{Checking structure of the input data against the JSON schema}\label{checking-structure-of-the-input-data-against-the-json-schema}}
 
-The JAMES function now also reads, validates and interprets BDS fields related to the Van Wiechenschema (Dutch Development Instrument). See \url{https://growthcharts.org/bdsreader/index.html} and \url{https://github.com/growthcharts/jamesdemodata}.
+The \texttt{inst/extdata/bds\_v3.0} directory of the \href{https://github.com/growthcharts/jamesdemodata}{\texttt{jamesdemodata}} package contains examples of input data in JSON format. Non-R user can access these from GitHub from link \url{https://github.com/growthcharts/jamesdemodata/tree/master/inst/extdata/bds_v3.0}.
+
+Manual checking the structure of your child data can be done as follows. Surf to \url{https://www.jsonschemavalidator.net}, paste the JSON schema definition in the left panel and paste the child data in the right panel. You should see something like the Figure \ref{fig:jsonschema}.
+
+\begin{figure}
+\centering
+\includegraphics{fig/JSON-schema-validator.png}
+\caption{\label{fig:jsonschema}Manual validation of a child dataset (right side) according JSON schema \texttt{bds\_v3.0.json}.}
+\end{figure}
+
+
+
+Experiment with your child file (e.g.~remove the required Format field) to see what types errors the validator can catch.
+
+\hypertarget{bds-elements-supported-by-james}{%
+\section{BDS-elements supported by JAMES}\label{bds-elements-supported-by-james}}
+
+\begin{longtable}[]{@{}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0811}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3243}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0946}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3514}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1486}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedleft
+BDS
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Value
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Label
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\texttt{R} name
+\end{minipage} \\
+\midrule()
+\endhead
+19 & Sex of child & ``0'' & Unknown & \texttt{sex} \\
+& & ``1'' & Male & \\
+& & ``2'' & Female & \\
+& & ``3'' & Not specified & \\
+20 & Date of birth & ``yyyymmdd'' & year-month-day & \texttt{dob} \\
+62 & Caretaker relation & ``01'' & biological father & \\
+& & ``02'' & biological mother & \\
+& & ``03'' & male partner, stepfather & \\
+& & ``04'' & female partner, stepmother & \\
+& & ``05'' & adoptive father & \\
+& & ``06'' & adoptive mother & \\
+& & ``07'' & foster father & \\
+& & ``08'' & foster mother & \\
+& & ``98'' & other & \\
+63 & Caretaker date of birth & ``yyyymmdd'' & year-month-day & \texttt{dobf} \\
+& & & & \texttt{dobm} \\
+& & & & \texttt{agem} \\
+66 & Caretaker education & ``01'' & no primary school & \texttt{-} \\
+& & ``02'' & primary school, special ed & \\
+& & ``03'' & VSO-MLK/IVBO/VMBO-LWOO & \\
+& & ``04'' & LBO/VBO/VMBO-BBL\&KBL & \\
+& & ``05'' & MAVO/VMBO-GL\&TL & \\
+& & ``06'' & MBO & \\
+& & ``07'' & HAVO/VWO & \\
+& & ``08'' & HBO/HTS/HEAO & \\
+& & ``09'' & WO & \\
+& & ``98'' & Other & \\
+& & ``00'' & Unknown & \\
+71 & Caretaker birth country & ``dddd'' & \href{https://publicaties.rvig.nl/dsresource?objectid=29b66cb2-02ef-4a11-baf4-316ae00d8fa1}{4-digit code, Table 34} & \texttt{etn} (always \texttt{NL}) \\
+82 & Gestational age & ``ddd'' & in days & \texttt{gad} \\
+91 & Smoking during pregnancy & ``1'' & yes & \texttt{smo} \\
+& & ``2'' & no & \\
+& & ``99'' & unknown & \\
+110 & Birth weight & ``dddd'' & 3-4 digits, grammes & \texttt{bw} (g) \\
+235 & Length/height & ``dddd'' & 3-4 digits, millimeters & \texttt{hgt} (cm) \\
+245 & Body weight & ``dddddd'' & 3-6 digits, grammes & \texttt{wgt} (kg) \\
+252 & Head circumference & ``ddd'' & 2-3 digits, millimeters & \texttt{hdc} (cm) \\
+238 & Height biological mother & ``dddd'' & 3-4 digits, millimeters & \texttt{hgtf} (cm) \\
+240 & Height biological father & ``dddd'' & 3-4 digits, millimeters & \texttt{hgtm} (cm) \\
+510 & Passive smoking & ``01'' & No smoking in house & \texttt{-} \\
+& & ``02'' & Never with child & \\
+& & ``03'' & Not in last 7 days & \\
+& & ``04'' & Yes & \\
+\bottomrule()
+\end{longtable}
+
+JAMES supports the following BDS numbers with Van Wiechen items: 879, 881, 883, 884, 885, 887, 888, 889, 890, 891, 894, 896, 897, 898, 902, 903, 906, 907, 910, 912, 914, 916, 917, 918, 920, 922, 923, 926, 945, 951, 955, 956, 958, 959, 961, 962, 964, 966, 968, 970, 971, 973, 975, 977, 978, 986, 989, 991, 993, 994, 996, 999, 1002, 886, 892, 893, 900, 905, 909, 913, 921, 927, 928, 930, 931, 932, 933, 934, 935, 936, 937, 938, 939, 940, 941, 943, 947, 948, 949, 950, 953, 954, 972, 980, 982, 984, 998, 1001, 1278.
+
+The results of the Van Wiechen items are converted into 0/1 codes (by \href{https://github.com/growthcharts/bdsreader/blob/master/R/convert_ddi_gsed.R}{bdsreader:::convert\_ddi\_gsed}) and stored with GSED 9-position names as defined by the \href{https://d-score.org/dscore/}{\texttt{dscore}} package.
+
+In addition, JAMES reads the following non-BDS fields:
+
+\begin{longtable}[]{@{}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2687}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3582}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2239}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1493}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedleft
+Fields
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\texttt{R} name
+\end{minipage} \\
+\midrule()
+\endhead
+Reference & Description (opt) & String & \texttt{name} \\
+Format & JSON schema number (req) & Number.Number & \texttt{-} \\
+organisationCode & Organisation code (opt) & Integer & \texttt{src} \\
+\bottomrule()
+\end{longtable}
+
+\hypertarget{james-internal-data}{%
+\section{JAMES internal data}\label{james-internal-data}}
+
+Suppose we coded the following data set.
+
+\begin{verbatim}
+{
+  "Format": "3.0",
+  "organisationCode": 1234,
+  "Reference": "Maria",
+  "clientDetails": [
+    {
+      "bdsNumber": 19,
+      "value": "2"
+    },
+    {
+      "bdsNumber": 20,
+      "value": "20181011"
+    },
+    {
+      "bdsNumber": 82,
+      "value": 189
+    },
+    {
+      "bdsNumber": 91,
+      "value": "1"
+    },
+    {
+      "bdsNumber": 110,
+      "value": 990
+    },
+    {
+      "bdsNumber": 238,
+      "value": 1670
+    },
+    {
+      "bdsNumber": 240,
+      "value": 1900
+    }
+  ],
+  "clientMeasurements": [
+    {
+      "bdsNumber": 235,
+      "values": [
+        {
+          "date": "20181111",
+          "value": 380
+        },
+        {
+          "date": "20181211",
+          "value": 435
+        }
+      ]
+    },
+    {
+      "bdsNumber": 245,
+      "values": [
+        {
+          "date": "20181011",
+          "value": 990
+        },
+        {
+          "date": "20181111",
+          "value": 1250
+        },
+        {
+          "date": "20181211",
+          "value": 2100
+        }
+      ]
+    },
+    {
+      "bdsNumber": 252,
+      "values": [
+        {
+          "date": "20181111",
+          "value": 270
+        },
+        {
+          "date": "20181211",
+          "value": 305
+        }
+      ]
+    }
+  ],
+  "nestedDetails": [
+    {
+      "nestingBdsNumber": 62,
+      "nestingCode": "01",
+      "clientDetails": [
+        {
+          "bdsNumber": 63,
+          "value": "19950704"
+        }
+      ],
+      "clientMeasurements": [
+
+      ]
+    },
+    {
+      "nestingBdsNumber": 62,
+      "nestingCode": "02",
+      "clientDetails": [
+        {
+          "bdsNumber": 63,
+          "value": "19901202"
+        }
+      ],
+      "clientMeasurements": [
+
+      ]
+    }
+  ]
+}
+\end{verbatim}
+
+The following R script shows reading and conversion of the data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(bdsreader)}
+\NormalTok{fn }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"examples/maria.json"}\NormalTok{, }\AttributeTok{package =} \StringTok{"bdsreader"}\NormalTok{)}
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{read\_bds}\NormalTok{(fn)}
+\end{Highlighting}
+\end{Shaded}
+
+Object \texttt{m} object is a list with two components:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{m\$psn} a tibble with one row containing fixed covariates
+\item
+  \texttt{m\$xyz} a tibble with multiple rows with time-varying data
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m}\SpecialCharTok{$}\NormalTok{psn}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 16
+##      id name  dob        dobf       dobm       src   dnr   sex      gad    ga
+##   <int> <chr> <date>     <date>     <date>     <chr> <chr> <chr>  <dbl> <dbl>
+## 1    -1 Maria 2018-10-11 1995-07-04 1990-12-02 1234  <NA>  female   189    27
+## # i 6 more variables: smo <int>, bw <dbl>, hgtm <dbl>, hgtf <dbl>, agem <dbl>,
+## #   etn <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m}\SpecialCharTok{$}\NormalTok{xyz}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 11 x 8
+##       age xname yname zname zref                        x     y      z
+##     <dbl> <chr> <chr> <chr> <chr>                   <dbl> <dbl>  <dbl>
+##  1 0.0849 age   hgt   hgt_z nl_2012_hgt_female_27  0.0849 38    -0.158
+##  2 0.0849 age   wgt   wgt_z nl_2012_wgt_female_27  0.0849  1.25 -0.203
+##  3 0.0849 age   hdc   hdc_z nl_2012_hdc_female_27  0.0849 27    -0.709
+##  4 0.0849 age   bmi   bmi_z nl_1997_bmi_female_nl  0.0849  8.66 -5.72 
+##  5 0.167  age   hgt   hgt_z nl_2012_hgt_female_27  0.167  43.5   0.047
+##  6 0.167  age   wgt   wgt_z nl_2012_wgt_female_27  0.167   2.1   0.015
+##  7 0.167  age   hdc   hdc_z nl_2012_hdc_female_27  0.167  30.5  -0.913
+##  8 0.167  age   bmi   bmi_z nl_1997_bmi_female_nl  0.167  11.1  -3.77 
+##  9 0      age   wgt   wgt_z nl_2012_wgt_female_27  0       0.99  0.19 
+## 10 0.0849 hgt   wfh   wfh_z nl_2012_wfh_female_   38       1.25 -0.001
+## 11 0.167  hgt   wfh   wfh_z nl_2012_wfh_female_   43.5     2.1   0.326
+\end{verbatim}
 
 \hypertarget{growth-charts-in-james}{%
 \chapter{Growth charts in JAMES}\label{growth-charts-in-james}}
@@ -517,7 +650,7 @@ The GitHub repository \url{https://github.com/growthcharts/chartbox} contains th
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 394   8
+## [1] 478   8
 \end{verbatim}
 
 \begin{Shaded}
@@ -528,33 +661,48 @@ The GitHub repository \url{https://github.com/growthcharts/chartbox} contains th
 
 \begin{verbatim}
 ##     chartgrp chartcode population    sex design  side language week
-## 1     nl2010      HJAA         HS   male      A front    dutch     
-## 22    nl2010      HMBH         HS female      B   hgt    dutch     
-## 23    nl2010      HMBR         HS female      B   wfh    dutch     
-## 300  preterm   PMAHN28         PT female      A   hgt    dutch   28
-## 301  preterm   PMAHN29         PT female      A   hgt    dutch   29
-## 340  preterm   PMEAN32         PT female      E front    dutch   32
+## 1     nl2010      DJAA         DS   male      A front    dutch     
+## 22    nl2010      DMBA         DS female      B front    dutch     
+## 23    nl2010      DMBB         DS female      B  back    dutch     
+## 300  preterm   PMAAN32         PT female      A front    dutch   32
+## 301  preterm   PMAAN33         PT female      A front    dutch   33
+## 340  preterm   PMAHN36         PT female      A   hgt    dutch   36
 \end{verbatim}
 
 The \texttt{chartbox} package currently contains three chart groups: \texttt{nl2010}, \texttt{preterm} and \texttt{who}. Each group collects charts of a similar type.
 
-\begin{longtable}[]{@{}lrlll@{}}
-\toprule
-Chart Group & N & Chart code & Description & Source \\
-\midrule
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0964}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0723}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1325}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.5783}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1205}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedright
+Chart Group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Chart code
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Source
+\end{minipage} \\
+\midrule()
 \endhead
 \texttt{nl2010} & 140 & CCCC & Dutch children 0-21 years, including minorities & \citet{talma2010} \\
 \texttt{preterm} & 240 & CCCCCNN & Dutch preterms, ga \textless= 36 weeks, 0-4 years & \citet{bocca2012} \\
 \texttt{who} & 14 & CCCC & WHO Child Growth Standards 0-4 years & \href{https://www.who.int/childgrowth/en/}{WHO} \\
-\bottomrule
+\bottomrule()
 \end{longtable}
 
 The chart code is an alpha-numeric code of four (for \texttt{nl2010} and \texttt{who}) or seven (for \texttt{preterm}) that uniquely identifies each of the charts. The table below specifies the full coding schema used to construct the chart codes.
 
 \begin{longtable}[]{@{}clll@{}}
-\toprule
+\toprule()
 Position & Field & Value & Description \\
-\midrule
+\midrule()
 \endhead
 1 & Population & N & Dutch \\
 & & T & Turkish \\
@@ -582,7 +730,7 @@ Position & Field & Value & Description \\
 5 & Language & N & Dutch \\
 & & E & English \\
 6-7 & Week & 25-36 & Gestational age \\
-\bottomrule
+\bottomrule()
 \end{longtable}
 
 For illustration, code \texttt{NJAA} references to Dutch (\texttt{N}), boys (\texttt{J}), 0-15 month (\texttt{A}), front side (\texttt{A}). Likewise, \texttt{PMEAN33} codes for the chart of preterm (\texttt{M}), girls (\texttt{M}), 0-4 years (\texttt{E}), front side (\texttt{A}), Dutch language (\texttt{N}) born at 33 weeks of gestation (\texttt{33}).
@@ -592,9 +740,9 @@ Some forms hold multiple growth charts. For example, the \texttt{NJAA} chart is 
 The following table lists the measures per design-form combination.
 
 \begin{longtable}[]{@{}ccll@{}}
-\toprule
+\toprule()
 Design & Side & Measure & Description \\
-\midrule
+\midrule()
 \endhead
 A & A & \texttt{hdc} & Head circumference by age, 0-15 mo \\
 & & \texttt{hgt} & Length by age, 0-15 mo \\
@@ -628,7 +776,7 @@ E & A & \texttt{wgt} & Weight by age, 0-4 yr \\
 & H & \texttt{hgt} & Height by age, 0-4 yr \\
 & O & \texttt{hdc} & Head circumference by age, 0-4 yr \\
 & W & \texttt{wgt} & Weight by age, 0-4 yr \\
-\bottomrule
+\bottomrule()
 \end{longtable}
 
 \hypertarget{methods}{%
@@ -645,12 +793,18 @@ This document describes the actions taken to implement the \href{https://d-score
 \section{Actions}\label{actions}}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.29}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.32}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.39}}@{}}
-\toprule
-Package & PR & Description \\
-\midrule
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2857}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3214}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3929}}@{}}
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedright
+Package
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+PR
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule()
 \endhead
 minihealth & \href{https://github.com/growthcharts/minihealth/commit/03a32f1960e81a685bb749911e6ea297684ab4dc}{03a32f1} & Create milestones descriptions \\
 dscore & \href{https://github.com/D-score/dscore/commit/f0013ce9a02d34ad25dd5c101c6a7c5b1444b53b}{f0013ce} & Link BDS number to Van Wiechen milestones \\
@@ -686,7 +840,7 @@ jamestest & \href{https://github.com/growthcharts/jamesdemo/commit/6484191fd8de0
 jamestest & \href{https://github.com/growthcharts/jamesdemo/commit/ce1dbe5591ca7182fef05ea6c5cb0d1361e876dc}{ce1dbe} & Update the \texttt{installed.cabinets} object with the new individual milestones data \\
 minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/4dda8daabca8811a4cc321c66aaccf31c4aba83f}{4dda8d} & Add class \texttt{individualRW} to store and convert raw milestones data \\
 minihealth & \href{https://github.com/stefvanbuuren/minihealth/commit/9e03e7e39b007a9687d21efbaa13e77283866d5c}{9e03e7} & Complete the JSON validator schema \\
-\bottomrule
+\bottomrule()
 \end{longtable}
 
 \hypertarget{opencpu-deployment}{%
